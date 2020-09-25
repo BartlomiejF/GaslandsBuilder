@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GaslandsBuilder</string>
+    <string name="create_vehicle">Create vehicle</string>
+    <string name="car_name">Car name:</string>
+    <string name="carNameHint">Judgement Deliverer</string>
+    <string name="cans">cans:</string>
+    <string name="build_slots">build slots:</string>
+    <string name="add_weapon">Add weapon</string>
+    <string name="mount">Mount:</string>
+    <string name="cost">Cost:</string>
+</resources>

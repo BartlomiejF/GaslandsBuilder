@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/carType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cansText"
+        android:layout_width="53dp"
+        android:layout_height="17dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:text="@string/cans"
+        app:layout_constraintBottom_toBottomOf="@+id/carType"
+        app:layout_constraintEnd_toStartOf="@+id/carCans"
+        app:layout_constraintTop_toTopOf="@+id/carType" />
+
+    <TextView
+        android:id="@+id/carCans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/cansText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cansText" />
+
+    <TextView
+        android:id="@+id/slotsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
+        android:text="@string/build_slots"
+        app:layout_constraintEnd_toStartOf="@+id/buildSlots" />
+
+    <TextView
+        android:id="@+id/buildSlots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/carType"
+        app:layout_constraintEnd_toStartOf="@+id/cansText"
+        app:layout_constraintTop_toTopOf="@+id/carType" />
+</androidx.constraintlayout.widget.ConstraintLayout>
