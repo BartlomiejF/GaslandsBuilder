@@ -1,5 +1,6 @@
 package com.example.gaslandsbuilder
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,11 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.gaslandsbuilder.data.ChosenWeapon
 import com.example.gaslandsbuilder.data.Vehicle
 import com.example.gaslandsbuilder.data.getAllVehicles
 import kotlinx.android.synthetic.main.car_spinner_row.view.*
+import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
 
 class CarCreator : AppCompatActivity() {
+    val weaponActivityRequestCode = 0
+    val chosenWeapons: MutableList<ChosenWeapon> = mutableListOf<ChosenWeapon>()
+    val chosenWeaponsAdapter = ChosenWeaponAdapter(chosenWeapons, ::removeWeapon)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.car_creator)
@@ -21,7 +30,13 @@ class CarCreator : AppCompatActivity() {
         val preferences = getPrefs()
         val addWeaponButton: Button = findViewById(R.id.addWeaponButton)
         addWeaponButton.setOnClickListener{
-            startActivity(Intent(this, WeaponCreator::class.java))
+            startActivityForResult(Intent(this, WeaponCreator::class.java), weaponActivityRequestCode)
+        }
+
+        val chosenWeaponsRecyclerView: RecyclerView = findViewById(R.id.chosenWeaponsList)
+        chosenWeaponsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(application)
+            adapter = chosenWeaponsAdapter
         }
 
         val carTypeSpinner: Spinner = findViewById(R.id.carTypeSpinner)
@@ -50,6 +65,16 @@ class CarCreator : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == weaponActivityRequestCode){
+            if (resultCode == Activity.RESULT_OK){
+                chosenWeapons.add(data!!.getParcelableExtra<ChosenWeapon>("chosenWeapon")!!)
+                chosenWeaponsAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         val preferences = getPrefs()
@@ -61,6 +86,20 @@ class CarCreator : AppCompatActivity() {
             "singleCar",
             Context.MODE_PRIVATE
         )
+    }
+
+    fun removeWeapon(weapon: ChosenWeapon): Unit{
+        val preferences = getPrefs()
+        preferences.edit().apply {
+            putInt(
+                "sumWeaponsValue",
+                preferences.getInt("sumWeaponsValue", 0) - weapon.cost
+            )
+            apply()
+        }
+        updateSumCost()
+        chosenWeapons.remove(weapon)
+        chosenWeaponsAdapter.notifyDataSetChanged()
     }
 
     fun updateSumCost(){
@@ -99,4 +138,32 @@ class CarTypeSpinnerAdapter(val carTypeList: MutableList<Vehicle>): BaseAdapter(
         view.buildSlots.text = carTypeList[position].buildSlots.toString()
         return view
     }
+}
+
+class ChosenWeaponAdapter(val chosenWeapons: MutableList<ChosenWeapon>, val weaponRemover:(ChosenWeapon) -> Unit): RecyclerView.Adapter<ChosenWeaponAdapter.ViewHolder>() {
+
+    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        fun bind(weapon: ChosenWeapon, weaponRemover:(ChosenWeapon) -> Unit){
+//            val position = itemView.getAdapterPosition()
+            itemView.chosenWeaponName.text = "${weapon.mount} mounted ${weapon.name}"
+            itemView.removeChosenWeaponButton.setOnClickListener{
+                weaponRemover(weapon)
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.chosen_weapons_row, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return chosenWeapons.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(chosenWeapons[position], weaponRemover)
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.example.gaslandsbuilder
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gaslandsbuilder.data.ChosenWeapon
 import com.example.gaslandsbuilder.data.Weapon
 import com.example.gaslandsbuilder.data.getAllWeaponNames
-import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
 import kotlinx.android.synthetic.main.single_weapons_row.view.*
 
 class WeaponCreator : AppCompatActivity() {
@@ -32,12 +33,6 @@ class WeaponCreator : AppCompatActivity() {
         carWeaponsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
             adapter = CarWeaponAdapter(getAllWeaponNames(application), ::addWeapon)
-        }
-
-        val chosenWeaponsRecyclerView: RecyclerView = findViewById(R.id.chosenWeaponsList)
-        chosenWeaponsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(application)
-            adapter = ChosenWeaponAdapter(chosenWeapons, ::removeWeapon)
         }
 
         val spinner: Spinner = findViewById(R.id.mountSpinner)
@@ -65,8 +60,8 @@ class WeaponCreator : AppCompatActivity() {
 
     }
 
-    fun addWeapon(cost: Int, name: String, buildSlots: Int){
-        var cost = cost
+    fun addWeapon(weapon: Weapon){
+        var cost = weapon.cost
         val preferences = getPrefs()
         val mount = this@WeaponCreator.mount
         when (mount){
@@ -80,21 +75,11 @@ class WeaponCreator : AppCompatActivity() {
             )
             apply()
         }
-        chosenWeapons.add(ChosenWeapon(name, cost, buildSlots, mount))
-        updateSumCost()
-    }
-
-    fun removeWeapon(position: Int): Unit{
-        val preferences = getPrefs()
-        preferences.edit().apply {
-            putInt(
-                "sumWeaponsValue",
-                preferences.getInt("sumWeaponsValue", 0) - chosenWeapons[position].cost
-            )
-            apply()
-        }
-        updateSumCost()
-        chosenWeapons.removeAt(position)
+        val chosenWeapon = ChosenWeapon(weapon.name, weapon.cost, weapon.buildSlots, mount)
+        val intent = Intent()
+        intent.putExtra("chosenWeapon", chosenWeapon)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     fun getPrefs(): SharedPreferences{
@@ -113,15 +98,15 @@ class WeaponCreator : AppCompatActivity() {
 }
 
 class CarWeaponAdapter(val weaponsList: MutableList<Weapon>,
-                       val weaponAdder:(Int, String, Int) -> Unit
+                       val weaponAdder:(Weapon) -> Unit
     ): RecyclerView.Adapter<CarWeaponAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View, val weaponAdder:(Int, String, Int) -> Unit): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, val weaponAdder:(Weapon) -> Unit): RecyclerView.ViewHolder(view) {
         fun bind(weapon: Weapon){
             itemView.weaponName.text = weapon.name
             itemView.weaponCost.text = weapon.cost.toString()
             itemView.setOnClickListener{
-                weaponAdder(weapon.addWeapon(), weapon.name, weapon.buildSlots)
+                weaponAdder(weapon)
             }
         }
     }
@@ -142,30 +127,3 @@ class CarWeaponAdapter(val weaponsList: MutableList<Weapon>,
 
 }
 
-class ChosenWeaponAdapter(val chosenWeapons: MutableList<ChosenWeapon>, val weaponRemover:(Int) -> Unit): RecyclerView.Adapter<ChosenWeaponAdapter.ViewHolder>() {
-
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun bind(weapon: ChosenWeapon, weaponRemover:(Int) -> Unit, position: Int, notifier:(Int) -> Unit){
-            itemView.chosenWeaponName.text = "${weapon.mount} mounted ${weapon.name}"
-            itemView.removeChosenWeaponButton.setOnClickListener{
-                weaponRemover(position)
-                notifier(position)
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.chosen_weapons_row, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        return chosenWeapons.size
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(chosenWeapons[position], weaponRemover, position, ::notifyItemRemoved)
-    }
-
-}

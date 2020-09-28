@@ -3,6 +3,8 @@ package com.example.gaslandsbuilder.data
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
 class Weapon(
     val name: String,
@@ -18,12 +20,13 @@ class Weapon(
     }
 }
 
+@Parcelize
 data class ChosenWeapon(
     val name: String,
     val cost: Int,
     val buildSlots: Int,
     val mount: String
-)
+): Parcelable
 
 
 fun getAllWeaponNames(context: Context): MutableList<Weapon>{
