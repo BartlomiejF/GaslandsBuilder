@@ -75,7 +75,7 @@ class WeaponCreator : AppCompatActivity() {
             )
             apply()
         }
-        val chosenWeapon = ChosenWeapon(weapon.name, weapon.cost, weapon.buildSlots, mount)
+        val chosenWeapon = ChosenWeapon(weapon.name, cost, weapon.buildSlots, mount)
         val intent = Intent()
         intent.putExtra("chosenWeapon", chosenWeapon)
         setResult(Activity.RESULT_OK, intent)

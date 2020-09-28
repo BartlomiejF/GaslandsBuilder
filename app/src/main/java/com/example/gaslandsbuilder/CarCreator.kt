@@ -69,7 +69,7 @@ class CarCreator : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == weaponActivityRequestCode){
             if (resultCode == Activity.RESULT_OK){
-                chosenWeapons.add(data!!.getParcelableExtra<ChosenWeapon>("chosenWeapon")!!)
+                chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
                 chosenWeaponsAdapter.notifyDataSetChanged()
             }
         }
