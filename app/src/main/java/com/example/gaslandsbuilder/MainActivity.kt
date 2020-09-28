@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -33,8 +32,5 @@ class MainActivity : AppCompatActivity() {
             putInt("sumWeaponsValue", 0)
             apply()
         }
-
-        val sumCost: TextView = findViewById(R.id.sumCost)
-        sumCost.text = preferences.getInt("sumCarVal", 0).toString()
     }
 }

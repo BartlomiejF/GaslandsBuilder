@@ -31,3 +31,4 @@ fun getAllVehicles(context: Context): MutableList<Vehicle>{
     cursor.close()
     return vehiclesMutableList
 }
+

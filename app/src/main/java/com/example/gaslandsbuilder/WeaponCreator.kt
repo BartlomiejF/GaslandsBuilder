@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.single_weapons_row.view.*
 
 class WeaponCreator : AppCompatActivity() {
     lateinit var mount: String
-    val mountType = arrayOf("Front", "Back", "Side", "Turret(cost x3)")
+    val mountType = arrayOf("Front", "Back", "Side", "Turret")
     val chosenWeapons: MutableList<ChosenWeapon> = mutableListOf<ChosenWeapon>()
 
 
@@ -65,7 +65,7 @@ class WeaponCreator : AppCompatActivity() {
         val preferences = getPrefs()
         val mount = this@WeaponCreator.mount
         when (mount){
-            "Turret(cost x3)"-> cost *= 3
+            "Turret"-> cost *= 3
             else -> cost = cost
         }
         preferences.edit().apply {
