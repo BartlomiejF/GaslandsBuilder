@@ -48,7 +48,14 @@ class DbHelper(val context: Context) : SQLiteOpenHelper(context,
         val inputStream = context.assets.open("$ASSETS_PATH/$DATABASE_NAME.sqlite3")
 
         try {
+            val outputDir = context.getDatabasePath(DATABASE_NAME).parentFile
+            if(!outputDir.exists()){
+                outputDir.mkdir()
+            }
             val outputFile = File(context.getDatabasePath(DATABASE_NAME).path)
+            if (!outputFile.exists()){
+                outputFile.createNewFile()
+            }
             val outputStream = FileOutputStream(outputFile)
 
             inputStream.copyTo(outputStream)
@@ -72,6 +79,6 @@ class DbHelper(val context: Context) : SQLiteOpenHelper(context,
     companion object {
         const val DATABASE_NAME = "gaslandsWeapons"
         const val ASSETS_PATH = "databases"
-        const val DATABASE_VERSION = 4
+        const val DATABASE_VERSION = 6
     }
 }
