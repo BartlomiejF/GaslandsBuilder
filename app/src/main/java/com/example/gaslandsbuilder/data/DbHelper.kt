@@ -7,13 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper
 import java.io.File
 import java.io.FileOutputStream
 
-class DbHelper(val context: Context) : SQLiteOpenHelper(context,
-    DATABASE_NAME, null,
-    DATABASE_VERSION
+class DbHelper(val context: Context, val dbName: String, val dbVersion: Int) : SQLiteOpenHelper(context,
+    dbName, null, dbVersion
 ) {
 
     private val preferences: SharedPreferences = context.getSharedPreferences(
-        "${context.packageName}.database_versions",
+        "databases.$dbName",
         Context.MODE_PRIVATE
     )
 
@@ -22,14 +21,14 @@ class DbHelper(val context: Context) : SQLiteOpenHelper(context,
     }
 
     private fun installedDatabaseIsOutdated(): Boolean {
-        return preferences.getInt(DATABASE_NAME, 0) < DATABASE_VERSION
+        return preferences.getInt(dbName, 0) < dbVersion
     }
 
-    private fun writeDatabaseVersionInPreferences() {
+    private fun writedbVersionInPreferences() {
         preferences.edit().apply {
             putInt(
-                DATABASE_NAME,
-                DATABASE_VERSION
+                dbName,
+                dbVersion
             )
             apply()
         }
@@ -38,21 +37,21 @@ class DbHelper(val context: Context) : SQLiteOpenHelper(context,
     @Synchronized
     private fun installOrUpdateIfNecessary() {
         if (installedDatabaseIsOutdated()) {
-            context.deleteDatabase(DATABASE_NAME)
+            context.deleteDatabase(dbName)
             installDatabaseFromAssets()
-            writeDatabaseVersionInPreferences()
+            writedbVersionInPreferences()
         }
     }
 
     private fun installDatabaseFromAssets() {
-        val inputStream = context.assets.open("$ASSETS_PATH/$DATABASE_NAME.sqlite3")
+        val inputStream = context.assets.open("$ASSETS_PATH/$dbName.sqlite3")
 
         try {
-            val outputDir = context.getDatabasePath(DATABASE_NAME).parentFile
+            val outputDir = context.getDatabasePath(dbName).parentFile
             if(!outputDir.exists()){
                 outputDir.mkdir()
             }
-            val outputFile = File(context.getDatabasePath(DATABASE_NAME).path)
+            val outputFile = File(context.getDatabasePath(dbName).path)
             if (!outputFile.exists()){
                 outputFile.createNewFile()
             }
@@ -64,7 +63,7 @@ class DbHelper(val context: Context) : SQLiteOpenHelper(context,
             outputStream.flush()
             outputStream.close()
         } catch (exception: Throwable) {
-            throw RuntimeException("The $DATABASE_NAME database couldn't be installed.", exception)
+            throw RuntimeException("The $dbName database couldn't be installed.", exception)
         }
     }
 
@@ -77,8 +76,6 @@ class DbHelper(val context: Context) : SQLiteOpenHelper(context,
     }
 
     companion object {
-        const val DATABASE_NAME = "gaslandsWeapons"
         const val ASSETS_PATH = "databases"
-        const val DATABASE_VERSION = 6
     }
 }

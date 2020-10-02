@@ -25,6 +25,8 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/weaponName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/weaponName"
         app:layout_constraintTop_toTopOf="@+id/weaponName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

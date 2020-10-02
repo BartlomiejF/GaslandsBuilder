@@ -1,20 +1,41 @@
 package com.example.gaslandsbuilder.data
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 
-@Entity(tableName = "SavedCars")
+
 data class SavedCar(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo val name: String,
-    @ColumnInfo val cost: Int
+    val name: String,
+    val cost: Int
 )
 
-@Dao
-interface SavedCarsDBDao{
-    @Insert
-    fun saveCar(car: SavedCar)
 
-    @Query("SELECT name, cost FROM SavedCars")
-    fun getAllSavedCars(): LiveData<List<SavedCar>>
+fun getAllSavedCars(context: Context): MutableList<SavedCar> {
+        val db: SQLiteDatabase = DbHelper(
+            context,
+            "savedCarsDB",
+            1
+        ).readableDatabase
+        val savedCarsMutableList = mutableListOf<SavedCar>()
+        val cursor: Cursor = db.rawQuery("SELECT name, cost FROM savedCars", null)
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val name = cursor.getString(cursor.getColumnIndex("name"))
+                val cost = cursor.getString(cursor.getColumnIndex("cost")).toInt()
+                savedCarsMutableList.add(SavedCar(name, cost))
+                cursor.moveToNext()
+            }
+        }
+        cursor.close()
+        return savedCarsMutableList
+}
+
+fun saveCar(car: SavedCar, db: SQLiteDatabase){
+    val values = ContentValues().apply{
+        put("name", car.name)
+        put("cost", car.cost)
+    }
+    db.insert("savedCars", null, values)
 }

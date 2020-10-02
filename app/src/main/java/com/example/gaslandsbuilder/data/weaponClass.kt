@@ -31,7 +31,9 @@ data class ChosenWeapon(
 
 fun getAllWeaponNames(context: Context): MutableList<Weapon>{
     val db: SQLiteDatabase = DbHelper(
-        context
+        context,
+        "gaslandsWeapons",
+        6
     ).readableDatabase
     val weaponsMutableList = mutableListOf<Weapon>()
     val cursor: Cursor = db.rawQuery("SELECT name, cost, buildSlots FROM weapons", null)

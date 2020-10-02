@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gaslandsbuilder.data.ChosenWeapon
-import com.example.gaslandsbuilder.data.Vehicle
-import com.example.gaslandsbuilder.data.getAllVehicles
+import com.example.gaslandsbuilder.data.*
 import kotlinx.android.synthetic.main.car_spinner_row.view.*
 import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
 
@@ -33,6 +32,22 @@ class CarCreator : AppCompatActivity() {
             startActivityForResult(Intent(this, WeaponCreator::class.java), weaponActivityRequestCode)
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == weaponActivityRequestCode){
+            if (resultCode == Activity.RESULT_OK){
+                chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
+                chosenWeaponsAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val preferences = getPrefs()
+        updateSumCost()
         val chosenWeaponsRecyclerView: RecyclerView = findViewById(R.id.chosenWeaponsList)
         chosenWeaponsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
@@ -61,24 +76,28 @@ class CarCreator : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // write code to perform some action
             }
-
         }
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == weaponActivityRequestCode){
-            if (resultCode == Activity.RESULT_OK){
-                chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
-                chosenWeaponsAdapter.notifyDataSetChanged()
+        val db: SQLiteDatabase = DbHelper(
+            this,
+            "savedCarsDB",
+            1
+        ).writableDatabase
+        val addCarButton: Button = findViewById(R.id.saveCarButton)
+        addCarButton.setOnClickListener{
+            val carNameInput: String = findViewById<EditText>(R.id.carNameInput).text.toString()
+            val carName: String = when (carNameInput){
+                "" -> "Judgement Deliverer"
+                else -> carNameInput
             }
+            saveCar(
+                SavedCar(
+                name = carName,
+                cost = preferences.getInt("sumCarVal", 0)
+                ),
+                db
+            )
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val preferences = getPrefs()
-        updateSumCost()
     }
 
     fun getPrefs(): SharedPreferences{
@@ -144,11 +163,12 @@ class ChosenWeaponAdapter(val chosenWeapons: MutableList<ChosenWeapon>, val weap
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         fun bind(weapon: ChosenWeapon, weaponRemover:(ChosenWeapon) -> Unit){
-//            val position = itemView.getAdapterPosition()
+            itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             itemView.chosenWeaponName.text = "${weapon.mount} mounted ${weapon.name}"
             itemView.removeChosenWeaponButton.setOnClickListener{
                 weaponRemover(weapon)
             }
+            itemView.requestLayout()
         }
     }
 
@@ -165,5 +185,4 @@ class ChosenWeaponAdapter(val chosenWeapons: MutableList<ChosenWeapon>, val weap
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(chosenWeapons[position], weaponRemover)
     }
-
 }
