@@ -32,6 +32,32 @@ class CarCreator : AppCompatActivity() {
             startActivityForResult(Intent(this, WeaponCreator::class.java), weaponActivityRequestCode)
         }
 
+        val carTypeSpinner: Spinner = findViewById(R.id.carTypeSpinner)
+        val adapter = CarTypeSpinnerAdapter(getAllVehicles(this))
+        carTypeSpinner.adapter = adapter
+        carTypeSpinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
+            ) {
+                val carType = view.carType.text.toString()
+                val carValue = view.carCans.text.toString().toInt()
+                val freeSlots = view.buildSlots.text.toString().toInt()
+                preferences.edit().apply{
+                    putInt("vehicleTypeCost", carValue)
+                    putInt("freeBuildSlots", freeSlots)
+                    putString("carType", carType)
+                    apply()
+                }
+                updateSumCost()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -54,34 +80,10 @@ class CarCreator : AppCompatActivity() {
             adapter = chosenWeaponsAdapter
         }
 
-        val carTypeSpinner: Spinner = findViewById(R.id.carTypeSpinner)
-        val adapter = CarTypeSpinnerAdapter(getAllVehicles(this))
-        carTypeSpinner.adapter = adapter
-        carTypeSpinner.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View, position: Int, id: Long
-            ) {
-                val carValue = view.carCans.text.toString().toInt()
-                val freeSlots = view.buildSlots.text.toString().toInt()
-                preferences.edit().apply{
-                    putInt("vehicleTypeCost", carValue)
-                    putInt("freeBuildSlots", freeSlots)
-                    apply()
-                }
-                updateSumCost()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // write code to perform some action
-            }
-        }
-
         val db: SQLiteDatabase = DbHelper(
             this,
             "savedCarsDB",
-            1
+            SAVED_CARS_DB_VERSION
         ).writableDatabase
         val addCarButton: Button = findViewById(R.id.saveCarButton)
         addCarButton.setOnClickListener{
@@ -93,10 +95,13 @@ class CarCreator : AppCompatActivity() {
             saveCar(
                 SavedCar(
                 name = carName,
-                cost = preferences.getInt("sumCarVal", 0)
+                cost = preferences.getInt("sumCarVal", 0),
+                type = preferences.getString("carType", "Car")!!,
+                    weapons = chosenWeapons.joinToString(separator = ";") { it -> "${it.mount} mounted ${it.name}" }
                 ),
                 db
             )
+            finish()
         }
     }
 

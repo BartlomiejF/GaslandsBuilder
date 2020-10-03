@@ -3,12 +3,15 @@ package com.example.gaslandsbuilder.data
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Vehicle(
     val name: String,
     val cost: Int,
     val buildSlots: Int
-)
+): Parcelable
 
 fun getAllVehicles(context: Context): MutableList<Vehicle>{
     val db: SQLiteDatabase = DbHelper(

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gaslandsbuilder.data.SavedCar
 import com.example.gaslandsbuilder.data.getAllSavedCars
 import kotlinx.android.synthetic.main.saved_car_row.view.*
+import kotlinx.android.synthetic.main.saved_cars_chosen_weapons_listview_row.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(application)
             adapter = SavedCarsAdapter(getAllSavedCars(this@MainActivity))
             }
+
     }
 }
 
@@ -56,7 +59,10 @@ class SavedCarsAdapter(val savedCars: MutableList<SavedCar>): RecyclerView.Adapt
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         fun bind(car: SavedCar){
             itemView.carName.text = car.name
-            itemView.cost.text = car.cost.toString()
+            itemView.cost.text = "Cans: ${car.cost.toString()}"
+            itemView.savedCarType.text = car.type
+            val adapter = SavedCarsWeaponsAdapter(car.weapons.split(";"))
+            itemView.savedCarWeaponsListView.adapter = adapter
         }
     }
 
@@ -72,5 +78,27 @@ class SavedCarsAdapter(val savedCars: MutableList<SavedCar>): RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(savedCars[position])
+    }
+}
+
+class SavedCarsWeaponsAdapter(val weaponsList: List<String>): BaseAdapter() {
+
+    override fun getItem(position: Int): Any {
+        return weaponsList[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getCount(): Int {
+        return weaponsList.size
+    }
+
+    override fun getView(position: Int, convertview: View?, parent: ViewGroup?): View {
+        val view = LayoutInflater.from(parent?.context)
+            .inflate(R.layout.saved_cars_chosen_weapons_listview_row, parent, false)
+        view.chosenWeapon.text = weaponsList[position]
+        return view
     }
 }
