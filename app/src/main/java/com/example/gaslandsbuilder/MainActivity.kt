@@ -3,6 +3,7 @@ package com.example.gaslandsbuilder
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +13,13 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gaslandsbuilder.data.SavedCar
-import com.example.gaslandsbuilder.data.getAllSavedCars
+import com.example.gaslandsbuilder.data.*
 import kotlinx.android.synthetic.main.saved_car_row.view.*
 import kotlinx.android.synthetic.main.saved_cars_chosen_weapons_listview_row.view.*
 
 class MainActivity : AppCompatActivity() {
+    lateinit var savedCars: MutableList<SavedCar>
+    lateinit var savedCarsAdapter: SavedCarsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +28,19 @@ class MainActivity : AppCompatActivity() {
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
         }
-
     }
 
     override fun onResume() {
         super.onResume()
+        savedCars = getAllSavedCars(this)
+        savedCarsAdapter = SavedCarsAdapter(savedCars,
+            DbHelper(
+                this@MainActivity,
+                "savedCarsDB",
+                SAVED_CARS_DB_VERSION
+            ).writableDatabase,
+            ::removeSavedCar
+        )
 
         val preferences: SharedPreferences = this.getSharedPreferences(
             "singleCar",
@@ -45,24 +55,37 @@ class MainActivity : AppCompatActivity() {
             apply()
         }
 
+
+
         val savedCarsRecyclerView: RecyclerView = findViewById(R.id.savedCarsRecyclerView)
         savedCarsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
-            adapter = SavedCarsAdapter(getAllSavedCars(this@MainActivity))
+            adapter = savedCarsAdapter
             }
-
     }
+
+    fun removeSavedCar(car: SavedCar){
+        savedCars.remove(car)
+        savedCarsAdapter.notifyDataSetChanged()
+    }
+
 }
 
-class SavedCarsAdapter(val savedCars: MutableList<SavedCar>): RecyclerView.Adapter<SavedCarsAdapter.ViewHolder>() {
+class SavedCarsAdapter(val savedCars: MutableList<SavedCar>, val db: SQLiteDatabase,
+val carRemover: (SavedCar) -> Unit): RecyclerView.Adapter<SavedCarsAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun bind(car: SavedCar){
+        fun bind(car: SavedCar, db: SQLiteDatabase, carRemover: (SavedCar) -> Unit){
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost.toString()}"
             itemView.savedCarType.text = car.type
             val adapter = SavedCarsWeaponsAdapter(car.weapons.split(";"))
             itemView.savedCarWeaponsListView.adapter = adapter
+            itemView.deleteButton.setOnClickListener {
+                deleteSavedCar(car.id!!, db)
+                carRemover(car)
+
+            }
         }
     }
 
@@ -77,7 +100,7 @@ class SavedCarsAdapter(val savedCars: MutableList<SavedCar>): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(savedCars[position])
+        holder.bind(savedCars[position], db, carRemover)
     }
 }
 
