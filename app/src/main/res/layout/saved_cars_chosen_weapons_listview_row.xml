@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
+        android:fontFamily="@font/bangers"
         android:text="TextView"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"

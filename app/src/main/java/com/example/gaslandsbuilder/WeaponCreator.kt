@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,13 +23,10 @@ import kotlinx.android.synthetic.main.single_weapons_row.view.*
 class WeaponCreator : AppCompatActivity() {
     lateinit var mount: String
     val mountType = arrayOf("Front", "Back", "Side", "Turret")
-    val chosenWeapons: MutableList<ChosenWeapon> = mutableListOf<ChosenWeapon>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weapon_creator)
-        val preferences = getPrefs()
         updateSumCost()
 
         val carWeaponsRecyclerView: RecyclerView = findViewById(R.id.weaponsView)
@@ -49,12 +49,10 @@ class WeaponCreator : AppCompatActivity() {
                 parent: AdapterView<*>,
                 view: View, position: Int, id: Long
             ) {
-                Toast.makeText(this@WeaponCreator, mountType[position], Toast.LENGTH_SHORT).show()
                 this@WeaponCreator.mount = mountType[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // write code to perform some action
             }
         }
 
@@ -64,9 +62,8 @@ class WeaponCreator : AppCompatActivity() {
         var cost = weapon.cost
         val preferences = getPrefs()
         val mount = this@WeaponCreator.mount
-        when (mount){
-            "Turret"-> cost *= 3
-            else -> cost = cost
+        if (mount=="Turret"){
+            cost *= 3
         }
         preferences.edit().apply {
             putInt(
@@ -92,7 +89,7 @@ class WeaponCreator : AppCompatActivity() {
     fun updateSumCost(){
         val preferences = getPrefs()
         val sumCost: TextView = findViewById(R.id.sumWeaponCost)
-        sumCost.text = preferences.getInt("sumWeaponsValue", 0).toString()
+        sumCost.text = preferences.getInt("sumCarVal", 0).toString()
     }
 
 }
