@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="6dp">
 
     <TextView
         android:id="@+id/chosenWeaponName"
@@ -12,20 +13,24 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/bangers"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/removeChosenWeaponButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="remove"
+        android:background="#FFFFFF"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/chosenWeaponName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/chosenWeaponName"
-        app:layout_constraintTop_toTopOf="@+id/chosenWeaponName" />
+        app:layout_constraintTop_toTopOf="@+id/chosenWeaponName"
+        app:srcCompat="@drawable/piston_remove3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

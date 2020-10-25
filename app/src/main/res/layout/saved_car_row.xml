@@ -54,14 +54,24 @@
 
     <ImageButton
         android:id="@+id/deleteButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/savedCarWeaponsListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cost"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:srcCompat="@drawable/piston_remove3" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="6dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/savedCarWeaponsListView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
