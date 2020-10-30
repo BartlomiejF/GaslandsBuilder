@@ -46,7 +46,7 @@ class CarCreator : AppCompatActivity() {
                 val freeSlots = view.buildSlots.text.toString().toInt()
                 preferences.edit().apply{
                     putInt("vehicleTypeCost", carValue)
-                    putInt("freeBuildSlots", freeSlots)
+                    putInt("buildSlots", freeSlots)
                     putString("carType", carType)
                     apply()
                 }
@@ -119,6 +119,10 @@ class CarCreator : AppCompatActivity() {
                 "sumWeaponsValue",
                 preferences.getInt("sumWeaponsValue", 0) - weapon.cost
             )
+            putInt(
+                "takenSlots",
+                preferences.getInt("takenSlots", 0) - weapon.buildSlots
+            )
             apply()
         }
         updateSumCost()
@@ -129,14 +133,20 @@ class CarCreator : AppCompatActivity() {
     fun updateSumCost(){
         val preferences = getPrefs()
         val sumCost: TextView = findViewById(R.id.sumCost)
+        val sumSlots: TextView = findViewById(R.id.sumSlots)
         preferences.edit().apply {
             putInt(
                 "sumCarVal",
                 preferences.getInt("sumWeaponsValue", 0) + preferences.getInt("vehicleTypeCost", 0)
             )
+            putInt(
+                "freeBuildSlots",
+                preferences.getInt("buildSlots", 0) - preferences.getInt("takenSlots", 0)
+            )
             apply()
         }
-        sumCost.text = preferences.getInt("sumCarVal", 0).toString()
+        sumCost.text = "${ preferences.getInt("sumCarVal", 0) } cans"
+        sumSlots.text = "${preferences.getInt("freeBuildSlots", 0)}/${preferences.getInt("buildSlots", 0)}"
     }
 }
 

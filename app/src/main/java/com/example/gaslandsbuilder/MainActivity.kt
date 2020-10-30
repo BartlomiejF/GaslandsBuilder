@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
             putInt("vehicleTypeCost", 0)
             putInt("freeBuildSlots", 0)
             putInt("sumWeaponsValue", 0)
+            putInt("takenSlots", 0)
             apply()
         }
 

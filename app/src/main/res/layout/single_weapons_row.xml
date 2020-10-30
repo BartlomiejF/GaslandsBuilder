@@ -27,8 +27,6 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/weaponName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/weaponName"
         app:layout_constraintTop_toTopOf="@+id/weaponName" />
 
     <View
@@ -39,5 +37,19 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weaponCost" />
+
+    <TextView
+        android:id="@+id/slotsCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:fontFamily="@font/bangers"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/weaponName"
+        app:layout_constraintEnd_toStartOf="@+id/weaponCost"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/weaponName"
+        app:layout_constraintTop_toTopOf="@+id/weaponName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,14 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +30,11 @@ class WeaponCreator : AppCompatActivity() {
         val carWeaponsRecyclerView: RecyclerView = findViewById(R.id.weaponsView)
         carWeaponsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
-            adapter = CarWeaponAdapter(getAllWeaponNames(application), ::addWeapon)
+            adapter = CarWeaponAdapter(
+                getAllWeaponNames(application),
+                ::addWeapon,
+                getPrefs().getInt("freeBuildSlots", 0)
+            )
         }
 
         val spinner: Spinner = findViewById(R.id.mountSpinner)
@@ -61,22 +63,34 @@ class WeaponCreator : AppCompatActivity() {
     fun addWeapon(weapon: Weapon){
         var cost = weapon.cost
         val preferences = getPrefs()
-        val mount = this@WeaponCreator.mount
-        if (mount=="Turret"){
-            cost *= 3
+        if (preferences.getInt("freeBuildSlots", 0) - weapon.buildSlots < 0){
+            val toast = Toast.makeText(
+                applicationContext,
+                "Not enough free build slots.",
+                Toast.LENGTH_SHORT)
+            toast.show()
+        } else {
+            val mount = this@WeaponCreator.mount
+            if (mount == "Turret") {
+                cost *= 3
+            }
+            preferences.edit().apply {
+                putInt(
+                    "sumWeaponsValue",
+                    preferences.getInt("sumWeaponsValue", 0) + cost
+                )
+                putInt(
+                    "takenSlots",
+                    preferences.getInt("takenSlots", 0) + weapon.buildSlots
+                )
+                apply()
+            }
+            val chosenWeapon = ChosenWeapon(weapon.name, cost, weapon.buildSlots, mount)
+            val intent = Intent()
+            intent.putExtra("chosenWeapon", chosenWeapon)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
-        preferences.edit().apply {
-            putInt(
-                "sumWeaponsValue",
-                preferences.getInt("sumWeaponsValue", 0) + cost
-            )
-            apply()
-        }
-        val chosenWeapon = ChosenWeapon(weapon.name, cost, weapon.buildSlots, mount)
-        val intent = Intent()
-        intent.putExtra("chosenWeapon", chosenWeapon)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
     }
 
     fun getPrefs(): SharedPreferences{
@@ -95,13 +109,20 @@ class WeaponCreator : AppCompatActivity() {
 }
 
 class CarWeaponAdapter(val weaponsList: MutableList<Weapon>,
-                       val weaponAdder:(Weapon) -> Unit
+                       val weaponAdder:(Weapon) -> Unit,
+                       val freeSlots: Int
     ): RecyclerView.Adapter<CarWeaponAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View, val weaponAdder:(Weapon) -> Unit): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, val weaponAdder:(Weapon) -> Unit, val freeSlots: Int): RecyclerView.ViewHolder(view) {
         fun bind(weapon: Weapon){
             itemView.weaponName.text = weapon.name
-            itemView.weaponCost.text = weapon.cost.toString()
+            itemView.slotsCost.text = "${weapon.buildSlots} slots"
+            itemView.weaponCost.text = "${weapon.cost} cans"
+            if ((freeSlots - weapon.buildSlots)<= (-1)){
+                itemView.weaponName.setTextColor(Color.RED)
+                itemView.slotsCost.setTextColor(Color.RED)
+                itemView.weaponCost.setTextColor(Color.RED)
+            }
             itemView.setOnClickListener{
                 weaponAdder(weapon)
             }
@@ -111,7 +132,7 @@ class CarWeaponAdapter(val weaponsList: MutableList<Weapon>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.single_weapons_row, parent, false)
-        return ViewHolder(view, weaponAdder)
+        return ViewHolder(view, weaponAdder, freeSlots)
     }
 
     override fun getItemCount(): Int {
