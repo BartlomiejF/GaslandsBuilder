@@ -80,12 +80,14 @@ val carRemover: (SavedCar) -> Unit): RecyclerView.Adapter<SavedCarsAdapter.ViewH
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost.toString()}"
             itemView.savedCarType.text = car.type
-            val adapter = SavedCarsWeaponsAdapter(car.weapons.split(";"))
+            val weaponsAndUpgradesList: MutableList<String> = mutableListOf<String>()
+            weaponsAndUpgradesList.addAll(car.weapons.split(";"))
+            weaponsAndUpgradesList.addAll(car.upgrades.split(";"))
+            val adapter = SavedCarsWeaponsAdapter(weaponsAndUpgradesList)
             itemView.savedCarWeaponsListView.adapter = adapter
             itemView.deleteButton.setOnClickListener {
                 deleteSavedCar(car.id!!, db)
                 carRemover(car)
-
             }
         }
     }

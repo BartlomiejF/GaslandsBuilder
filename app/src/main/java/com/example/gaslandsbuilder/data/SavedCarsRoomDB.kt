@@ -5,14 +5,15 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
-val SAVED_CARS_DB_VERSION = 3
+val SAVED_CARS_DB_VERSION = 4
 
 data class SavedCar(
     val name: String,
     val cost: Int,
     val type: String,
     val weapons: String,
-    val id: Int? = null
+    val id: Int? = null,
+    val upgrades: String
 )
 
 fun getAllSavedCars(context: Context): MutableList<SavedCar> {
@@ -30,7 +31,8 @@ fun getAllSavedCars(context: Context): MutableList<SavedCar> {
                 val type = cursor.getString(cursor.getColumnIndex("type"))
                 val weapons = cursor.getString(cursor.getColumnIndex("weapons"))
                 val id = cursor.getString(cursor.getColumnIndex("id")).toInt()
-                savedCarsMutableList.add(SavedCar(name, cost, type, weapons, id))
+                val upgrades = cursor.getString(cursor.getColumnIndex("upgrades"))
+                savedCarsMutableList.add(SavedCar(name, cost, type, weapons, id, upgrades))
                 cursor.moveToNext()
             }
         }
@@ -44,6 +46,7 @@ fun saveCar(car: SavedCar, db: SQLiteDatabase){
         put("cost", car.cost)
         put("type", car.type)
         put("weapons", car.weapons)
+        put("upgrades", car.upgrades)
     }
     db.insert("savedCars", null, values)
 }

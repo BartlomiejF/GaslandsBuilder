@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Parcelable
+import com.example.gaslandsbuilder.R
 import kotlinx.android.parcel.Parcelize
 
 class Weapon(
@@ -33,7 +34,7 @@ fun getAllWeaponNames(context: Context): MutableList<Weapon>{
     val db: SQLiteDatabase = DbHelper(
         context,
         "gaslandsWeapons",
-        6
+        context.resources.getInteger(R.integer.dbVersion)
     ).readableDatabase
     val weaponsMutableList = mutableListOf<Weapon>()
     val cursor: Cursor = db.rawQuery("SELECT name, cost, buildSlots FROM weapons", null)

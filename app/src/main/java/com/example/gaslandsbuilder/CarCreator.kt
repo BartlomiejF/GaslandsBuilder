@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gaslandsbuilder.data.*
 import kotlinx.android.synthetic.main.car_spinner_row.view.*
+import kotlinx.android.synthetic.main.chosen_upgrades_row.view.*
 import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
 
 class CarCreator : AppCompatActivity() {
@@ -23,6 +24,7 @@ class CarCreator : AppCompatActivity() {
     val chosenWeapons: MutableList<ChosenWeapon> = mutableListOf<ChosenWeapon>()
     val chosenWeaponsAdapter = ChosenWeaponAdapter(chosenWeapons, ::removeWeapon)
     val chosenUpgrades: MutableList<Upgrade> = mutableListOf<Upgrade>()
+    val chosenUpgradesAdapter = ChosenUpgradesAdapter(chosenUpgrades, ::removeUpgrade)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +77,7 @@ class CarCreator : AppCompatActivity() {
             }
         } else if (requestCode == upgradeActivityRequestCode){
             if (resultCode == Activity.RESULT_OK){
-                chosenUpgrades.add(data!!.getParcelableExtra("chosenWeapon")!!)
+                chosenUpgrades.add(data!!.getParcelableExtra("chosenUpgrade")!!)
                 chosenUpgradesAdapter.notifyDataSetChanged()
             }
         }
@@ -89,6 +91,11 @@ class CarCreator : AppCompatActivity() {
         chosenWeaponsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
             adapter = chosenWeaponsAdapter
+        }
+        val chosenUpgradesRecyclerView: RecyclerView = findViewById(R.id.chosenUpgradesList)
+        chosenUpgradesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(application)
+            adapter = chosenUpgradesAdapter
         }
 
         val db: SQLiteDatabase = DbHelper(
@@ -108,7 +115,8 @@ class CarCreator : AppCompatActivity() {
                 name = carName,
                 cost = preferences.getInt("sumCarVal", 0),
                 type = preferences.getString("carType", "Car")!!,
-                    weapons = chosenWeapons.joinToString(separator = ";") { it -> "${it.mount} mounted ${it.name}" }
+                    weapons = chosenWeapons.joinToString(separator = ";") { "${it.mount} mounted ${it.name}" },
+                    upgrades = chosenUpgrades.joinToString(separator = ";"){ it.name }
                 ),
                 db
             )
@@ -139,6 +147,24 @@ class CarCreator : AppCompatActivity() {
         updateSumCost()
         chosenWeapons.remove(weapon)
         chosenWeaponsAdapter.notifyDataSetChanged()
+    }
+
+    fun removeUpgrade(upgrade: Upgrade): Unit{
+        val preferences = getPrefs()
+        preferences.edit().apply {
+            putInt(
+                "sumWeaponsValue",
+                preferences.getInt("sumWeaponsValue", 0) - upgrade.cost
+            )
+            putInt(
+                "takenSlots",
+                preferences.getInt("takenSlots", 0) - upgrade.buildSlots
+            )
+            apply()
+        }
+        updateSumCost()
+        chosenUpgrades.remove(upgrade)
+        chosenUpgradesAdapter.notifyDataSetChanged()
     }
 
     fun updateSumCost(){
@@ -210,5 +236,33 @@ class ChosenWeaponAdapter(val chosenWeapons: MutableList<ChosenWeapon>, val weap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(chosenWeapons[position], weaponRemover)
+    }
+}
+
+class ChosenUpgradesAdapter(val chosenUpgrades: MutableList<Upgrade>, val upgradeRemover:(Upgrade) -> Unit): RecyclerView.Adapter<ChosenUpgradesAdapter.ViewHolder>() {
+
+    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        fun bind(upgrade: Upgrade, upgradeRemover:(Upgrade) -> Unit){
+            itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            itemView.chosenUpgradesName.text = upgrade.name
+            itemView.removeChosenUpgradesButton.setOnClickListener{
+                upgradeRemover(upgrade)
+            }
+            itemView.requestLayout()
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.chosen_upgrades_row, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return chosenUpgrades.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(chosenUpgrades[position], upgradeRemover)
     }
 }
