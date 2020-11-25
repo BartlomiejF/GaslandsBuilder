@@ -6,6 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".CarCreator">
 
+    <Button
+        android:id="@+id/addUpgradeButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bangers"
+        android:text="Add Upgrade"
+        app:layout_constraintBottom_toTopOf="@+id/saveCarButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addWeaponButton" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chosenWeaponsList"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/bangers"
+        android:text="Chosen Upgrades"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chosenUpgradesList" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -18,12 +54,12 @@
         app:layout_constraintTop_toBottomOf="@+id/sumCost" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chosenWeaponsList"
+        android:id="@+id/chosenUpgradesList"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,14 +124,13 @@
 
     <Button
         android:id="@+id/addWeaponButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:fontFamily="@font/bangers"
         android:text="@string/add_weapon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chosenWeaponsList" />
+        app:layout_constraintBottom_toTopOf="@+id/saveCarButton"
+        app:layout_constraintEnd_toStartOf="@+id/addUpgradeButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/saveCarButton"

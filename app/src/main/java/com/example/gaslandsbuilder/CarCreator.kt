@@ -19,8 +19,10 @@ import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
 
 class CarCreator : AppCompatActivity() {
     val weaponActivityRequestCode = 0
+    val upgradeActivityRequestCode = 1
     val chosenWeapons: MutableList<ChosenWeapon> = mutableListOf<ChosenWeapon>()
     val chosenWeaponsAdapter = ChosenWeaponAdapter(chosenWeapons, ::removeWeapon)
+    val chosenUpgrades: MutableList<Upgrade> = mutableListOf<Upgrade>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,10 @@ class CarCreator : AppCompatActivity() {
         val addWeaponButton: Button = findViewById(R.id.addWeaponButton)
         addWeaponButton.setOnClickListener{
             startActivityForResult(Intent(this, WeaponCreator::class.java), weaponActivityRequestCode)
+        }
+        val addUpgradeButton: Button = findViewById(R.id.addUpgradeButton)
+        addUpgradeButton.setOnClickListener{
+            startActivityForResult(Intent(this, addUpgrade::class.java), upgradeActivityRequestCode)
         }
 
         val carTypeSpinner: Spinner = findViewById(R.id.carTypeSpinner)
@@ -66,6 +72,11 @@ class CarCreator : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK){
                 chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
                 chosenWeaponsAdapter.notifyDataSetChanged()
+            }
+        } else if (requestCode == upgradeActivityRequestCode){
+            if (resultCode == Activity.RESULT_OK){
+                chosenUpgrades.add(data!!.getParcelableExtra("chosenWeapon")!!)
+                chosenUpgradesAdapter.notifyDataSetChanged()
             }
         }
     }
