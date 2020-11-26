@@ -4,8 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-
-val SAVED_CARS_DB_VERSION = 4
+import com.example.gaslandsbuilder.R
 
 data class SavedCar(
     val name: String,
@@ -20,7 +19,7 @@ fun getAllSavedCars(context: Context): MutableList<SavedCar> {
         val db: SQLiteDatabase = DbHelper(
             context,
             "savedCarsDB",
-            SAVED_CARS_DB_VERSION
+            context.resources.getInteger(R.integer.savedCarsDBVersion)
         ).readableDatabase
         val savedCarsMutableList = mutableListOf<SavedCar>()
         val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars", null)

@@ -101,7 +101,7 @@ class CarCreator : AppCompatActivity() {
         val db: SQLiteDatabase = DbHelper(
             this,
             "savedCarsDB",
-            SAVED_CARS_DB_VERSION
+            this.resources.getInteger(R.integer.savedCarsDBVersion)
         ).writableDatabase
         val addCarButton: Button = findViewById(R.id.saveCarButton)
         addCarButton.setOnClickListener{

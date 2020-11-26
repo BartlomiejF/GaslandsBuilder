@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             DbHelper(
                 this@MainActivity,
                 "savedCarsDB",
-                SAVED_CARS_DB_VERSION
+                this.resources.getInteger(R.integer.savedCarsDBVersion)
             ).writableDatabase,
             ::removeSavedCar
         )
@@ -80,9 +80,13 @@ val carRemover: (SavedCar) -> Unit): RecyclerView.Adapter<SavedCarsAdapter.ViewH
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost.toString()}"
             itemView.savedCarType.text = car.type
-            val weaponsAndUpgradesList: MutableList<String> = mutableListOf<String>()
+            var weaponsAndUpgradesList: MutableList<String> = mutableListOf<String>()
             weaponsAndUpgradesList.addAll(car.weapons.split(";"))
-            weaponsAndUpgradesList.addAll(car.upgrades.split(";"))
+            if (weaponsAndUpgradesList[0] == ""){
+                weaponsAndUpgradesList = car.upgrades.split(";") as MutableList<String>
+            } else {
+                weaponsAndUpgradesList.addAll(car.upgrades.split(";"))
+            }
             val adapter = SavedCarsWeaponsAdapter(weaponsAndUpgradesList)
             itemView.savedCarWeaponsListView.adapter = adapter
             itemView.deleteButton.setOnClickListener {

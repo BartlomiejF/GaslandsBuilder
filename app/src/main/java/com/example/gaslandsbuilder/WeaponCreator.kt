@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -118,11 +117,6 @@ class CarWeaponAdapter(val weaponsList: MutableList<Weapon>,
             itemView.weaponName.text = weapon.name
             itemView.slotsCost.text = "${weapon.buildSlots} slots"
             itemView.weaponCost.text = "${weapon.cost} cans"
-            if ((freeSlots - weapon.buildSlots)<= (-1)){
-                itemView.weaponName.setTextColor(Color.RED)
-                itemView.slotsCost.setTextColor(Color.RED)
-                itemView.weaponCost.setTextColor(Color.RED)
-            }
             itemView.setOnClickListener{
                 weaponAdder(weapon)
             }
