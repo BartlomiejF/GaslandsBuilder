@@ -1,10 +1,10 @@
-package com.example.gaslandsbuilder.data
+package com.bartek.gaslandsbuilder.data
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import com.example.gaslandsbuilder.R
+import com.bartek.gaslandsbuilder.R
 
 data class SavedCar(
     val name: String,

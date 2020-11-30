@@ -1,4 +1,4 @@
-package com.example.gaslandsbuilder
+package com.bartek.gaslandsbuilder
 
 import org.junit.Test
 

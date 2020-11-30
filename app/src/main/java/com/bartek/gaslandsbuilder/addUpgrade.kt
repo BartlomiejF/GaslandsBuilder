@@ -1,4 +1,4 @@
-package com.example.gaslandsbuilder
+package com.bartek.gaslandsbuilder
 
 import android.app.Activity
 import android.content.Context
@@ -9,12 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gaslandsbuilder.data.Upgrade
-import com.example.gaslandsbuilder.data.getAllUpgradesNames
+import com.bartek.gaslandsbuilder.data.Upgrade
+import com.bartek.gaslandsbuilder.data.getAllUpgradesNames
 import kotlinx.android.synthetic.main.single_upgrade_row.view.*
 
 
@@ -36,30 +35,22 @@ class addUpgrade : AppCompatActivity() {
     }
     fun addUpgrade(upgrade: Upgrade){
         val preferences = getPrefs()
-        if (preferences.getInt("freeBuildSlots", 0) - upgrade.buildSlots < 0){
-            val toast = Toast.makeText(
-                applicationContext,
-                "Not enough free build slots.",
-                Toast.LENGTH_SHORT)
-            toast.show()
-        } else {
-            preferences.edit().apply {
-                putInt(
-                    "sumWeaponsValue",
-                    preferences.getInt("sumWeaponsValue", 0) + upgrade.cost
-                )
-                putInt(
-                    "takenSlots",
-                    preferences.getInt("takenSlots", 0) + upgrade.buildSlots
-                )
-                apply()
-            }
-            val intent = Intent()
-            intent.putExtra("chosenUpgrade", upgrade)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+        preferences.edit().apply {
+            putInt(
+                "sumWeaponsValue",
+                preferences.getInt("sumWeaponsValue", 0) + upgrade.cost
+            )
+            putInt(
+                "takenSlots",
+                preferences.getInt("takenSlots", 0) + upgrade.buildSlots
+            )
+            apply()
         }
-    }
+        val intent = Intent()
+        intent.putExtra("chosenUpgrade", upgrade)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+        }
 
     fun getPrefs(): SharedPreferences {
         return this.getSharedPreferences(

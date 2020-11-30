@@ -1,4 +1,4 @@
-package com.example.gaslandsbuilder
+package com.bartek.gaslandsbuilder
 
 import android.app.Activity
 import android.content.Context
@@ -12,9 +12,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gaslandsbuilder.data.ChosenWeapon
-import com.example.gaslandsbuilder.data.Weapon
-import com.example.gaslandsbuilder.data.getAllWeaponNames
+import com.bartek.gaslandsbuilder.data.ChosenWeapon
+import com.bartek.gaslandsbuilder.data.Weapon
+import com.bartek.gaslandsbuilder.data.getAllWeaponNames
 import kotlinx.android.synthetic.main.single_weapons_row.view.*
 
 class WeaponCreator : AppCompatActivity() {
@@ -62,35 +62,27 @@ class WeaponCreator : AppCompatActivity() {
     fun addWeapon(weapon: Weapon){
         var cost = weapon.cost
         val preferences = getPrefs()
-        if (preferences.getInt("freeBuildSlots", 0) - weapon.buildSlots < 0){
-            val toast = Toast.makeText(
-                applicationContext,
-                "Not enough free build slots.",
-                Toast.LENGTH_SHORT)
-            toast.show()
-        } else {
-            val mount = this@WeaponCreator.mount
-            if (mount == "Turret") {
-                cost *= 3
-            }
-            preferences.edit().apply {
-                putInt(
-                    "sumWeaponsValue",
-                    preferences.getInt("sumWeaponsValue", 0) + cost
-                )
-                putInt(
-                    "takenSlots",
-                    preferences.getInt("takenSlots", 0) + weapon.buildSlots
-                )
-                apply()
-            }
-            val chosenWeapon = ChosenWeapon(weapon.name, cost, weapon.buildSlots, mount)
-            val intent = Intent()
-            intent.putExtra("chosenWeapon", chosenWeapon)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+        val mount = this@WeaponCreator.mount
+        if (mount == "Turret") {
+            cost *= 3
         }
-    }
+        preferences.edit().apply {
+            putInt(
+                "sumWeaponsValue",
+                preferences.getInt("sumWeaponsValue", 0) + cost
+            )
+            putInt(
+                "takenSlots",
+                preferences.getInt("takenSlots", 0) + weapon.buildSlots
+            )
+            apply()
+        }
+        val chosenWeapon = ChosenWeapon(weapon.name, cost, weapon.buildSlots, mount)
+        val intent = Intent()
+        intent.putExtra("chosenWeapon", chosenWeapon)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+        }
 
     fun getPrefs(): SharedPreferences{
         return this.getSharedPreferences(

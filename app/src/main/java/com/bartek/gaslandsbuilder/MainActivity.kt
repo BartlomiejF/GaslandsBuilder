@@ -1,19 +1,16 @@
-package com.example.gaslandsbuilder
+package com.bartek.gaslandsbuilder
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
+import android.view.*
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gaslandsbuilder.data.*
+import com.bartek.gaslandsbuilder.data.*
 import kotlinx.android.synthetic.main.saved_car_row.view.*
 import kotlinx.android.synthetic.main.saved_cars_chosen_weapons_listview_row.view.*
 
@@ -28,6 +25,19 @@ class MainActivity : AppCompatActivity() {
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = MenuInflater(this)
+        inflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()){
+            R.id.menuItemAbout -> startActivity(Intent(this, about::class.java))
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
@@ -87,8 +97,7 @@ val carRemover: (SavedCar) -> Unit): RecyclerView.Adapter<SavedCarsAdapter.ViewH
             } else {
                 weaponsAndUpgradesList.addAll(car.upgrades.split(";"))
             }
-            val adapter = SavedCarsWeaponsAdapter(weaponsAndUpgradesList)
-            itemView.savedCarWeaponsListView.adapter = adapter
+            itemView.savedCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n")
             itemView.deleteButton.setOnClickListener {
                 deleteSavedCar(car.id!!, db)
                 carRemover(car)
@@ -108,27 +117,5 @@ val carRemover: (SavedCar) -> Unit): RecyclerView.Adapter<SavedCarsAdapter.ViewH
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(savedCars[position], db, carRemover)
-    }
-}
-
-class SavedCarsWeaponsAdapter(val weaponsList: List<String>): BaseAdapter() {
-
-    override fun getItem(position: Int): Any {
-        return weaponsList[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getCount(): Int {
-        return weaponsList.size
-    }
-
-    override fun getView(position: Int, convertview: View?, parent: ViewGroup?): View {
-        val view = LayoutInflater.from(parent?.context)
-            .inflate(R.layout.saved_cars_chosen_weapons_listview_row, parent, false)
-        view.chosenWeapon.text = weaponsList[position]
-        return view
     }
 }

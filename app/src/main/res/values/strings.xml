@@ -8,4 +8,13 @@
     <string name="add_weapon">Add weapon</string>
     <string name="mount">Mount:</string>
     <string name="cost">Cost:</string>
+    <string name="about_greet">Greetings my fellow Gaslander.</string>
+    <string name="about_text">
+    The Gaslands Builder was created because I wanted to learn how to write Android apps. Its source
+        code is open on GitHub.
+    I had great fun with it and it is highly possible that the app will develop. But since most of
+    the time I am focused on family life and my PhD in chemistry the development may take awhile.</string>
+    <string name="about_support">If you like the app, find it useful and want to support and encourage my efforts click the
+        Support button on top. I would appreciate stars and watchers on my GitHub account. You may also provide me a cup of coffee.
+    </string>
 </resources>

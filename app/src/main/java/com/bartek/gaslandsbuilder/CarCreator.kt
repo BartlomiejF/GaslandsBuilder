@@ -1,10 +1,11 @@
-package com.example.gaslandsbuilder
+package com.bartek.gaslandsbuilder
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gaslandsbuilder.data.*
+import com.bartek.gaslandsbuilder.data.*
 import kotlinx.android.synthetic.main.car_spinner_row.view.*
 import kotlinx.android.synthetic.main.chosen_upgrades_row.view.*
 import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
@@ -65,8 +66,21 @@ class CarCreator : AppCompatActivity() {
                 // write code to perform some action
             }
         }
-
     }
+//
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        val inflater = MenuInflater(this)
+//        inflater.inflate(R.menu.menu_car_creator, menu)
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.getItemId()){
+//            R.id.menuItemAbout -> startActivity(Intent(this, about::class.java))
+//            R.id.menuItemWarnings -> startActivity(Intent(this, warnings::class.java))
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -98,13 +112,13 @@ class CarCreator : AppCompatActivity() {
             adapter = chosenUpgradesAdapter
         }
 
-        val db: SQLiteDatabase = DbHelper(
-            this,
-            "savedCarsDB",
-            this.resources.getInteger(R.integer.savedCarsDBVersion)
-        ).writableDatabase
         val addCarButton: Button = findViewById(R.id.saveCarButton)
         addCarButton.setOnClickListener{
+            val db: SQLiteDatabase = DbHelper(
+                this,
+                "savedCarsDB",
+                this.resources.getInteger(R.integer.savedCarsDBVersion)
+            ).writableDatabase
             val carNameInput: String = findViewById<EditText>(R.id.carNameInput).text.toString()
             val carName: String = when (carNameInput){
                 "" -> "Judgement Deliverer"
@@ -171,6 +185,7 @@ class CarCreator : AppCompatActivity() {
         val preferences = getPrefs()
         val sumCost: TextView = findViewById(R.id.sumCost)
         val sumSlots: TextView = findViewById(R.id.sumSlots)
+        val freeSlots = preferences.getInt("buildSlots", 0) - preferences.getInt("takenSlots",0)
         preferences.edit().apply {
             putInt(
                 "sumCarVal",
@@ -178,12 +193,20 @@ class CarCreator : AppCompatActivity() {
             )
             putInt(
                 "freeBuildSlots",
-                preferences.getInt("buildSlots", 0) - preferences.getInt("takenSlots", 0)
+                freeSlots
             )
             apply()
         }
         sumCost.text = "${ preferences.getInt("sumCarVal", 0) } cans"
-        sumSlots.text = "${preferences.getInt("freeBuildSlots", 0)}/${preferences.getInt("buildSlots", 0)}"
+        sumSlots.text = "$freeSlots/${preferences.getInt("buildSlots", 0)} slots"
+        if (freeSlots < 0){
+            sumSlots.setTextColor(Color.RED)
+            Toast.makeText(
+                applicationContext,
+                "You exceeded build slots limit.",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else sumSlots.setTextColor(TextView(this).textColors)
     }
 }
 

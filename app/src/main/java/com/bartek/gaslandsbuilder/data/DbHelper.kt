@@ -1,4 +1,4 @@
-package com.example.gaslandsbuilder.data
+package com.bartek.gaslandsbuilder.data
 
 import android.content.Context
 import android.content.SharedPreferences
