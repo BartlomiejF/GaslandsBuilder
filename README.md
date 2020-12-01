@@ -12,11 +12,11 @@ The app has basic functionality - the user may create a car by choosing its type
 
 ## Screens
 ### Main view
-![Main View](0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg)
+![Main View](0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg =25%)
 ### Create Vehicle
-![Create Vehicle](0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg)
+![Create Vehicle](0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg =25%)
 ### Add Weapon
-![Add Weapon](0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg)
+![Add Weapon](0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg =25%)
 
 ## Support
 If you would like to show me support you may watch or star this project. You may also buy me a cup of coffee.
