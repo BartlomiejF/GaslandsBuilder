@@ -5,7 +5,7 @@ Gaslands vehicle builder. This is my learning Android development app.
 Gaslands is a tabletop game where one plays with toy cars. For more information head to Gaslands site [here](https://gaslands.com/).
 
 ## Installation
-Right now the beta version of the app awaits publication on Google Play.
+You may download the app from Google Play but since it is beta version it must be entered via [this link from Android device](https://play.google.com/store/apps/details?id=com.bartek.gaslandsbuilder).
 
 ## Features
 The app has basic functionality - the user may create a car by choosing its type, add weapons and upgrades. The overall vehicle cost and build slots is calculated. The user may save the car and view it on main screen.
