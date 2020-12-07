@@ -16,12 +16,9 @@ The app has basic functionality - the user may create a car by choosing its type
 If you would like to download prepopulated database with Gaslands weapons, upgrades and vehicles from this repository then [head here](https://github.com/BartlomiejF/GaslandsBuilder/raw/master/app/src/main/assets/databases/gaslandsWeapons.sqlite3). If it helped to reduce the amount of time it would take to populate the database on your own then give this repo a star.
 
 ## Screens
-### Main view
-[<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg)
-### Create Vehicle
-[<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg)
-### Add Weapon
-[<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg)
+| ### Main view  |  ### Create Vehicle |  ### Add Weapon |
+|---|---|---|
+|  [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg) | [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg)  |  [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg) |
 
 ## Support
 If you would like to show me support you may watch or star this project. You may also buy me a cup of coffee.
