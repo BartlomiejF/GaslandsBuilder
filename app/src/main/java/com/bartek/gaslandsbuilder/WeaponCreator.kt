@@ -39,7 +39,8 @@ class WeaponCreator : AppCompatActivity() {
         val spinner: Spinner = findViewById(R.id.mountSpinner)
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_mount_item,
+            R.id.text1,
             this.mountType
         )
 

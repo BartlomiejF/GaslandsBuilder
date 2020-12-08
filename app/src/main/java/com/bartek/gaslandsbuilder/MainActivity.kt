@@ -1,12 +1,14 @@
 package com.bartek.gaslandsbuilder
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -76,8 +78,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun removeSavedCar(car: SavedCar){
-        savedCars.remove(car)
-        savedCarsAdapter.notifyDataSetChanged()
+        val alertDialog: AlertDialog? = this?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setMessage("The car will be deleted!")
+                setTitle("WARNING!")
+                setPositiveButton("OK",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        savedCars.remove(car)
+                        savedCarsAdapter.notifyDataSetChanged()
+                        dialog.cancel()
+                    })
+                setNegativeButton("Cancel",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        dialog.cancel()
+                    })
+            }
+
+            builder.create()
+        }
+        alertDialog?.show()
+
+//        savedCars.remove(car)
+//        savedCarsAdapter.notifyDataSetChanged()
     }
 
 }

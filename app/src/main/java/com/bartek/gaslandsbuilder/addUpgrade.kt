@@ -75,7 +75,7 @@ class CarUpgradeAdapter(val upgradesList: MutableList<Upgrade>,
     class ViewHolder(view: View, val upgradeAdder:(Upgrade) -> Unit, val freeSlots: Int): RecyclerView.ViewHolder(view) {
         fun bind(upgrade: Upgrade){
             itemView.upgradeName.text = upgrade.name
-            itemView.slotsCost.text = "${upgrade.buildSlots} slots"
+            itemView.slotsCost.text = "${kotlin.math.abs(upgrade.buildSlots)} slots"
             itemView.upgradeCost.text = "${upgrade.cost} cans"
             itemView.setOnClickListener{
                 upgradeAdder(upgrade)
