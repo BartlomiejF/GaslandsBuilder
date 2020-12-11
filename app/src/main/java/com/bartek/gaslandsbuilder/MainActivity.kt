@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -12,9 +11,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bartek.gaslandsbuilder.data.*
+import com.bartek.gaslandsbuilder.data.SavedCar
+import com.bartek.gaslandsbuilder.data.deleteSavedCar
+import com.bartek.gaslandsbuilder.data.getAllSavedCars
 import kotlinx.android.synthetic.main.saved_car_row.view.*
-import kotlinx.android.synthetic.main.saved_cars_chosen_weapons_listview_row.view.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var savedCars: MutableList<SavedCar>
@@ -46,12 +46,8 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         savedCars = getAllSavedCars(this)
         savedCarsAdapter = SavedCarsAdapter(savedCars,
-            DbHelper(
-                this@MainActivity,
-                "savedCarsDB",
-                this.resources.getInteger(R.integer.savedCarsDBVersion)
-            ).writableDatabase,
-            ::removeSavedCar
+            ::removeSavedCar,
+            this
         )
 
         val preferences: SharedPreferences = this.getSharedPreferences(
@@ -68,8 +64,6 @@ class MainActivity : AppCompatActivity() {
             apply()
         }
 
-
-
         val savedCarsRecyclerView: RecyclerView = findViewById(R.id.savedCarsRecyclerView)
         savedCarsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
@@ -81,12 +75,13 @@ class MainActivity : AppCompatActivity() {
         val alertDialog: AlertDialog? = this?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
-                setMessage("The car will be deleted!")
+                setMessage("${car.name} will be deleted!")
                 setTitle("WARNING!")
                 setPositiveButton("OK",
                     DialogInterface.OnClickListener { dialog, id ->
                         savedCars.remove(car)
                         savedCarsAdapter.notifyDataSetChanged()
+                        deleteSavedCar(car.id!!, context)
                         dialog.cancel()
                     })
                 setNegativeButton("Cancel",
@@ -105,25 +100,40 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-class SavedCarsAdapter(val savedCars: MutableList<SavedCar>, val db: SQLiteDatabase,
-val carRemover: (SavedCar) -> Unit): RecyclerView.Adapter<SavedCarsAdapter.ViewHolder>() {
+class SavedCarsAdapter(val savedCars: MutableList<SavedCar>,
+val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<SavedCarsAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun bind(car: SavedCar, db: SQLiteDatabase, carRemover: (SavedCar) -> Unit){
+
+        fun viewCar(id: Int?, context: Context){
+            val intent = Intent(context, ViewCar::class.java)
+            intent.putExtra("id", id)
+            context.startActivity(intent)
+        }
+
+        fun bind(car: SavedCar, carRemover: (SavedCar) -> Unit, context: Context){
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost.toString()}"
             itemView.savedCarType.text = car.type
-            var weaponsAndUpgradesList: MutableList<String> = mutableListOf<String>()
-            weaponsAndUpgradesList.addAll(car.weapons.split(";"))
-            if (weaponsAndUpgradesList[0] == ""){
-                weaponsAndUpgradesList = car.upgrades.split(";") as MutableList<String>
-            } else {
-                weaponsAndUpgradesList.addAll(car.upgrades.split(";"))
-            }
-            itemView.savedCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n")
+//            var weaponsAndUpgradesList: MutableList<String> = mutableListOf()
+//            weaponsAndUpgradesList.addAll(car.weapons.split(";"))
+//            if (weaponsAndUpgradesList[0] == ""){
+//                weaponsAndUpgradesList = car.upgrades.split(";") as MutableList<String>
+//            } else {
+//                weaponsAndUpgradesList.addAll(car.upgrades.split(";"))
+//            }
+//            itemView.savedCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n")
+            val weaponsAndUpgrades: List<List<String>> = listOf(
+                car.weapons.split(";"),
+                car.upgrades.split(";")
+            )
+            val weaponsAndUpgradesList: List<String> = weaponsAndUpgrades.flatten()
+            itemView.savedCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n"){ it.split(":")[0] }
             itemView.deleteButton.setOnClickListener {
-                deleteSavedCar(car.id!!, db)
                 carRemover(car)
+            }
+            itemView.setOnClickListener{
+                viewCar(car.id, context)
             }
         }
     }
@@ -139,6 +149,6 @@ val carRemover: (SavedCar) -> Unit): RecyclerView.Adapter<SavedCarsAdapter.ViewH
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(savedCars[position], db, carRemover)
+        holder.bind(savedCars[position], carRemover, context)
     }
 }

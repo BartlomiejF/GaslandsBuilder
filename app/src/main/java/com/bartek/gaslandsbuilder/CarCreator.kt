@@ -84,15 +84,18 @@ class CarCreator : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == weaponActivityRequestCode){
-            if (resultCode == Activity.RESULT_OK){
-                chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
-                chosenWeaponsAdapter.notifyDataSetChanged()
+        when (requestCode) {
+            weaponActivityRequestCode -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
+                    chosenWeaponsAdapter.notifyDataSetChanged()
+                }
             }
-        } else if (requestCode == upgradeActivityRequestCode){
-            if (resultCode == Activity.RESULT_OK){
-                chosenUpgrades.add(data!!.getParcelableExtra("chosenUpgrade")!!)
-                chosenUpgradesAdapter.notifyDataSetChanged()
+            upgradeActivityRequestCode -> {
+                if (resultCode == Activity.RESULT_OK){
+                    chosenUpgrades.add(data!!.getParcelableExtra("chosenUpgrade")!!)
+                    chosenUpgradesAdapter.notifyDataSetChanged()
+                }
             }
         }
     }
@@ -126,11 +129,11 @@ class CarCreator : AppCompatActivity() {
             }
             saveCar(
                 SavedCar(
-                name = carName,
-                cost = preferences.getInt("sumCarVal", 0),
-                type = preferences.getString("carType", "Car")!!,
-                    weapons = chosenWeapons.joinToString(separator = ";") { "${it.mount} mounted ${it.name}" },
-                    upgrades = chosenUpgrades.joinToString(separator = ";"){ it.name }
+                    name = carName,
+                    cost = preferences.getInt("sumCarVal", 0),
+                    type = preferences.getString("carType", "Car")!!,
+                    weapons = chosenWeapons.joinToString(separator = ";") { "${it.mount} mounted ${it.name}:${it.cost}" },
+                    upgrades = chosenUpgrades.joinToString(separator = ";") { "${it.name}:${it.cost}" }
                 ),
                 db
             )

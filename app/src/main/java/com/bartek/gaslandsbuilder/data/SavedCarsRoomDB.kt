@@ -36,6 +36,7 @@ fun getAllSavedCars(context: Context): MutableList<SavedCar> {
             }
         }
         cursor.close()
+        db.close()
         return savedCarsMutableList
 }
 
@@ -50,6 +51,33 @@ fun saveCar(car: SavedCar, db: SQLiteDatabase){
     db.insert("savedCars", null, values)
 }
 
-fun deleteSavedCar(id: Int, db: SQLiteDatabase){
+fun deleteSavedCar(id: Int, context: Context){
+    val db =DbHelper(
+        context,
+        "savedCarsDB",
+        context.resources.getInteger(R.integer.savedCarsDBVersion)
+    ).writableDatabase
     db.delete("savedCars", "id=?", arrayOf(id.toString()))
+    db.close()
+}
+
+fun getSingleCar(context: Context, id: Int?): SavedCar {
+    val db: SQLiteDatabase = DbHelper(
+        context,
+        "savedCarsDB",
+        context.resources.getInteger(R.integer.savedCarsDBVersion)
+    ).readableDatabase
+    lateinit var readCar: SavedCar
+    val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars WHERE id=?", arrayOf(id.toString()))
+    if (cursor.moveToFirst()) {
+        val name = cursor.getString(cursor.getColumnIndex("name"))
+        val cost = cursor.getString(cursor.getColumnIndex("cost")).toInt()
+        val type = cursor.getString(cursor.getColumnIndex("type"))
+        val weapons = cursor.getString(cursor.getColumnIndex("weapons"))
+        val id = cursor.getString(cursor.getColumnIndex("id")).toInt()
+        val upgrades = cursor.getString(cursor.getColumnIndex("upgrades"))
+        readCar = SavedCar(name, cost, type, weapons, id, upgrades)
+    }
+    cursor.close()
+    return readCar
 }
