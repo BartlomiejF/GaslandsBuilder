@@ -3,6 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/play"
+        android:icon="@drawable/ic_baseline_play_arrow_24"
+        android:menuCategory="container"
+        android:title="play"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menuItemAbout"
-        android:title="About" />
+        android:title="About" ></item>
 </menu>

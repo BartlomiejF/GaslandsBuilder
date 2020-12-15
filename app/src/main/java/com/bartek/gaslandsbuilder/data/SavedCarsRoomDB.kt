@@ -12,7 +12,13 @@ data class SavedCar(
     val type: String,
     val weapons: String,
     val id: Int? = null,
-    val upgrades: String
+    val upgrades: String,
+    val hull: Int = 0,
+    val handling: Int = 0,
+    val maxGear: Int = 0,
+    val crew: Int = 0,
+    val specialRules: String? = null,
+    var currentGear: Int = 1
 )
 
 fun getAllSavedCars(context: Context): MutableList<SavedCar> {
@@ -47,6 +53,11 @@ fun saveCar(car: SavedCar, db: SQLiteDatabase){
         put("type", car.type)
         put("weapons", car.weapons)
         put("upgrades", car.upgrades)
+        put("handling", car.handling)
+        put("hull", car.hull)
+        put("crew", car.crew)
+        put("maxGear", car.maxGear)
+        put("specialRules", car.specialRules)
     }
     db.insert("savedCars", null, values)
 }
@@ -71,13 +82,59 @@ fun getSingleCar(context: Context, id: Int?): SavedCar {
     val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars WHERE id=?", arrayOf(id.toString()))
     if (cursor.moveToFirst()) {
         val name = cursor.getString(cursor.getColumnIndex("name"))
-        val cost = cursor.getString(cursor.getColumnIndex("cost")).toInt()
+        val cost = cursor.getInt(cursor.getColumnIndex("cost"))
         val type = cursor.getString(cursor.getColumnIndex("type"))
         val weapons = cursor.getString(cursor.getColumnIndex("weapons"))
-        val id = cursor.getString(cursor.getColumnIndex("id")).toInt()
+        val id = cursor.getInt(cursor.getColumnIndex("id"))
         val upgrades = cursor.getString(cursor.getColumnIndex("upgrades"))
-        readCar = SavedCar(name, cost, type, weapons, id, upgrades)
+        val hull = cursor.getInt(cursor.getColumnIndex("hull"))
+        val handling = cursor.getInt(cursor.getColumnIndex("handling"))
+        val maxGear = cursor.getInt(cursor.getColumnIndex("maxGear"))
+        val crew = cursor.getInt(cursor.getColumnIndex("crew"))
+        val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
+        readCar = SavedCar(name, cost, type, weapons, id, upgrades, hull, handling, maxGear, crew, specialRules)
     }
     cursor.close()
+    db.close()
     return readCar
+}
+
+fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
+    val db: SQLiteDatabase = DbHelper(
+        context,
+        "savedCarsDB",
+        context.resources.getInteger(R.integer.savedCarsDBVersion)
+    ).readableDatabase
+    var readCars = mutableListOf<SavedCar>()
+    val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars WHERE id IN ( $ids )", null)
+    if (cursor.moveToFirst()) {
+        while (!cursor.isAfterLast) {
+            val name = cursor.getString(cursor.getColumnIndex("name"))
+            val cost = cursor.getInt(cursor.getColumnIndex("cost"))
+            val type = cursor.getString(cursor.getColumnIndex("type"))
+            val weapons = cursor.getString(cursor.getColumnIndex("weapons"))
+            val id = cursor.getInt(cursor.getColumnIndex("id"))
+            val upgrades = cursor.getString(cursor.getColumnIndex("upgrades"))
+            val hull = cursor.getInt(cursor.getColumnIndex("hull"))
+            val handling = cursor.getInt(cursor.getColumnIndex("handling"))
+            val maxGear = cursor.getInt(cursor.getColumnIndex("maxGear"))
+            val crew = cursor.getInt(cursor.getColumnIndex("crew"))
+            val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
+            readCars.add(SavedCar(name,
+                cost,
+                type,
+                weapons,
+                id,
+                upgrades,
+                hull,
+                handling,
+                maxGear,
+                crew,
+                specialRules))
+            cursor.moveToNext()
+        }
+    }
+    cursor.close()
+    db.close()
+    return readCars
 }

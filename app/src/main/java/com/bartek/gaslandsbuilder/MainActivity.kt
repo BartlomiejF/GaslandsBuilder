@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.saved_car_row.view.*
 class MainActivity : AppCompatActivity() {
     lateinit var savedCars: MutableList<SavedCar>
     lateinit var savedCarsAdapter: SavedCarsAdapter
+    var carsToPlay = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +39,18 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()){
             R.id.menuItemAbout -> startActivity(Intent(this, about::class.java))
+            R.id.play -> {
+                val intent = Intent(this, gameTracker::class.java)
+                intent.putExtra("ids", carsToPlay.joinToString(", "))
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
         super.onResume()
+        carsToPlay.clear()
         savedCars = getAllSavedCars(this)
         savedCarsAdapter = SavedCarsAdapter(savedCars,
             ::removeSavedCar,
@@ -115,14 +122,6 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost.toString()}"
             itemView.savedCarType.text = car.type
-//            var weaponsAndUpgradesList: MutableList<String> = mutableListOf()
-//            weaponsAndUpgradesList.addAll(car.weapons.split(";"))
-//            if (weaponsAndUpgradesList[0] == ""){
-//                weaponsAndUpgradesList = car.upgrades.split(";") as MutableList<String>
-//            } else {
-//                weaponsAndUpgradesList.addAll(car.upgrades.split(";"))
-//            }
-//            itemView.savedCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n")
             val weaponsAndUpgrades: List<List<String>> = listOf(
                 car.weapons.split(";"),
                 car.upgrades.split(";")
@@ -134,6 +133,13 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             }
             itemView.setOnClickListener{
                 viewCar(car.id, context)
+            }
+            itemView.markToPlay.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked){
+                    (context as MainActivity).carsToPlay.add(car.id!!)
+                } else {
+                    (context as MainActivity).carsToPlay.remove(car.id!!)
+                }
             }
         }
     }

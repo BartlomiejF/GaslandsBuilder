@@ -4,6 +4,8 @@
     android:installLocation="auto"
     android:versionCode="2">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/carcrash"
@@ -11,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewCar"></activity>
+        <activity android:name=".gameTracker"></activity>
+        <activity android:name=".ViewCar" />
         <activity android:name=".warnings" />
         <activity android:name=".about" />
         <activity android:name=".addUpgrade" />
@@ -29,7 +32,5 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

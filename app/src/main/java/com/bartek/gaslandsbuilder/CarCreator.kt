@@ -26,6 +26,7 @@ class CarCreator : AppCompatActivity() {
     val chosenWeaponsAdapter = ChosenWeaponAdapter(chosenWeapons, ::removeWeapon)
     val chosenUpgrades: MutableList<Upgrade> = mutableListOf<Upgrade>()
     val chosenUpgradesAdapter = ChosenUpgradesAdapter(chosenUpgrades, ::removeUpgrade)
+    lateinit var chosenVehicleType: Vehicle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +54,7 @@ class CarCreator : AppCompatActivity() {
                 val carType = view.carType.text.toString()
                 val carValue = view.carCans.text.toString().toInt()
                 val freeSlots = view.buildSlots.text.toString().toInt()
+                chosenVehicleType = parent.getItemAtPosition(position) as Vehicle
                 preferences.edit().apply{
                     putInt("vehicleTypeCost", carValue)
                     putInt("buildSlots", freeSlots)
@@ -133,7 +135,12 @@ class CarCreator : AppCompatActivity() {
                     cost = preferences.getInt("sumCarVal", 0),
                     type = preferences.getString("carType", "Car")!!,
                     weapons = chosenWeapons.joinToString(separator = ";") { "${it.mount} mounted ${it.name}:${it.cost}" },
-                    upgrades = chosenUpgrades.joinToString(separator = ";") { "${it.name}:${it.cost}" }
+                    upgrades = chosenUpgrades.joinToString(separator = ";") { "${it.name}:${it.cost}" },
+                    hull = chosenVehicleType.hull,
+                    handling = chosenVehicleType.handling,
+                    maxGear = chosenVehicleType.maxGear,
+                    crew = chosenVehicleType.crew,
+                    specialRules = chosenVehicleType.specialRules
                 ),
                 db
             )
