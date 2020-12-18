@@ -12,7 +12,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bartek.gaslandsbuilder.data.ChosenWeapon
 import com.bartek.gaslandsbuilder.data.Weapon
 import com.bartek.gaslandsbuilder.data.getAllWeaponNames
 import kotlinx.android.synthetic.main.single_weapons_row.view.*
@@ -63,9 +62,12 @@ class WeaponCreator : AppCompatActivity() {
     fun addWeapon(weapon: Weapon){
         var cost = weapon.cost
         val preferences = getPrefs()
-        val mount = this@WeaponCreator.mount
-        if (mount == "Turret") {
-            cost *= 3
+        var mount: String? = null
+        if (weapon.crewFired==0) {
+             mount = this@WeaponCreator.mount
+            if (mount == "Turret") {
+                cost *= 3
+            }
         }
         preferences.edit().apply {
             putInt(
@@ -78,7 +80,15 @@ class WeaponCreator : AppCompatActivity() {
             )
             apply()
         }
-        val chosenWeapon = ChosenWeapon(weapon.name, cost, weapon.buildSlots, mount)
+        val chosenWeapon = Weapon(
+            weapon.name,
+            cost,
+            weapon.buildSlots,
+            weapon.specialRules,
+            weapon.ammo,
+            damage = weapon.damage,
+            mount = mount
+        )
         val intent = Intent()
         intent.putExtra("chosenWeapon", chosenWeapon)
         setResult(Activity.RESULT_OK, intent)

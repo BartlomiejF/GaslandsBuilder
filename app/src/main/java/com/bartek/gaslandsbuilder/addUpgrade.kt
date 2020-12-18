@@ -46,6 +46,35 @@ class addUpgrade : AppCompatActivity() {
             )
             apply()
         }
+        when (upgrade.name) {
+            "Extra Crewmember" -> {
+                upgrade.onAdd = {
+                    it.crew += 1
+                }
+                upgrade.onRemove = {
+                    it.crew -= 1
+                }
+            }
+            "Armour Plating" -> {
+                upgrade.onAdd = {
+                    it.hull += 2
+                }
+                upgrade.onRemove = {
+                    it.hull -= 2
+                }
+            }
+            "Tank Tracks" -> {
+                upgrade.onAdd = {
+                    it.maxGear -= 1
+                    it.handling += 1
+                }
+                upgrade.onRemove = {
+                    it.maxGear += 1
+                    it.handling -= 1
+                }
+            }
+        }
+
         val intent = Intent()
         intent.putExtra("chosenUpgrade", upgrade)
         setResult(Activity.RESULT_OK, intent)

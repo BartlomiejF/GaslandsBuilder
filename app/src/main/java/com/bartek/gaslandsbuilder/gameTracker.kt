@@ -1,12 +1,14 @@
 package com.bartek.gaslandsbuilder
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +28,29 @@ class gameTracker : AppCompatActivity() {
             layoutManager = LinearLayoutManager(application)
             adapter = gameTrackerAdapter
         }
+
+    }
+
+    override fun onBackPressed() {
+        val alertDialog: AlertDialog? = this?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setMessage("Do you really want to finish the tracker?")
+                setTitle("Back button pressed")
+                setPositiveButton("Yes",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        super.onBackPressed()
+                        dialog.cancel()
+                    })
+                setNegativeButton("No",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        dialog.cancel()
+                    })
+            }
+
+            builder.create()
+        }
+        alertDialog?.show()
     }
 }
 
@@ -43,7 +68,12 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                 car.weapons.split(";"),
                 car.upgrades.split(";")
             )
-            val weaponsAndUpgradesList: List<String> = weaponsAndUpgrades.flatten()
+
+            val weaponsAndUpgradesList: List<String> = if (weaponsAndUpgrades[0][0] == ""){
+                weaponsAndUpgrades.flatten().drop(1)
+            } else {
+                weaponsAndUpgrades.flatten()
+            }
             itemView.viewCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n"){ it.split(":")[0] }
 
             itemView.maxGearValue.text = car.currentGear.toString()

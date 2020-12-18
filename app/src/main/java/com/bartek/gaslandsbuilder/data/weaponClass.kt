@@ -7,27 +7,25 @@ import android.os.Parcelable
 import com.bartek.gaslandsbuilder.R
 import kotlinx.android.parcel.Parcelize
 
-class Weapon(
-    val name: String,
-    val cost: Int,
-    val buildSlots: Int
-){
-    fun addWeapon(): Int{
-        return cost
-    }
-
-    fun removeWeapon(): Int{
-        return cost*(-1)
-    }
-}
-
 @Parcelize
-data class ChosenWeapon(
+data class Weapon(
     val name: String,
     val cost: Int,
     val buildSlots: Int,
-    val mount: String
+    val specialRules: String? = null,
+    val ammo: Int = 0,
+    val crewFired: Int? = null,
+    val damage: String? = null,
+    val mount: String? = null
 ): Parcelable
+
+//@Parcelize
+//data class ChosenWeapon(
+//    val name: String,
+//    val cost: Int,
+//    val buildSlots: Int,
+//    val mount: String
+//): Parcelable
 
 
 fun getAllWeaponNames(context: Context): MutableList<Weapon>{
@@ -37,13 +35,17 @@ fun getAllWeaponNames(context: Context): MutableList<Weapon>{
         context.resources.getInteger(R.integer.dbVersion)
     ).readableDatabase
     val weaponsMutableList = mutableListOf<Weapon>()
-    val cursor: Cursor = db.rawQuery("SELECT name, cost, buildSlots FROM weapons", null)
+    val cursor: Cursor = db.rawQuery("SELECT * FROM weapons", null)
     if (cursor.moveToFirst()) {
         while (!cursor.isAfterLast) {
             val name = cursor.getString(cursor.getColumnIndex("name"))
             val cost = cursor.getString(cursor.getColumnIndex("cost")).toInt()
             val buildSlots = cursor.getString(cursor.getColumnIndex("buildSlots")).toInt()
-            weaponsMutableList.add(Weapon(name, cost, buildSlots))
+            val ammo = cursor.getInt(cursor.getColumnIndex("ammo"))
+            val crewFired = cursor.getInt(cursor.getColumnIndex("crewFired"))
+            val damage = cursor.getString(cursor.getColumnIndex("damage"))
+            val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
+            weaponsMutableList.add(Weapon(name, cost, buildSlots, specialRules, ammo, crewFired, damage))
             cursor.moveToNext()
         }
     }

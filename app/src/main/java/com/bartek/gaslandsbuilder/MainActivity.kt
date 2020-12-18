@@ -31,9 +31,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = MenuInflater(this)
+        val inflater = MenuInflater(this@MainActivity)
         inflater.inflate(R.menu.menu_main, menu)
-        return true
+        menu!!.getItem(1)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

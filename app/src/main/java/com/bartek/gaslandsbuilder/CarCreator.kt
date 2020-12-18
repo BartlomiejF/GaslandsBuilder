@@ -22,16 +22,21 @@ import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
 class CarCreator : AppCompatActivity() {
     val weaponActivityRequestCode = 0
     val upgradeActivityRequestCode = 1
-    val chosenWeapons: MutableList<ChosenWeapon> = mutableListOf<ChosenWeapon>()
+    val chosenWeapons: MutableList<Weapon> = mutableListOf<Weapon>()
     val chosenWeaponsAdapter = ChosenWeaponAdapter(chosenWeapons, ::removeWeapon)
     val chosenUpgrades: MutableList<Upgrade> = mutableListOf<Upgrade>()
-    val chosenUpgradesAdapter = ChosenUpgradesAdapter(chosenUpgrades, ::removeUpgrade)
+    var vehicles = mutableListOf<Vehicle>()
     lateinit var chosenVehicleType: Vehicle
+    lateinit var chosenUpgradesAdapter: ChosenUpgradesAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.car_creator)
         updateSumCost()
+        vehicles = getAllVehicles(this)
+        chosenVehicleType = vehicles[0]
+        chosenUpgradesAdapter = ChosenUpgradesAdapter(chosenUpgrades, ::removeUpgrade, chosenVehicleType)
         val preferences = getPrefs()
         val addWeaponButton: Button = findViewById(R.id.addWeaponButton)
         addWeaponButton.setOnClickListener{
@@ -43,7 +48,7 @@ class CarCreator : AppCompatActivity() {
         }
 
         val carTypeSpinner: Spinner = findViewById(R.id.carTypeSpinner)
-        val adapter = CarTypeSpinnerAdapter(getAllVehicles(this))
+        val adapter = CarTypeSpinnerAdapter(vehicles)
         carTypeSpinner.adapter = adapter
         carTypeSpinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
@@ -95,8 +100,13 @@ class CarCreator : AppCompatActivity() {
             }
             upgradeActivityRequestCode -> {
                 if (resultCode == Activity.RESULT_OK){
-                    chosenUpgrades.add(data!!.getParcelableExtra("chosenUpgrade")!!)
+                    val chosenUpgrade = data!!.getParcelableExtra<Upgrade>("chosenUpgrade")!!
+                    chosenUpgrades.add(chosenUpgrade)
+                    if (chosenUpgrade.onAdd != null){
+                        chosenUpgrade.onAdd?.invoke(chosenVehicleType)
+                    }
                     chosenUpgradesAdapter.notifyDataSetChanged()
+
                 }
             }
         }
@@ -134,7 +144,11 @@ class CarCreator : AppCompatActivity() {
                     name = carName,
                     cost = preferences.getInt("sumCarVal", 0),
                     type = preferences.getString("carType", "Car")!!,
-                    weapons = chosenWeapons.joinToString(separator = ";") { "${it.mount} mounted ${it.name}:${it.cost}" },
+                    weapons = chosenWeapons.joinToString(separator = ";") {
+                        var prefix = ""
+                        if (it.mount!=null){ prefix = "${it.mount} mounted " }
+                        return@joinToString "${prefix}${it.name}:${it.cost}"
+                    },
                     upgrades = chosenUpgrades.joinToString(separator = ";") { "${it.name}:${it.cost}" },
                     hull = chosenVehicleType.hull,
                     handling = chosenVehicleType.handling,
@@ -155,7 +169,7 @@ class CarCreator : AppCompatActivity() {
         )
     }
 
-    fun removeWeapon(weapon: ChosenWeapon): Unit{
+    fun removeWeapon(weapon: Weapon): Unit{
         val preferences = getPrefs()
         preferences.edit().apply {
             putInt(
@@ -244,12 +258,14 @@ class CarTypeSpinnerAdapter(val carTypeList: MutableList<Vehicle>): BaseAdapter(
     }
 }
 
-class ChosenWeaponAdapter(val chosenWeapons: MutableList<ChosenWeapon>, val weaponRemover:(ChosenWeapon) -> Unit): RecyclerView.Adapter<ChosenWeaponAdapter.ViewHolder>() {
+class ChosenWeaponAdapter(val chosenWeapons: MutableList<Weapon>, val weaponRemover:(Weapon) -> Unit): RecyclerView.Adapter<ChosenWeaponAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun bind(weapon: ChosenWeapon, weaponRemover:(ChosenWeapon) -> Unit){
+        fun bind(weapon: Weapon, weaponRemover:(Weapon) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            itemView.chosenWeaponName.text = "${weapon.mount} mounted ${weapon.name}"
+            var prefix = ""
+            if (weapon.mount!=null){ prefix = "${weapon.mount} mounted " }
+            itemView.chosenWeaponName.text = "${prefix}${weapon.name}"
             itemView.removeChosenWeaponButton.setOnClickListener{
                 weaponRemover(weapon)
             }
@@ -272,13 +288,16 @@ class ChosenWeaponAdapter(val chosenWeapons: MutableList<ChosenWeapon>, val weap
     }
 }
 
-class ChosenUpgradesAdapter(val chosenUpgrades: MutableList<Upgrade>, val upgradeRemover:(Upgrade) -> Unit): RecyclerView.Adapter<ChosenUpgradesAdapter.ViewHolder>() {
+class ChosenUpgradesAdapter(val chosenUpgrades: MutableList<Upgrade>, val upgradeRemover:(Upgrade) -> Unit, val vehicle:Vehicle): RecyclerView.Adapter<ChosenUpgradesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        fun bind(upgrade: Upgrade, upgradeRemover:(Upgrade) -> Unit){
+        fun bind(upgrade: Upgrade, upgradeRemover:(Upgrade) -> Unit, vehicle: Vehicle){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             itemView.chosenUpgradesName.text = upgrade.name
             itemView.removeChosenUpgradesButton.setOnClickListener{
+                if (upgrade.onRemove != null){
+                    upgrade.onRemove?.invoke(vehicle)
+                }
                 upgradeRemover(upgrade)
             }
             itemView.requestLayout()
@@ -296,6 +315,6 @@ class ChosenUpgradesAdapter(val chosenUpgrades: MutableList<Upgrade>, val upgrad
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(chosenUpgrades[position], upgradeRemover)
+        holder.bind(chosenUpgrades[position], upgradeRemover, vehicle)
     }
 }

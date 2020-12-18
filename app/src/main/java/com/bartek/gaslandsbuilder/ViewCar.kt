@@ -32,7 +32,11 @@ class ViewCar : AppCompatActivity() {
             car.weapons.split(";"),
             car.upgrades.split(";")
         )
-        val weaponsAndUpgradesList: List<String> = weaponsAndUpgrades.flatten()
+        val weaponsAndUpgradesList: List<String> = if (weaponsAndUpgrades[0][0] == ""){
+            weaponsAndUpgrades.flatten().drop(1)
+        } else {
+            weaponsAndUpgrades.flatten()
+        }
         weapons.text = weaponsAndUpgradesList.joinToString(separator="\n"){ it.split(":")[0] }
 
         val btn: Button = findViewById(R.id.button)

@@ -12,11 +12,12 @@ data class Vehicle(
     val name: String,
     val cost: Int,
     val buildSlots: Int,
-    val hull: Int = 0,
-    val handling: Int = 0,
-    val maxGear: Int = 0,
-    val crew: Int = 0,
-    val specialRules: String? = null
+    var hull: Int = 0,
+    var handling: Int = 0,
+    var maxGear: Int = 0,
+    var crew: Int = 0,
+    val specialRules: String? = null,
+    val weight: String = "L"
 ): Parcelable
 
 fun getAllVehicles(context: Context): MutableList<Vehicle>{
