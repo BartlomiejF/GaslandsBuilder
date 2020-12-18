@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var savedCars: MutableList<SavedCar>
     lateinit var savedCarsAdapter: SavedCarsAdapter
     var carsToPlay = mutableListOf<Int>()
+    var teamCost = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -51,6 +54,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        val teamCostValue: TextView = findViewById(R.id.teamCostValue)
+        val teamCostText: TextView = findViewById(R.id.teamCostText)
+        teamCostText.visibility = View.GONE
+        teamCostValue.visibility = View.GONE
         carsToPlay.clear()
         savedCars = getAllSavedCars(this)
         savedCarsAdapter = SavedCarsAdapter(savedCars,
@@ -106,6 +113,27 @@ class MainActivity : AppCompatActivity() {
 //        savedCarsAdapter.notifyDataSetChanged()
     }
 
+    fun teamCostCalculator(car: SavedCar, add:Boolean){
+        val teamCostValue: TextView = findViewById(R.id.teamCostValue)
+        val teamCostText: TextView = findViewById(R.id.teamCostText)
+        if (add) {
+            carsToPlay.add(car.id!!)
+            teamCost += car.cost
+        } else {
+            carsToPlay.remove(car.id!!)
+            teamCost -= car.cost
+        }
+
+        teamCostValue.text = teamCost.toString()
+        if ((teamCostValue.visibility == View.GONE) xor ( teamCost > 0)) {
+            teamCostText.visibility = View.VISIBLE
+            teamCostValue.visibility = View.VISIBLE
+        } else {
+            teamCostText.visibility = View.GONE
+            teamCostValue.visibility = View.GONE
+        }
+    }
+
 }
 
 class SavedCarsAdapter(val savedCars: MutableList<SavedCar>,
@@ -121,7 +149,7 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
 
         fun bind(car: SavedCar, carRemover: (SavedCar) -> Unit, context: Context){
             itemView.carName.text = car.name
-            itemView.cost.text = "Cans: ${car.cost.toString()}"
+            itemView.cost.text = "Cans: ${car.cost}"
             itemView.savedCarType.text = car.type
             val weaponsAndUpgrades: List<List<String>> = listOf(
                 car.weapons.split(";"),
@@ -137,9 +165,9 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             }
             itemView.markToPlay.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked){
-                    (context as MainActivity).carsToPlay.add(car.id!!)
+                    (context as MainActivity).teamCostCalculator(car, true)
                 } else {
-                    (context as MainActivity).carsToPlay.remove(car.id!!)
+                    (context as MainActivity).teamCostCalculator(car, false)
                 }
             }
         }

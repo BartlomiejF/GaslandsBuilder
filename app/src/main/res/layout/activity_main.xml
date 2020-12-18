@@ -29,4 +29,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createVehicle" />
 
+    <TextView
+        android:id="@+id/teamCostText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/bangers"
+        android:text="Team Cost:"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/teamCostValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:fontFamily="@font/bangers"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/teamCostText"
+        app:layout_constraintStart_toEndOf="@+id/teamCostText"
+        app:layout_constraintTop_toTopOf="@+id/teamCostText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
