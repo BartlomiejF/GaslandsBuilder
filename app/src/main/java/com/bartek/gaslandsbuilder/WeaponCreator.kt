@@ -87,7 +87,8 @@ class WeaponCreator : AppCompatActivity() {
             weapon.specialRules,
             weapon.ammo,
             damage = weapon.damage,
-            mount = mount
+            mount = mount,
+            range = weapon.range
         )
         val intent = Intent()
         intent.putExtra("chosenWeapon", chosenWeapon)

@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        teamCost = 0
         val teamCostValue: TextView = findViewById(R.id.teamCostValue)
         val teamCostText: TextView = findViewById(R.id.teamCostText)
         teamCostText.visibility = View.GONE

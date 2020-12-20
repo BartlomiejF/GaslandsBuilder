@@ -51,26 +51,16 @@ class addUpgrade : AppCompatActivity() {
                 upgrade.onAdd = {
                     it.crew += 1
                 }
-                upgrade.onRemove = {
-                    it.crew -= 1
-                }
             }
             "Armour Plating" -> {
                 upgrade.onAdd = {
                     it.hull += 2
-                }
-                upgrade.onRemove = {
-                    it.hull -= 2
                 }
             }
             "Tank Tracks" -> {
                 upgrade.onAdd = {
                     it.maxGear -= 1
                     it.handling += 1
-                }
-                upgrade.onRemove = {
-                    it.maxGear += 1
-                    it.handling -= 1
                 }
             }
         }

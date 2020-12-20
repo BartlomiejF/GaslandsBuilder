@@ -16,6 +16,7 @@ data class Weapon(
     val ammo: Int = 0,
     val crewFired: Int? = null,
     val damage: String? = null,
+    val range: String? = null,
     val mount: String? = null
 ): Parcelable
 
@@ -45,7 +46,8 @@ fun getAllWeaponNames(context: Context): MutableList<Weapon>{
             val crewFired = cursor.getInt(cursor.getColumnIndex("crewFired"))
             val damage = cursor.getString(cursor.getColumnIndex("damage"))
             val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
-            weaponsMutableList.add(Weapon(name, cost, buildSlots, specialRules, ammo, crewFired, damage))
+            val range = cursor.getString(cursor.getColumnIndex("range"))
+            weaponsMutableList.add(Weapon(name, cost, buildSlots, specialRules, ammo, crewFired, damage, range))
             cursor.moveToNext()
         }
     }

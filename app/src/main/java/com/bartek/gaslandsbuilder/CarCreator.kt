@@ -102,9 +102,6 @@ class CarCreator : AppCompatActivity() {
                 if (resultCode == Activity.RESULT_OK){
                     val chosenUpgrade = data!!.getParcelableExtra<Upgrade>("chosenUpgrade")!!
                     chosenUpgrades.add(chosenUpgrade)
-                    if (chosenUpgrade.onAdd != null){
-                        chosenUpgrade.onAdd?.invoke(chosenVehicleType)
-                    }
                     chosenUpgradesAdapter.notifyDataSetChanged()
 
                 }
@@ -146,10 +143,18 @@ class CarCreator : AppCompatActivity() {
                     type = preferences.getString("carType", "Car")!!,
                     weapons = chosenWeapons.joinToString(separator = ";") {
                         var prefix = ""
-                        if (it.mount!=null){ prefix = "${it.mount} mounted " }
-                        return@joinToString "${prefix}${it.name}:${it.cost}"
+                        var specRules = ""
+                        if (it.mount!=null){
+                            prefix = "${it.mount} mounted "
+                            specRules = it.specialRules.toString()
+                        } else {
+                            specRules = "Crew Fired. ${specRules}"
+                        }
+                        return@joinToString "${prefix}${it.name}:${it.ammo}:${it.range}:${it.damage}:${specRules}"
                     },
-                    upgrades = chosenUpgrades.joinToString(separator = ";") { "${it.name}:${it.cost}" },
+                    upgrades = chosenUpgrades.joinToString(separator = ";") {
+                        if (it.onAdd != null){ it.onAdd?.invoke(chosenVehicleType) }
+                        "${it.name}:${it.cost}" },
                     hull = chosenVehicleType.hull,
                     handling = chosenVehicleType.handling,
                     maxGear = chosenVehicleType.maxGear,
@@ -295,9 +300,6 @@ class ChosenUpgradesAdapter(val chosenUpgrades: MutableList<Upgrade>, val upgrad
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             itemView.chosenUpgradesName.text = upgrade.name
             itemView.removeChosenUpgradesButton.setOnClickListener{
-                if (upgrade.onRemove != null){
-                    upgrade.onRemove?.invoke(vehicle)
-                }
                 upgradeRemover(upgrade)
             }
             itemView.requestLayout()

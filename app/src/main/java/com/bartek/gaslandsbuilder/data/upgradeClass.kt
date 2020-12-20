@@ -13,8 +13,7 @@ data class Upgrade(
     val name: String,
     val cost: Int,
     val buildSlots: Int,
-    var onAdd: @RawValue ((Vehicle) -> Unit)? = null,
-    var onRemove: @RawValue ((Vehicle) -> Unit)? = null
+    var onAdd: @RawValue ((Vehicle) -> Unit)? = null
 ): Parcelable
 
 
