@@ -18,6 +18,7 @@ data class SavedCar(
     val maxGear: Int = 0,
     val crew: Int = 0,
     val specialRules: String? = null,
+    val weight: String? = null,
     var currentGear: Int = 1
 )
 
@@ -58,6 +59,7 @@ fun saveCar(car: SavedCar, db: SQLiteDatabase){
         put("crew", car.crew)
         put("maxGear", car.maxGear)
         put("specialRules", car.specialRules)
+        put("weight", car.weight)
     }
     db.insert("savedCars", null, values)
 }
@@ -92,7 +94,8 @@ fun getSingleCar(context: Context, id: Int?): SavedCar {
         val maxGear = cursor.getInt(cursor.getColumnIndex("maxGear"))
         val crew = cursor.getInt(cursor.getColumnIndex("crew"))
         val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
-        readCar = SavedCar(name, cost, type, weapons, id, upgrades, hull, handling, maxGear, crew, specialRules)
+        val weight = cursor.getString(cursor.getColumnIndex("weight"))
+        readCar = SavedCar(name, cost, type, weapons, id, upgrades, hull, handling, maxGear, crew, specialRules, weight)
     }
     cursor.close()
     db.close()
@@ -105,7 +108,7 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
         "savedCarsDB",
         context.resources.getInteger(R.integer.savedCarsDBVersion)
     ).readableDatabase
-    var readCars = mutableListOf<SavedCar>()
+    val readCars = mutableListOf<SavedCar>()
     val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars WHERE id IN ( $ids )", null)
     if (cursor.moveToFirst()) {
         while (!cursor.isAfterLast) {
@@ -120,6 +123,7 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
             val maxGear = cursor.getInt(cursor.getColumnIndex("maxGear"))
             val crew = cursor.getInt(cursor.getColumnIndex("crew"))
             val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
+            val weight = cursor.getString(cursor.getColumnIndex("weight"))
             readCars.add(SavedCar(name,
                 cost,
                 type,
@@ -130,7 +134,8 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
                 handling,
                 maxGear,
                 crew,
-                specialRules))
+                specialRules,
+                weight))
             cursor.moveToNext()
         }
     }

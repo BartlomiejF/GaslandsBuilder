@@ -231,6 +231,18 @@
 
         </TableLayout>
 
+        <TextView
+            android:id="@+id/viewCarVehicleWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/bangers"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/viewCarCost"
+            app:layout_constraintEnd_toStartOf="@+id/viewCarCost"
+            app:layout_constraintTop_toTopOf="@+id/viewCarCost" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button

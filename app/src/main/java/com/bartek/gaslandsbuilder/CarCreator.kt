@@ -159,7 +159,8 @@ class CarCreator : AppCompatActivity() {
                     handling = chosenVehicleType.handling,
                     maxGear = chosenVehicleType.maxGear,
                     crew = chosenVehicleType.crew,
-                    specialRules = chosenVehicleType.specialRules
+                    specialRules = chosenVehicleType.specialRules,
+                    weight = chosenVehicleType.weight
                 ),
                 db
             )
