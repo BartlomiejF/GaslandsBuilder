@@ -64,7 +64,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
         fun bind(car: SavedCar, context: Context) {
             itemView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             itemView.viewCarName.text = car.name
-            itemView.viewCarCost.text = car.cost.toString()
+            itemView.viewCarCost.text = "Cans: ${car.cost}"
             itemView.maxGearText.text = "Gear"
 
             var weaponsList: List<String> = car.weapons.split(";")
@@ -75,6 +75,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
             if (upgradesList[0] == ""){
                 upgradesList = upgradesList.drop(1)
             }
+            itemView.vehicleTypeText.text = car.type
 
             val viewCarWeapons: LinearLayout = itemView.viewCarWeapons
             if (weaponsList.isNotEmpty()){
@@ -85,6 +86,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                     weaponsRow.apply {
                         viewCarWeaponName.text = info[0]
                         val ammo = info[1].toInt()
+                        if (ammo != 0){
                         repeat(ammo){
                             val ammoLinearLayout: LinearLayout = findViewById(R.id.ammoLayout)
                             val checkBox = CheckBox(context)
@@ -92,6 +94,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                             checkBox.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                             ammoLinearLayout.addView(checkBox)
                         }
+                        } else { ammoText.visibility = View.GONE }
                         rangeText.text = info[2]
                         if (info[3] != "null"){
                             weaponDamage.text = info[3]
