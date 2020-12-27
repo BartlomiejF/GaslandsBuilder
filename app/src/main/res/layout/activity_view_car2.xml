@@ -194,11 +194,11 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@+id/viewCarWeapons"
             app:layout_constraintStart_toStartOf="@+id/viewCarWeapons"
-            app:layout_constraintTop_toBottomOf="@+id/viewCarName">
+            app:layout_constraintTop_toBottomOf="@+id/vehicleTypeText">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/hullTableRowLayout3"
@@ -209,13 +209,13 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/hullTableRowLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal" />
             </TableRow>
 
             <TableRow
@@ -226,10 +226,23 @@
                     android:id="@+id/hullTableRowLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal" />
             </TableRow>
 
         </TableLayout>
+
+        <TextView
+            android:id="@+id/vehicleTypeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/bangers"
+            android:text="TextView"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/viewCarName"
+            app:layout_constraintTop_toBottomOf="@+id/viewCarName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
