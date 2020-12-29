@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.SavedCar
 import com.bartek.gaslandsbuilder.data.getMultipleCarsOnId
 import kotlinx.android.synthetic.main.activity_view_car2.view.*
+import kotlinx.android.synthetic.main.single_upgrade_row.view.*
+import kotlinx.android.synthetic.main.view_car_upgrades_row.view.*
 import kotlinx.android.synthetic.main.view_car_weapons_row.view.*
 
 class gameTracker : AppCompatActivity() {
@@ -112,11 +114,21 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
             }
             if (upgradesList.isNotEmpty()){
                 upgradesList.forEach{
-                    val upgradeName = TextView(context)
-                    upgradeName.text = it.split(":")[0]
-                    val typeface = ResourcesCompat.getFont(context, R.font.bangers)
-                    upgradeName.typeface = typeface
-                    viewCarWeapons.addView(upgradeName)
+                    val upgradesRow = LayoutInflater.from(context).inflate(R.layout.view_car_upgrades_row, null)
+                    val info = it.split(":")
+                    upgradesRow.apply {
+                        viewCarUpgradeName.text = info[0]
+                        upgradeSpecialRules.text = info[3]
+                        if (info[2] == "0") {
+                            upgradeAmmoCheckBox.visibility = View.GONE
+                            viewCarAmmoText.visibility = View.GONE
+                        }
+                    }
+//                    val upgradeName = TextView(context)
+//                    upgradeName.text = it.split(":")[0]
+//                    val typeface = ResourcesCompat.getFont(context, R.font.bangers)
+//                    upgradeName.typeface = typeface
+                        viewCarWeapons.addView(upgradesRow)
                 }
             }
 //            itemView.viewCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n"){ it.split(":")[0] }
