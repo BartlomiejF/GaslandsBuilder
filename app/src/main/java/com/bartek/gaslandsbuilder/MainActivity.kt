@@ -126,12 +126,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         teamCostValue.text = teamCost.toString()
-        if ((teamCostValue.visibility == View.GONE) xor ( teamCost > 0)) {
-            teamCostText.visibility = View.VISIBLE
-            teamCostValue.visibility = View.VISIBLE
-        } else {
+        if ((teamCostValue.visibility == View.VISIBLE) and ( teamCost == 0)) {
             teamCostText.visibility = View.GONE
             teamCostValue.visibility = View.GONE
+        } else {
+            teamCostText.visibility = View.VISIBLE
+            teamCostValue.visibility = View.VISIBLE
         }
     }
 

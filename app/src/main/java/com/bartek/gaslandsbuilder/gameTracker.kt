@@ -78,6 +78,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                 upgradesList = upgradesList.drop(1)
             }
             itemView.vehicleTypeText.text = car.type
+            itemView.vehicleWeightText.text = car.weight
 
             val viewCarWeapons: LinearLayout = itemView.viewCarWeapons
             if (weaponsList.isNotEmpty()){

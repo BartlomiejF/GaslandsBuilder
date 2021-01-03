@@ -240,9 +240,20 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/bangers"
             android:text="TextView"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/viewCarName"
             app:layout_constraintTop_toBottomOf="@+id/viewCarName" />
+
+        <TextView
+            android:id="@+id/vehicleWeightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bangers"
+            android:text="TextView"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/vehicleTypeText"
+            app:layout_constraintEnd_toEndOf="@+id/viewCarCost"
+            app:layout_constraintTop_toTopOf="@+id/vehicleTypeText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
