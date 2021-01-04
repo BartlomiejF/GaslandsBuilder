@@ -322,3 +322,10 @@ class ChosenUpgradesAdapter(val chosenUpgrades: MutableList<Upgrade>, val upgrad
         holder.bind(chosenUpgrades[position], upgradeRemover, vehicle)
     }
 }
+
+class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Any>, val remover: (Any) -> Unit, val vehicle: Vehicle): RecyclerView.Adapter<Any>() {
+
+    class ViewHolderWeapon(view: View): RecyclerView.ViewHolder(view) {
+
+    }
+}
