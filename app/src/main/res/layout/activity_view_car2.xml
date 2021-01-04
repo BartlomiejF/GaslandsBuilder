@@ -194,11 +194,11 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@+id/viewCarWeapons"
             app:layout_constraintStart_toStartOf="@+id/viewCarWeapons"
-            app:layout_constraintTop_toBottomOf="@+id/viewCarName">
+            app:layout_constraintTop_toBottomOf="@+id/vehicleTypeText">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/hullTableRowLayout3"
@@ -209,13 +209,13 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/hullTableRowLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal" />
             </TableRow>
 
             <TableRow
@@ -226,22 +226,34 @@
                     android:id="@+id/hullTableRowLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal" />
             </TableRow>
 
         </TableLayout>
 
         <TextView
-            android:id="@+id/viewCarVehicleWeight"
+            android:id="@+id/vehicleTypeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/bangers"
             android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/viewCarCost"
-            app:layout_constraintEnd_toStartOf="@+id/viewCarCost"
-            app:layout_constraintTop_toTopOf="@+id/viewCarCost" />
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/viewCarName"
+            app:layout_constraintTop_toBottomOf="@+id/viewCarName" />
+
+        <TextView
+            android:id="@+id/vehicleWeightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bangers"
+            android:text="TextView"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/vehicleTypeText"
+            app:layout_constraintEnd_toEndOf="@+id/viewCarCost"
+            app:layout_constraintTop_toTopOf="@+id/vehicleTypeText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

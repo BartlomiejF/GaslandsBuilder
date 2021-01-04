@@ -13,6 +13,8 @@ data class Upgrade(
     val name: String,
     val cost: Int,
     val buildSlots: Int,
+    val ammo: Int,
+    val specRules: String,
     var onAdd: @RawValue ((Vehicle) -> Unit)? = null
 ): Parcelable
 
@@ -30,7 +32,9 @@ fun getAllUpgradesNames(context: Context): MutableList<Upgrade>{
             val name = cursor.getString(cursor.getColumnIndex("name"))
             val cost = cursor.getString(cursor.getColumnIndex("cost")).toInt()
             val buildSlots = cursor.getString(cursor.getColumnIndex("buildSlots")).toInt()
-            upgradesMutableList.add(Upgrade(name, cost, buildSlots))
+            val ammo = cursor.getInt(cursor.getColumnIndex("ammo"))
+            val specRules = cursor.getString(cursor.getColumnIndex("specRules"))
+            upgradesMutableList.add(Upgrade(name, cost, buildSlots, ammo, specRules))
             cursor.moveToNext()
         }
     }

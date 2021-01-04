@@ -38,7 +38,8 @@ fun getAllVehicles(context: Context): MutableList<Vehicle>{
             val maxGear = cursor.getInt(cursor.getColumnIndex("maxGear"))
             val crew = cursor.getInt(cursor.getColumnIndex("crew"))
             val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
-            vehiclesMutableList.add(Vehicle(name, cost, buildSlots, hull, handling, maxGear,crew, specialRules))
+            val weight = cursor.getString(cursor.getColumnIndex("weight"))
+            vehiclesMutableList.add(Vehicle(name, cost, buildSlots, hull, handling, maxGear,crew, specialRules, weight))
             cursor.moveToNext()
         }
     }

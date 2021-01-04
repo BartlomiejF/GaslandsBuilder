@@ -154,7 +154,8 @@ class CarCreator : AppCompatActivity() {
                     },
                     upgrades = chosenUpgrades.joinToString(separator = ";") {
                         if (it.onAdd != null){ it.onAdd?.invoke(chosenVehicleType) }
-                        "${it.name}:${it.cost}" },
+                        "${it.name}:${it.cost}:${it.ammo}:${it.specRules}"
+                    },
                     hull = chosenVehicleType.hull,
                     handling = chosenVehicleType.handling,
                     maxGear = chosenVehicleType.maxGear,

@@ -18,7 +18,7 @@ data class SavedCar(
     val maxGear: Int = 0,
     val crew: Int = 0,
     val specialRules: String? = null,
-    val weight: String? = null,
+    val weight: String = "L",
     var currentGear: Int = 1
 )
 
@@ -108,7 +108,7 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
         "savedCarsDB",
         context.resources.getInteger(R.integer.savedCarsDBVersion)
     ).readableDatabase
-    val readCars = mutableListOf<SavedCar>()
+    var readCars = mutableListOf<SavedCar>()
     val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars WHERE id IN ( $ids )", null)
     if (cursor.moveToFirst()) {
         while (!cursor.isAfterLast) {
@@ -135,7 +135,7 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
                 maxGear,
                 crew,
                 specialRules,
-                weight))
+            weight))
             cursor.moveToNext()
         }
     }
