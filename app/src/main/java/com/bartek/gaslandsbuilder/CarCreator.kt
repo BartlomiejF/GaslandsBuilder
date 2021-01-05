@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,18 +17,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.*
 import kotlinx.android.synthetic.main.car_spinner_row.view.*
+import kotlinx.android.synthetic.main.chosen_perk_row.view.*
 import kotlinx.android.synthetic.main.chosen_upgrades_row.view.*
 import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
 
 class CarCreator : AppCompatActivity() {
     val weaponActivityRequestCode = 0
     val upgradeActivityRequestCode = 1
+    val perksActivityRequestCode = 2
     val chosenWeapons: MutableList<Weapon> = mutableListOf<Weapon>()
     val chosenUpgrades: MutableList<Upgrade> = mutableListOf<Upgrade>()
+    val chosenPerks: MutableList<Perk> = mutableListOf()
+    var weaponsUpgradesPerks: MutableList<Parcelable> = mutableListOf()
     var vehicles = mutableListOf<Vehicle>()
     lateinit var chosenVehicleType: Vehicle
     lateinit var weaponsUpgadesPerksAdapter: WeaponsUpgadesPerksAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,10 @@ class CarCreator : AppCompatActivity() {
         val addUpgradeButton: Button = findViewById(R.id.addUpgradeButton)
         addUpgradeButton.setOnClickListener{
             startActivityForResult(Intent(this, addUpgrade::class.java), upgradeActivityRequestCode)
+        }
+        val addPerkButton: Button = findViewById(R.id.addPerkButton)
+        addPerkButton.setOnClickListener {
+            startActivityForResult(Intent(this, addPerk::class.java), perksActivityRequestCode)
         }
 
         val carTypeSpinner: Spinner = findViewById(R.id.carTypeSpinner)
@@ -93,14 +101,21 @@ class CarCreator : AppCompatActivity() {
             weaponActivityRequestCode -> {
                 if (resultCode == Activity.RESULT_OK) {
                     chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
-
+                    notifier()
                 }
             }
             upgradeActivityRequestCode -> {
-                if (resultCode == Activity.RESULT_OK){
+                if (resultCode == Activity.RESULT_OK) {
                     val chosenUpgrade = data!!.getParcelableExtra<Upgrade>("chosenUpgrade")!!
                     chosenUpgrades.add(chosenUpgrade)
-
+                    notifier()
+                }
+            }
+            perksActivityRequestCode -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val chosenPerk = data!!.getParcelableExtra<Perk>("chosenPerk")!!
+                    chosenPerks.add(chosenPerk)
+                    notifier()
                 }
             }
         }
@@ -110,15 +125,12 @@ class CarCreator : AppCompatActivity() {
         super.onResume()
         val preferences = getPrefs()
         updateSumCost()
-        val chosenWeaponsRecyclerView: RecyclerView = findViewById(R.id.chosenWeaponsList)
-        chosenWeaponsRecyclerView.apply {
+        weaponsUpgradesPerks = listOf(chosenWeapons.toList(), chosenUpgrades.toList(), chosenPerks.toList()).flatten().toMutableList()
+        weaponsUpgadesPerksAdapter = WeaponsUpgadesPerksAdapter(weaponsUpgradesPerks, ::removeWeaponUpgradePerk, chosenVehicleType)
+        val weaponsUpgadesPerksRecyclerView: RecyclerView = findViewById(R.id.weaponsUpgradesPerksList)
+        weaponsUpgadesPerksRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
-            adapter = chosenWeaponsAdapter
-        }
-        val chosenUpgradesRecyclerView: RecyclerView = findViewById(R.id.chosenUpgradesList)
-        chosenUpgradesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(application)
-            adapter = chosenUpgradesAdapter
+            adapter = weaponsUpgadesPerksAdapter
         }
 
         val addCarButton: Button = findViewById(R.id.saveCarButton)
@@ -173,40 +185,73 @@ class CarCreator : AppCompatActivity() {
         )
     }
 
-    fun removeWeapon(weapon: Weapon): Unit{
+    fun removeWeaponUpgradePerk(removable: Any): Unit{
+        fun removeWeaponUpgrade(removable: Any, prefs: SharedPreferences): Unit{
+            when (removable){
+                is Weapon -> {
+                    prefs.edit().apply {
+                    putInt(
+                        "sumWeaponsValue",
+                        prefs.getInt("sumWeaponsValue", 0) - removable.cost
+                    )
+                    putInt(
+                        "takenSlots",
+                        prefs.getInt("takenSlots", 0) - removable.buildSlots
+                    )
+                    apply()
+
+                }
+                    chosenWeapons.remove(removable)
+                    weaponsUpgradesPerks.remove(removable)
+                }
+                is Upgrade -> {
+                    prefs.edit().apply {
+                    putInt(
+                        "sumWeaponsValue",
+                        prefs.getInt("sumWeaponsValue", 0) - removable.cost
+                    )
+                    putInt(
+                        "takenSlots",
+                        prefs.getInt("takenSlots", 0) - removable.buildSlots
+                    )
+                    apply()
+                }
+                    chosenUpgrades.remove(removable)
+                    weaponsUpgradesPerks.remove(removable)
+                }
+            }
+        }
+
+        fun removePerk(removable: Perk, prefs: SharedPreferences): Unit{
+            chosenPerks.remove(removable)
+            weaponsUpgradesPerks.remove(removable)
+            prefs.edit().apply {
+                putInt(
+                    "sumWeaponsValue",
+                    prefs.getInt("sumWeaponsValue", 0) - removable.cost
+                )
+            }
+        }
+
         val preferences = getPrefs()
-        preferences.edit().apply {
-            putInt(
-                "sumWeaponsValue",
-                preferences.getInt("sumWeaponsValue", 0) - weapon.cost
-            )
-            putInt(
-                "takenSlots",
-                preferences.getInt("takenSlots", 0) - weapon.buildSlots
-            )
-            apply()
+        when (removable){
+            is Weapon -> removeWeaponUpgrade(removable, preferences)
+            is Upgrade -> removeWeaponUpgrade(removable, preferences)
+            is Perk -> removePerk(removable, preferences)
         }
         updateSumCost()
-        chosenWeapons.remove(weapon)
-        chosenWeaponsAdapter.notifyDataSetChanged()
+        notifier()
     }
 
-    fun removeUpgrade(upgrade: Upgrade): Unit{
-        val preferences = getPrefs()
-        preferences.edit().apply {
-            putInt(
-                "sumWeaponsValue",
-                preferences.getInt("sumWeaponsValue", 0) - upgrade.cost
-            )
-            putInt(
-                "takenSlots",
-                preferences.getInt("takenSlots", 0) - upgrade.buildSlots
-            )
-            apply()
+    fun notifier(){
+//        weaponsUpgadesPerksAdapter.notifyDataSetChanged()
+        weaponsUpgradesPerks = listOf(chosenWeapons.toList(), chosenUpgrades.toList(), chosenPerks.toList()).flatten().toMutableList()
+        weaponsUpgadesPerksAdapter = WeaponsUpgadesPerksAdapter(weaponsUpgradesPerks, ::removeWeaponUpgradePerk, chosenVehicleType)
+        val weaponsUpgadesPerksRecyclerView: RecyclerView = findViewById(R.id.weaponsUpgradesPerksList)
+        weaponsUpgadesPerksRecyclerView.apply {
+            layoutManager = LinearLayoutManager(application)
+            adapter = weaponsUpgadesPerksAdapter
         }
-        updateSumCost()
-        chosenUpgrades.remove(upgrade)
-        chosenUpgradesAdapter.notifyDataSetChanged()
     }
 
     fun updateSumCost(){
@@ -262,23 +307,38 @@ class CarTypeSpinnerAdapter(val carTypeList: MutableList<Vehicle>): BaseAdapter(
     }
 }
 
-class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Any>, val remover: (Any) -> Unit, val vehicle: Vehicle): RecyclerView.Adapter<Any>() {
+class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Parcelable>, val remover: (Any) -> Unit, val vehicle: Vehicle): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class ViewHolderWeapon(view: View): RecyclerView.ViewHolder(view) {
-        fun bind(weapon: Weapon){
+        fun bind(weapon: Weapon, remover: (Any) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             var prefix = ""
             if (weapon.mount!=null){ prefix = "${weapon.mount} mounted " }
             itemView.chosenWeaponName.text = "${prefix}${weapon.name}"
+            itemView.removeChosenWeaponButton.setOnClickListener {
+                remover(weapon)
+            }
             itemView.requestLayout()
         }
     }
 
     class ViewHolderUpgrade(view: View): RecyclerView.ViewHolder(view){
-        fun bind(upgrade: Upgrade){
+        fun bind(upgrade: Upgrade, remover: (Any) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             itemView.chosenUpgradesName.text = upgrade.name
             itemView.removeChosenUpgradesButton.setOnClickListener{
+                remover(upgrade)
+            }
+            itemView.requestLayout()
+        }
+    }
+
+    class ViewHolderPerk(view: View): RecyclerView.ViewHolder(view){
+        fun bind(perk: Perk, remover: (Any) -> Unit){
+            itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            itemView.chosenPerkName.text = perk.name
+            itemView.removeChosenPerkButton.setOnClickListener{
+                remover(perk)
             }
             itemView.requestLayout()
         }
@@ -288,24 +348,26 @@ class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Any>, val
         return position
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Any {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
+        lateinit var holder: RecyclerView.ViewHolder
         when (weaponsUpgradesPerks[viewType]) {
-            is Weapon -> return ViewHolderWeapon(view.inflate(R.layout.chosen_weapons_row, parent, false))
-            is Upgrade -> return ViewHolderUpgrade(view.inflate(R.layout.chosen_upgrades_row, parent, false))
-//            is Perk ->
+            is Weapon -> holder = ViewHolderWeapon(view.inflate(R.layout.chosen_weapons_row, parent, false))
+            is Upgrade -> holder = ViewHolderUpgrade(view.inflate(R.layout.chosen_upgrades_row, parent, false))
+            is Perk -> holder = ViewHolderPerk(view.inflate(R.layout.chosen_perk_row, parent, false))
         }
+        return holder
     }
 
     override fun getItemCount(): Int {
         return weaponsUpgradesPerks.size
     }
 
-    override fun onBindViewHolder(holder: Any, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (weaponsUpgradesPerks[position]) {
-            is Weapon -> (holder as ViewHolderWeapon).bind(weaponsUpgradesPerks[position] as Weapon)
-            is Upgrade -> (holder as ViewHolderUpgrade).bind(weaponsUpgradesPerks[position] as Upgrade)
-//            is Perk ->
+            is Weapon -> (holder as ViewHolderWeapon).bind(weaponsUpgradesPerks[position] as Weapon, remover)
+            is Upgrade -> (holder as ViewHolderUpgrade).bind(weaponsUpgradesPerks[position] as Upgrade, remover)
+            is Perk -> (holder as ViewHolderPerk).bind(weaponsUpgradesPerks[position] as Perk, remover)
         }
     }
 }
