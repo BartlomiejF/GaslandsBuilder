@@ -150,27 +150,20 @@ class CarCreator : AppCompatActivity() {
                     name = carName,
                     cost = preferences.getInt("sumCarVal", 0),
                     type = preferences.getString("carType", "Car")!!,
-                    weapons = chosenWeapons.joinToString(separator = ";") {
-                        var prefix = ""
-                        var specRules = ""
-                        if (it.mount!=null){
-                            prefix = "${it.mount} mounted "
-                            specRules = it.specialRules.toString()
-                        } else {
-                            specRules = "Crew Fired. ${specRules}"
-                        }
-                        return@joinToString "${prefix}${it.name}:${it.ammo}:${it.range}:${it.damage}:${specRules}"
+                    weapons = chosenWeapons.joinToString("") {
+                        it.to_str()
                     },
-                    upgrades = chosenUpgrades.joinToString(separator = ";") {
+                    upgrades = chosenUpgrades.joinToString("") {
                         if (it.onAdd != null){ it.onAdd?.invoke(chosenVehicleType) }
-                        "${it.name}:${it.cost}:${it.ammo}:${it.specRules}"
+                        it.to_str()
                     },
                     hull = chosenVehicleType.hull,
                     handling = chosenVehicleType.handling,
                     maxGear = chosenVehicleType.maxGear,
                     crew = chosenVehicleType.crew,
                     specialRules = chosenVehicleType.specialRules,
-                    weight = chosenVehicleType.weight
+                    weight = chosenVehicleType.weight,
+                perks = chosenPerks.joinToString("") { it.to_str() }
                 ),
                 db
             )

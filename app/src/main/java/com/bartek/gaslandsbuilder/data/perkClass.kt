@@ -12,7 +12,11 @@ data class Perk(
     val name: String,
     val perkClass: String,
     val cost: Int
-): Parcelable
+): Parcelable{
+    fun to_str(): String{
+        return "$name:$perkClass:$cost;"
+    }
+}
 
 val PERK_CLASSES = listOf("Aggression", "Badass", "Built", "Daring", "Horror", "Military", "Reckless",
                       "Speed", "Technology", "Tuning", "Precision", "Pursuit")

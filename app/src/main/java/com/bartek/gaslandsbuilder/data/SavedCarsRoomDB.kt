@@ -19,8 +19,60 @@ data class SavedCar(
     val crew: Int = 0,
     val specialRules: String? = null,
     val weight: String = "L",
+    val perks: String? = null,
     var currentGear: Int = 1
-)
+){
+    fun getWeaponsList(): MutableList<Weapon>{
+        val weaponsList = mutableListOf<Weapon>()
+        weapons.split(";").dropLast(1).forEach {
+            val params = it.split(":")
+            weaponsList.add(Weapon(
+                name = params[0],
+                cost = params[1].toInt(),
+                buildSlots = params[2].toInt(),
+                specialRules = params[3],
+                ammo = params[4].toInt(),
+                crewFired = params[5].toInt(),
+                damage = params[6],
+                range = params[7],
+                mount = params[8]
+            ))
+        }
+        return weaponsList
+    }
+
+    fun getUpgradesList(): MutableList<Upgrade>{
+        val upgradesList = mutableListOf<Upgrade>()
+        upgrades.split(";").dropLast(1).forEach{
+            val params = it.split(":")
+            upgradesList.add(Upgrade(
+                name = params[0],
+                cost = params[1].toInt(),
+                buildSlots = params[2].toInt(),
+                ammo = params[3].toInt(),
+                specRules = params[4]
+            ))
+        }
+        return upgradesList
+    }
+
+    fun getPerksList(): MutableList<Perk>{
+        val perksList = mutableListOf<Perk>()
+        perks?.split(";")?.dropLast(1)?.forEach{
+            val params = it.split(":")
+            perksList.add(Perk(
+                name = params[0],
+                perkClass = params[1],
+                cost = params[2].toInt()
+            ))
+        }
+        return perksList
+    }
+}
+
+//fun savedCarFromString(savedCarString: String): SavedCar{
+//
+//}
 
 fun getAllSavedCars(context: Context): MutableList<SavedCar> {
         val db: SQLiteDatabase = DbHelper(
@@ -38,7 +90,8 @@ fun getAllSavedCars(context: Context): MutableList<SavedCar> {
                 val weapons = cursor.getString(cursor.getColumnIndex("weapons"))
                 val id = cursor.getString(cursor.getColumnIndex("id")).toInt()
                 val upgrades = cursor.getString(cursor.getColumnIndex("upgrades"))
-                savedCarsMutableList.add(SavedCar(name, cost, type, weapons, id, upgrades))
+                val perks = cursor.getString(cursor.getColumnIndex("perks"))
+                savedCarsMutableList.add(SavedCar(name, cost, type, weapons, id, upgrades, perks=perks))
                 cursor.moveToNext()
             }
         }
@@ -60,6 +113,7 @@ fun saveCar(car: SavedCar, db: SQLiteDatabase){
         put("maxGear", car.maxGear)
         put("specialRules", car.specialRules)
         put("weight", car.weight)
+        put("perks", car.perks)
     }
     db.insert("savedCars", null, values)
 }
@@ -95,7 +149,8 @@ fun getSingleCar(context: Context, id: Int?): SavedCar {
         val crew = cursor.getInt(cursor.getColumnIndex("crew"))
         val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
         val weight = cursor.getString(cursor.getColumnIndex("weight"))
-        readCar = SavedCar(name, cost, type, weapons, id, upgrades, hull, handling, maxGear, crew, specialRules, weight)
+        val perks = cursor.getString(cursor.getColumnIndex("perks"))
+        readCar = SavedCar(name, cost, type, weapons, id, upgrades, hull, handling, maxGear, crew, specialRules, weight, perks)
     }
     cursor.close()
     db.close()
@@ -124,6 +179,7 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
             val crew = cursor.getInt(cursor.getColumnIndex("crew"))
             val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
             val weight = cursor.getString(cursor.getColumnIndex("weight"))
+            val perks = cursor.getString(cursor.getColumnIndex("perks"))
             readCars.add(SavedCar(name,
                 cost,
                 type,
@@ -135,7 +191,9 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
                 maxGear,
                 crew,
                 specialRules,
-            weight))
+            weight,
+            perks
+            ))
             cursor.moveToNext()
         }
     }

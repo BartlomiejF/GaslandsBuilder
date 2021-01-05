@@ -152,12 +152,19 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost}"
             itemView.savedCarType.text = car.type
-            val weaponsAndUpgrades: List<List<String>> = listOf(
-                car.weapons.split(";"),
-                car.upgrades.split(";")
+            val weaponsAndUpgrades: List<String> = listOf(
+                car.getWeaponsList().joinToString("\n") {
+                    var text = "$it.name"
+                    if (it.mount != "null") {
+                        text = "${it.mount} mounted ${it.name}"
+                    }
+                    return@joinToString text
+                },
+                car.getUpgradesList().joinToString("\n") { it.name },
+                car.getPerksList().joinToString("\n") { it.name }
             )
-            val weaponsAndUpgradesList: List<String> = weaponsAndUpgrades.flatten()
-            itemView.savedCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n"){ it.split(":")[0] }
+            val weaponsAndUpgradesList: String = weaponsAndUpgrades.joinToString("\n")
+            itemView.savedCarWeapons.text = weaponsAndUpgradesList
             itemView.deleteButton.setOnClickListener {
                 carRemover(car)
             }
