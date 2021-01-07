@@ -69,10 +69,12 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
             val perksList: List<Perk> = car.getPerksList()
             itemView.vehicleTypeText.text = car.type
             itemView.vehicleWeightText.text = car.weight
+            if (weaponsList.isNotEmpty() or upgradesList.isNotEmpty() or perksList.isNotEmpty()){
+                itemView.viewCarWeaponsNoWeaponsText.visibility = View.GONE
+            }
 
             val viewCarWeapons: LinearLayout = itemView.viewCarWeapons
             if (weaponsList.isNotEmpty()){
-                itemView.viewCarWeaponsNoWeaponsText.visibility = View.GONE
                 for (item in weaponsList){
                     val weaponsRow = LayoutInflater.from(context).inflate(R.layout.view_car_weapons_row, null)
                     weaponsRow.apply {
