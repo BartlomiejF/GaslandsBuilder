@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".addPerk"></activity>
+        <activity android:name=".saved_car_editor"></activity>
+        <activity android:name=".addPerk" />
         <activity android:name=".gameTracker" />
         <activity android:name=".ViewCar" />
         <activity android:name=".warnings" />
