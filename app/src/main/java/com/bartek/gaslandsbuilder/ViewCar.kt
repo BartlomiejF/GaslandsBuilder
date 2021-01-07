@@ -99,7 +99,7 @@ class ViewCar : AppCompatActivity() {
             }
         }
 
-        findViewById<TextView>(R.id.maxGearValue).text = car.currentGear.toString()
+        findViewById<TextView>(R.id.maxGearValue).text = car.maxGear.toString()
 
         findViewById<TextView>(R.id.handlingValue).text = car.handling.toString()
 
@@ -115,46 +115,6 @@ class ViewCar : AppCompatActivity() {
                 findViewById<LinearLayout>(R.id.hullTableRowLayout1).addView(checkBox)
             } else { findViewById<LinearLayout>(R.id.hullTableRowLayout2).addView(checkBox) }
         }
-
-//        val weapons: TextView = findViewById(R.id.viewCarWeapons)
-//        val weaponsAndUpgrades: List<List<String>> = listOf(
-//            car.weapons.split(";"),
-//            car.upgrades.split(";")
-//        )
-//        val weaponsAndUpgradesList: List<String> = if (weaponsAndUpgrades[0][0] == ""){
-//            weaponsAndUpgrades.flatten().drop(1)
-//        } else {
-//            weaponsAndUpgrades.flatten()
-//        }
-//        weapons.text = weaponsAndUpgradesList.joinToString(separator="\n"){ it.split(":")[0] }
-//
-//        val btn: Button = findViewById(R.id.button)
-//        btn.setOnClickListener { toBitmapFromView(findViewById(R.id.carFrame), car.name) }
-//
-//        val maxGearValue: TextView = findViewById(R.id.maxGearValue)
-//        maxGearValue.text = car.maxGear.toString()
-//
-//        val handlingValue: TextView = findViewById(R.id.handlingValue)
-//        handlingValue.text = car.handling.toString()
-//
-//        val crewValue: TextView = findViewById(R.id.crewValue)
-//        crewValue.text = car.crew.toString()
-//
-//        val hullTableRowLayout1: LinearLayout = findViewById(R.id.hullTableRowLayout1)
-//        val hullTableRowLayout2: LinearLayout = findViewById(R.id.hullTableRowLayout2)
-//        repeat(car.hull){
-//            val checkBox = CheckBox(this)
-//            checkBox.text = ""
-//            checkBox.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//            if (it>17){
-//              val hullTableRowLayout3: LinearLayout = findViewById(R.id.hullTableRowLayout3)
-//                hullTableRowLayout3.addView(checkBox)
-//            } else if (it.rem(other = 2)==0) {
-//                hullTableRowLayout1.addView(checkBox)
-//            } else { hullTableRowLayout2.addView(checkBox) }
-//        }
-//            val gearUpDownLayout: LinearLayout = findViewById(R.id.gearUpDownLayout)
-//            gearUpDownLayout.visibility = View.VISIBLE
     }
 
     override fun onResume() {
