@@ -12,9 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bartek.gaslandsbuilder.data.SavedCar
-import com.bartek.gaslandsbuilder.data.getMultipleCarsOnId
+import com.bartek.gaslandsbuilder.data.*
 import kotlinx.android.synthetic.main.activity_view_car2.view.*
+import kotlinx.android.synthetic.main.view_car_perks_row.view.*
 import kotlinx.android.synthetic.main.view_car_upgrades_row.view.*
 import kotlinx.android.synthetic.main.view_car_weapons_row.view.*
 
@@ -30,7 +30,6 @@ class gameTracker : AppCompatActivity() {
             layoutManager = LinearLayoutManager(application)
             adapter = gameTrackerAdapter
         }
-
     }
 
     override fun onBackPressed() {
@@ -49,7 +48,6 @@ class gameTracker : AppCompatActivity() {
                         dialog.cancel()
                     })
             }
-
             builder.create()
         }
         alertDialog?.show()
@@ -66,14 +64,9 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
             itemView.viewCarCost.text = "Cans: ${car.cost}"
             itemView.maxGearText.text = "Gear"
 
-            var weaponsList: List<String> = car.weapons.split(";")
-            var upgradesList = car.upgrades.split(";")
-            if (weaponsList[0] == ""){
-                weaponsList = weaponsList.drop(1)
-            }
-            if (upgradesList[0] == ""){
-                upgradesList = upgradesList.drop(1)
-            }
+            val weaponsList: MutableList<Weapon> = car.getWeaponsList()
+            val upgradesList: MutableList<Upgrade> = car.getUpgradesList()
+            val perksList: List<Perk> = car.getPerksList()
             itemView.vehicleTypeText.text = car.type
             itemView.vehicleWeightText.text = car.weight
 
@@ -82,10 +75,9 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                 itemView.viewCarWeaponsNoWeaponsText.visibility = View.GONE
                 for (item in weaponsList){
                     val weaponsRow = LayoutInflater.from(context).inflate(R.layout.view_car_weapons_row, null)
-                    val info = item.split(":")
                     weaponsRow.apply {
-                        viewCarWeaponName.text = info[0]
-                        val ammo = info[1].toInt()
+                        viewCarWeaponName.text = item.name
+                        val ammo = item.ammo
                         if (ammo != 0){
                         repeat(ammo){
                             val ammoLinearLayout: LinearLayout = findViewById(R.id.ammoLayout)
@@ -95,14 +87,14 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                             ammoLinearLayout.addView(checkBox)
                         }
                         } else { ammoText.visibility = View.GONE }
-                        rangeText.text = info[2]
-                        if (info[3] != "null"){
-                            weaponDamage.text = info[3]
+                        rangeText.text = item.range
+                        if (item.damage != "null"){
+                            weaponDamage.text = item.damage
                         } else {
                             weaponDamage.visibility = View.GONE
                         }
-                        if (info[4] != "null"){
-                            weaponSpecialRules.text = info[4]
+                        if (item.specialRules != "null"){
+                            weaponSpecialRules.text = item.specialRules
                         } else {
                             weaponSpecialRules.visibility = View.GONE
                         }
@@ -113,23 +105,28 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
             if (upgradesList.isNotEmpty()){
                 upgradesList.forEach{
                     val upgradesRow = LayoutInflater.from(context).inflate(R.layout.view_car_upgrades_row, null)
-                    val info = it.split(":")
                     upgradesRow.apply {
-                        viewCarUpgradeName.text = info[0]
-                        upgradeSpecialRules.text = info[3]
-                        if (info[2] == "0") {
+                        viewCarUpgradeName.text = it.name
+                        upgradeSpecialRules.text = it.specRules
+                        if (it.ammo == 0) {
                             upgradeAmmoCheckBox.visibility = View.GONE
                             viewCarAmmoText.visibility = View.GONE
                         }
                     }
-//                    val upgradeName = TextView(context)
-//                    upgradeName.text = it.split(":")[0]
-//                    val typeface = ResourcesCompat.getFont(context, R.font.bangers)
-//                    upgradeName.typeface = typeface
-                        viewCarWeapons.addView(upgradesRow)
+                    viewCarWeapons.addView(upgradesRow)
                 }
             }
-//            itemView.viewCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n"){ it.split(":")[0] }
+
+            if (perksList.isNotEmpty()){
+                perksList.forEach {
+                    val perksRow = LayoutInflater.from(context).inflate(R.layout.view_car_perks_row, null)
+                    perksRow.apply {
+                        viewCarPerkName.text = it.name
+                        viewCarPerkClass.text = it.perkClass
+                    }
+                    viewCarWeapons.addView(perksRow)
+                }
+            }
 
             itemView.maxGearValue.text = car.currentGear.toString()
 
