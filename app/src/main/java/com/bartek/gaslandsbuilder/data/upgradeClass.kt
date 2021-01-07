@@ -16,7 +16,11 @@ data class Upgrade(
     val ammo: Int,
     val specRules: String,
     var onAdd: @RawValue ((Vehicle) -> Unit)? = null
-): Parcelable
+): Parcelable{
+    fun to_str(): String {
+        return "$name:$cost:$buildSlots:$ammo:$specRules;"
+    }
+}
 
 
 fun getAllUpgradesNames(context: Context): MutableList<Upgrade>{

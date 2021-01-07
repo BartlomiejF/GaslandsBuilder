@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/upgradeName"
+        android:id="@+id/perkName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -20,16 +21,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/upgradeCost"
+        android:id="@+id/perkCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:fontFamily="@font/bangers"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/upgradeName"
-        app:layout_constraintEnd_toStartOf="@+id/slotsCost"
-        app:layout_constraintTop_toTopOf="@+id/upgradeName" />
+        app:layout_constraintBottom_toBottomOf="@id/perkName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/perkName" />
+
+    <TextView
+        android:id="@+id/perkClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:fontFamily="@font/bangers"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@id/perkName"
+        app:layout_constraintEnd_toStartOf="@id/perkCost"
+        app:layout_constraintTop_toTopOf="@+id/perkName" />
 
     <View
         android:id="@+id/divider"
@@ -40,17 +53,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/slotsCost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:fontFamily="@font/bangers"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/upgradeName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/upgradeName"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

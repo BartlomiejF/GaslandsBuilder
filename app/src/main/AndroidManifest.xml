@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bartek.gaslandsbuilder"
     android:installLocation="auto"
-    android:versionCode="5">
+    android:versionCode="6">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".gameTracker"></activity>
+        <activity android:name=".addPerk"></activity>
+        <activity android:name=".gameTracker" />
         <activity android:name=".ViewCar" />
         <activity android:name=".warnings" />
         <activity android:name=".about" />

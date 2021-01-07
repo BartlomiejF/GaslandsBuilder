@@ -152,16 +152,29 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost}"
             itemView.savedCarType.text = car.type
-            val weaponsAndUpgrades: List<List<String>> = listOf(
-                car.weapons.split(";"),
-                car.upgrades.split(";")
+            val weaponsAndUpgrades: MutableList<String> = mutableListOf(
+                car.getWeaponsList().joinToString("\n") {
+                    var text = "$it.name"
+                    if (it.mount != "null") {
+                        text = "${it.mount} mounted ${it.name}"
+                    }
+                    return@joinToString text
+                },
+                car.getUpgradesList().joinToString("\n") { it.name },
+                car.getPerksList().joinToString("\n") { it.name }
             )
-            val weaponsAndUpgradesList: List<String> = weaponsAndUpgrades.flatten()
-            itemView.savedCarWeapons.text = weaponsAndUpgradesList.joinToString(separator="\n"){ it.split(":")[0] }
+           weaponsAndUpgrades.removeAll(listOf("", "\n"))
+            val weaponsAndUpgradesList: String = if (weaponsAndUpgrades.isNotEmpty()){
+                weaponsAndUpgrades.joinToString("\n")
+            } else {
+                ""
+            }
+
+            itemView.savedCarWeapons.text = weaponsAndUpgradesList
             itemView.deleteButton.setOnClickListener {
                 carRemover(car)
             }
-            itemView.setOnClickListener{
+            itemView.viewCarButton.setOnClickListener{
                 viewCar(car.id, context)
             }
             itemView.markToPlay.setOnCheckedChangeListener { _, isChecked ->

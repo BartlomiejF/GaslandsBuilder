@@ -13,59 +13,40 @@
         android:fontFamily="@font/bangers"
         android:text="Add Upgrade"
         app:layout_constraintBottom_toTopOf="@+id/saveCarButton"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/addPerkButton"
         app:layout_constraintStart_toEndOf="@+id/addWeaponButton" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/chosenUpgradesConstraintLayout"
+    <Button
+        android:id="@+id/addPerkButton"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/addWeaponButton"
-        app:layout_constraintEnd_toEndOf="@+id/chosenWeaponsConstraintLayout"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/chosenWeaponsConstraintLayout"
-        app:layout_constraintTop_toBottomOf="@+id/chosenWeaponsConstraintLayout">
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bangers"
-            android:text="Chosen Upgrades"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chosenUpgradesList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bangers"
+        android:text="Add Perk"
+        app:layout_constraintBottom_toTopOf="@+id/saveCarButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addUpgradeButton" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chosenWeaponsConstraintLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/addWeaponButton"
         app:layout_constraintEnd_toEndOf="@+id/sumCost"
         app:layout_constraintStart_toStartOf="@+id/sumSlots"
-        app:layout_constraintTop_toBottomOf="@+id/sumCost"
-        app:layout_constraintBottom_toTopOf="@+id/chosenUpgradesConstraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/sumCost">
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bangers"
-            android:text="Chosen Weapons"
+            android:text="Weapons Upgrades and Perks"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chosenWeaponsList"
+            android:id="@+id/weaponsUpgradesPerksList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

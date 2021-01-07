@@ -12,13 +12,17 @@ data class Weapon(
     val name: String,
     val cost: Int,
     val buildSlots: Int,
-    val specialRules: String? = null,
+    val specialRules: String? = "No special rules.",
     val ammo: Int = 0,
-    val crewFired: Int? = null,
-    val damage: String? = null,
-    val range: String? = null,
-    val mount: String? = null
-): Parcelable
+    val crewFired: Int = 0,
+    val damage: String? = "1d6",
+    val range: String? = "long",
+    val mount: String? = "front"
+): Parcelable {
+    fun to_str(): String {
+        return "$name:$cost:$buildSlots:$specialRules:$ammo:$crewFired:$damage:$range:$mount;"
+    }
+}
 
 //@Parcelize
 //data class ChosenWeapon(
