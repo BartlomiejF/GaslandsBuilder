@@ -30,6 +30,7 @@ class gameTracker : AppCompatActivity() {
             layoutManager = LinearLayoutManager(application)
             adapter = gameTrackerAdapter
         }
+
     }
 
     override fun onBackPressed() {
