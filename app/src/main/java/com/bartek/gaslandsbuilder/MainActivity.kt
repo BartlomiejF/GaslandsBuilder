@@ -148,6 +148,12 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             context.startActivity(intent)
         }
 
+        fun editCar(id: Int?, context: Context){
+            val intent = Intent(context, saved_car_editor::class.java)
+            intent.putExtra("id", id)
+            context.startActivity(intent)
+        }
+
         fun bind(car: SavedCar, carRemover: (SavedCar) -> Unit, context: Context){
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost}"
@@ -176,6 +182,9 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             }
             itemView.viewCarButton.setOnClickListener{
                 viewCar(car.id, context)
+            }
+            itemView.editButton.setOnClickListener {
+                editCar(car.id, context)
             }
             itemView.markToPlay.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked){
