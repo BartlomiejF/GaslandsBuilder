@@ -36,19 +36,26 @@ class CarCreator : AppCompatActivity() {
         val vehicles = getAllVehicles(this)
         val addWeaponButton: Button = findViewById(R.id.addWeaponButton)
         addWeaponButton.setOnClickListener{
-            startActivityForResult(Intent(this, WeaponCreator::class.java), weaponActivityRequestCode)
+            val intent = Intent(this, WeaponCreator::class.java)
+            intent.putExtra("cost", chosenVehicle.calculateCost())
+            startActivityForResult(intent, weaponActivityRequestCode)
         }
         val addUpgradeButton: Button = findViewById(R.id.addUpgradeButton)
         addUpgradeButton.setOnClickListener{
-            startActivityForResult(Intent(this, addUpgrade::class.java), upgradeActivityRequestCode)
+            val intent = Intent(this, addUpgrade::class.java)
+            intent.putExtra("cost", chosenVehicle.calculateCost())
+            startActivityForResult(intent , upgradeActivityRequestCode)
         }
         val addPerkButton: Button = findViewById(R.id.addPerkButton)
         addPerkButton.setOnClickListener {
-            startActivityForResult(Intent(this, addPerk::class.java), perksActivityRequestCode)
+            val intent = Intent(this, addPerk::class.java)
+            intent.putExtra("cost", chosenVehicle.calculateCost())
+            startActivityForResult(intent, perksActivityRequestCode)
         }
 
         val carTypeSpinner: Spinner = findViewById(R.id.carTypeSpinner)
         val adapter = CarTypeSpinnerAdapter(vehicles)
+        chosenVehicle.type = vehicles[0]
         carTypeSpinner.adapter = adapter
         carTypeSpinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
@@ -144,16 +151,16 @@ class CarCreator : AppCompatActivity() {
                         it.to_str()
                     },
                     upgrades = chosenVehicle.chosenUpgrades.joinToString("") {
-                        if (it.onAdd != null){ it.onAdd?.invoke(chosenVehicle.type!!) }
+                        applyUpgradeSpecialRules(it, chosenVehicle)
                         it.to_str()
                     },
+                    perks = chosenVehicle.chosenPerks.joinToString("") { it.to_str() },
                     hull = chosenVehicle.type!!.hull,
                     handling = chosenVehicle.type!!.handling,
                     maxGear = chosenVehicle.type!!.maxGear,
                     crew = chosenVehicle.type!!.crew,
                     specialRules = chosenVehicle.type!!.specialRules,
-                    weight = chosenVehicle.type!!.weight,
-                perks = chosenVehicle.chosenPerks.joinToString("") { it.to_str() }
+                    weight = chosenVehicle.type!!.weight
                 ),
                 db
             )

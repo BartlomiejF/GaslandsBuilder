@@ -18,20 +18,19 @@ import kotlinx.android.synthetic.main.single_weapons_row.view.*
 
 class WeaponCreator : AppCompatActivity() {
     lateinit var mount: String
-    val mountType = arrayOf("Front", "Back", "Side", "Turret")
+    val mountType = arrayOf("Front", "Rear", "Side", "Turret")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weapon_creator)
-        updateSumCost()
-
+        val sumCost: Int = intent.extras!!.getInt("cost")
+        findViewById<TextView>(R.id.addWeaponSumCarCost).text = sumCost.toString()
         val carWeaponsRecyclerView: RecyclerView = findViewById(R.id.weaponsView)
         carWeaponsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
             adapter = CarWeaponAdapter(
                 getAllWeaponNames(application),
-                ::addWeapon,
-                getPrefs().getInt("freeBuildSlots", 0)
+                ::addWeapon
             )
         }
 
@@ -56,29 +55,16 @@ class WeaponCreator : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
-
     }
 
     fun addWeapon(weapon: Weapon){
         var cost = weapon.cost
-        val preferences = getPrefs()
         var mount: String? = null
         if (weapon.crewFired==0) {
              mount = this@WeaponCreator.mount
             if (mount == "Turret") {
                 cost *= 3
             }
-        }
-        preferences.edit().apply {
-            putInt(
-                "sumWeaponsValue",
-                preferences.getInt("sumWeaponsValue", 0) + cost
-            )
-            putInt(
-                "takenSlots",
-                preferences.getInt("takenSlots", 0) + weapon.buildSlots
-            )
-            apply()
         }
         val chosenWeapon = Weapon(
             weapon.name,
@@ -95,28 +81,13 @@ class WeaponCreator : AppCompatActivity() {
         setResult(Activity.RESULT_OK, intent)
         finish()
         }
-
-    fun getPrefs(): SharedPreferences{
-        return this.getSharedPreferences(
-            "singleCar",
-            Context.MODE_PRIVATE
-        )
-    }
-
-    fun updateSumCost(){
-        val preferences = getPrefs()
-        val sumCost: TextView = findViewById(R.id.sumWeaponCost)
-        sumCost.text = preferences.getInt("sumCarVal", 0).toString()
-    }
-
 }
 
 class CarWeaponAdapter(val weaponsList: MutableList<Weapon>,
-                       val weaponAdder:(Weapon) -> Unit,
-                       val freeSlots: Int
+                       val weaponAdder:(Weapon) -> Unit
     ): RecyclerView.Adapter<CarWeaponAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View, val weaponAdder:(Weapon) -> Unit, val freeSlots: Int): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, val weaponAdder:(Weapon) -> Unit): RecyclerView.ViewHolder(view) {
         fun bind(weapon: Weapon){
             itemView.weaponName.text = weapon.name
             itemView.slotsCost.text = "${weapon.buildSlots} slots"
@@ -130,7 +101,7 @@ class CarWeaponAdapter(val weaponsList: MutableList<Weapon>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.single_weapons_row, parent, false)
-        return ViewHolder(view, weaponAdder, freeSlots)
+        return ViewHolder(view, weaponAdder)
     }
 
     override fun getItemCount(): Int {

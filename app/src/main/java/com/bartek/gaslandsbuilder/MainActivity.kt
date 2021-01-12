@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.SavedCar
 import com.bartek.gaslandsbuilder.data.deleteSavedCar
 import com.bartek.gaslandsbuilder.data.getAllSavedCars
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.saved_car_row.view.*
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +32,11 @@ class MainActivity : AppCompatActivity() {
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
         }
+        MobileAds.initialize(this) {}
+
+        val mAdView: AdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -132,7 +140,7 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
         }
 
         fun editCar(id: Int?, context: Context){
-            val intent = Intent(context, saved_car_editor::class.java)
+            val intent = Intent(context, SavedCarEditor::class.java)
             intent.putExtra("id", id)
             context.startActivity(intent)
         }
@@ -143,7 +151,7 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             itemView.savedCarType.text = car.type
             val weaponsAndUpgrades: MutableList<String> = mutableListOf(
                 car.getWeaponsList().joinToString("\n") {
-                    var text = "$it.name"
+                    var text = "${it.name}"
                     if (it.mount != "null") {
                         text = "${it.mount} mounted ${it.name}"
                     }

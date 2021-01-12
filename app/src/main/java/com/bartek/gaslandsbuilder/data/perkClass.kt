@@ -41,3 +41,7 @@ fun getAllPerks(context: Context): MutableList<Perk>{
     cursor.close()
     return perksMutableList
 }
+
+fun applyUpgradeSpecialRules(perk: Perk, vehicle: ChosenVehicle) {
+
+}

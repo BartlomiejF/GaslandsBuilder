@@ -45,3 +45,13 @@ fun getAllUpgradesNames(context: Context): MutableList<Upgrade>{
     cursor.close()
     return upgradesMutableList
 }
+fun applyUpgradeSpecialRules(upgrade: Upgrade, vehicle: ChosenVehicle) {
+    when (upgrade.name) {
+        "Extra Crewmember" -> { vehicle.type!!.crew += 1 }
+        "Armour Plating" -> { vehicle.type!!.hull += 2 }
+        "Tank Tracks" -> {
+            vehicle.type!!.maxGear -= 1
+            vehicle.type!!.handling += 1
+            }
+        }
+    }
