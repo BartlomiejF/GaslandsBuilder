@@ -264,7 +264,7 @@ class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Parcelabl
         fun bind(weapon: Weapon, remover: (Any) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             var prefix = ""
-            if (weapon.mount!=null){ prefix = "${weapon.mount} mounted " }
+            if ((weapon.mount!= null).and((weapon.mount) !="null")){ prefix = "${weapon.mount} mounted " }
             itemView.chosenWeaponName.text = "${prefix}${weapon.name}"
             itemView.removeChosenWeaponButton.setOnClickListener {
                 remover(weapon)
