@@ -8,18 +8,19 @@ data class ChosenVehicle(
     var cost: Int = 0
 ){
     fun calculateCost(): Int {
-        chosenWeapons.forEach{ cost += it.cost }
-        chosenUpgrades.forEach { cost += it.cost }
-        chosenPerks.forEach { cost += it.cost }
-        cost += type?.cost ?: 0
-
-        return cost
+        var calculated = 0
+        chosenWeapons.forEach{ calculated += it.cost }
+        chosenUpgrades.forEach { calculated += it.cost }
+        chosenPerks.forEach { calculated += it.cost }
+        calculated += type?.cost ?: 0
+        cost = calculated
+        return calculated
     }
 
     fun calculateBuildSlots(): Int{
         var buildSlots = type?.buildSlots ?: 0
-        chosenWeapons.forEach{ buildSlots += it.buildSlots }
-        chosenUpgrades.forEach { buildSlots += it.buildSlots }
+        chosenWeapons.forEach{ buildSlots -= it.buildSlots }
+        chosenUpgrades.forEach { buildSlots -= it.buildSlots }
 
         return buildSlots
     }

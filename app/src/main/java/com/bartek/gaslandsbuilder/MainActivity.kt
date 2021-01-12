@@ -3,7 +3,6 @@ package com.bartek.gaslandsbuilder
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -30,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -65,20 +63,6 @@ class MainActivity : AppCompatActivity() {
             ::removeSavedCar,
             this
         )
-
-        val preferences: SharedPreferences = this.getSharedPreferences(
-            "singleCar",
-            Context.MODE_PRIVATE
-        )
-
-        preferences.edit().apply {
-            putInt("sumCarVal", 0)
-            putInt("vehicleTypeCost", 0)
-            putInt("freeBuildSlots", 0)
-            putInt("sumWeaponsValue", 0)
-            putInt("takenSlots", 0)
-            apply()
-        }
 
         val savedCarsRecyclerView: RecyclerView = findViewById(R.id.savedCarsRecyclerView)
         savedCarsRecyclerView.apply {
@@ -134,7 +118,6 @@ class MainActivity : AppCompatActivity() {
             teamCostValue.visibility = View.VISIBLE
         }
     }
-
 }
 
 class SavedCarsAdapter(val savedCars: MutableList<SavedCar>,

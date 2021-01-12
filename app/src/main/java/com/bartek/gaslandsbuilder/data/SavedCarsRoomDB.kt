@@ -120,7 +120,6 @@ fun saveCar(car: SavedCar, db: SQLiteDatabase){
 
 fun updateCar(car: SavedCar, db: SQLiteDatabase, id: Int){
     val values = ContentValues().apply{
-        put("name", car.name)
         put("cost", car.cost)
         put("type", car.type)
         put("weapons", car.weapons)
