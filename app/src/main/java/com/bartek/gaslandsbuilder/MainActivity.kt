@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, CarCreator::class.java))
         }
         MobileAds.initialize(this) {}
-
         val mAdView: AdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
