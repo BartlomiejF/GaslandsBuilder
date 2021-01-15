@@ -35,8 +35,6 @@ class gameTracker : AppCompatActivity() {
             adapter = gameTrackerAdapter
         }
         val mAdView: AdView = findViewById(R.id.adView2)
-//        mAdView.adSize = AdSize.BANNER
-//        mAdView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
     }
