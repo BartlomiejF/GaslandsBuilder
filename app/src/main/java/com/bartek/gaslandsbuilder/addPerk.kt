@@ -20,8 +20,8 @@ class addPerk : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_perk)
-        updateSumCost()
-
+        val sumCost: Int = intent.extras!!.getInt("cost")
+        findViewById<TextView>(R.id.addPerkSumCarCost).text = sumCost.toString()
         val carUpgradesRecyclerView: RecyclerView = findViewById(R.id.perksView)
         carUpgradesRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
@@ -31,35 +31,13 @@ class addPerk : AppCompatActivity() {
             )
         }
     }
-    fun addPerk(perk: Perk){
-        val preferences = getPrefs()
-        preferences.edit().apply {
-            putInt(
-                "sumWeaponsValue",
-                preferences.getInt("sumWeaponsValue", 0) + perk.cost
-            )
-            apply()
-        }
 
+    fun addPerk(perk: Perk) {
         val intent = Intent()
         intent.putExtra("chosenPerk", perk)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
-
-    fun getPrefs(): SharedPreferences {
-        return this.getSharedPreferences(
-            "singleCar",
-            Context.MODE_PRIVATE
-        )
-    }
-
-    fun updateSumCost(){
-        val preferences = getPrefs()
-        val sumCost: TextView = findViewById(R.id.sumCarCost)
-        sumCost.text = preferences.getInt("sumCarVal", 0).toString()
-    }
-
 }
 
 class CarPerksAdapter(

@@ -3,7 +3,6 @@ package com.bartek.gaslandsbuilder
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -15,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.SavedCar
 import com.bartek.gaslandsbuilder.data.deleteSavedCar
 import com.bartek.gaslandsbuilder.data.getAllSavedCars
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.saved_car_row.view.*
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +33,10 @@ class MainActivity : AppCompatActivity() {
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
         }
-
+        MobileAds.initialize(this) {}
+        val mAdView: AdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -65,20 +71,6 @@ class MainActivity : AppCompatActivity() {
             ::removeSavedCar,
             this
         )
-
-        val preferences: SharedPreferences = this.getSharedPreferences(
-            "singleCar",
-            Context.MODE_PRIVATE
-        )
-
-        preferences.edit().apply {
-            putInt("sumCarVal", 0)
-            putInt("vehicleTypeCost", 0)
-            putInt("freeBuildSlots", 0)
-            putInt("sumWeaponsValue", 0)
-            putInt("takenSlots", 0)
-            apply()
-        }
 
         val savedCarsRecyclerView: RecyclerView = findViewById(R.id.savedCarsRecyclerView)
         savedCarsRecyclerView.apply {
@@ -134,7 +126,6 @@ class MainActivity : AppCompatActivity() {
             teamCostValue.visibility = View.VISIBLE
         }
     }
-
 }
 
 class SavedCarsAdapter(val savedCars: MutableList<SavedCar>,
@@ -148,13 +139,19 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             context.startActivity(intent)
         }
 
+        fun editCar(id: Int?, context: Context){
+            val intent = Intent(context, SavedCarEditor::class.java)
+            intent.putExtra("id", id)
+            context.startActivity(intent)
+        }
+
         fun bind(car: SavedCar, carRemover: (SavedCar) -> Unit, context: Context){
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost}"
             itemView.savedCarType.text = car.type
             val weaponsAndUpgrades: MutableList<String> = mutableListOf(
                 car.getWeaponsList().joinToString("\n") {
-                    var text = "$it.name"
+                    var text = "${it.name}"
                     if (it.mount != "null") {
                         text = "${it.mount} mounted ${it.name}"
                     }
@@ -176,6 +173,9 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             }
             itemView.viewCarButton.setOnClickListener{
                 viewCar(car.id, context)
+            }
+            itemView.editButton.setOnClickListener {
+                editCar(car.id, context)
             }
             itemView.markToPlay.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked){

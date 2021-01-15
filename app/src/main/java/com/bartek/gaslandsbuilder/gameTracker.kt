@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_view_car2.view.*
 import kotlinx.android.synthetic.main.view_car_perks_row.view.*
 import kotlinx.android.synthetic.main.view_car_upgrades_row.view.*
@@ -30,6 +34,9 @@ class gameTracker : AppCompatActivity() {
             layoutManager = LinearLayoutManager(application)
             adapter = gameTrackerAdapter
         }
+        val mAdView: AdView = findViewById(R.id.adView2)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     override fun onBackPressed() {

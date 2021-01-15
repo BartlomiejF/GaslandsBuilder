@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 /vectors
+/app/src/main/res/values/advalues.xml

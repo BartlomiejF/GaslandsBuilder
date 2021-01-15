@@ -118,6 +118,23 @@ fun saveCar(car: SavedCar, db: SQLiteDatabase){
     db.insert("savedCars", null, values)
 }
 
+fun updateCar(car: SavedCar, db: SQLiteDatabase, id: Int){
+    val values = ContentValues().apply{
+        put("cost", car.cost)
+        put("type", car.type)
+        put("weapons", car.weapons)
+        put("upgrades", car.upgrades)
+        put("handling", car.handling)
+        put("hull", car.hull)
+        put("crew", car.crew)
+        put("maxGear", car.maxGear)
+        put("specialRules", car.specialRules)
+        put("weight", car.weight)
+        put("perks", car.perks)
+    }
+    db.update("savedCars", values, "id=?", arrayOf(id.toString()))
+}
+
 fun deleteSavedCar(id: Int, context: Context){
     val db =DbHelper(
         context,

@@ -64,7 +64,6 @@
         android:layout_marginRight="8dp"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deleteButton"
         app:srcCompat="@drawable/spanner_edit" />

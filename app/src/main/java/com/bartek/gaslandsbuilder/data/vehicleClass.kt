@@ -44,6 +44,31 @@ fun getAllVehicles(context: Context): MutableList<Vehicle>{
         }
     }
     cursor.close()
+    db.close()
     return vehiclesMutableList
 }
 
+fun getVehicleOnName(context: Context, name: String): Vehicle {
+    val db: SQLiteDatabase = DbHelper(
+        context,
+        "gaslandsWeapons",
+        context.resources.getInteger(R.integer.dbVersion)
+    ).readableDatabase
+    lateinit var readVehicle: Vehicle
+    val cursor: Cursor = db.rawQuery("SELECT * FROM vehicles where name=?", arrayOf(name))
+    if (cursor.moveToFirst()) {
+        val name = cursor.getString(cursor.getColumnIndex("name"))
+        val cost = cursor.getString(cursor.getColumnIndex("cost")).toInt()
+        val buildSlots = cursor.getString(cursor.getColumnIndex("buildSlots")).toInt()
+        val hull = cursor.getInt(cursor.getColumnIndex("hull"))
+        val handling = cursor.getInt(cursor.getColumnIndex("handling"))
+        val maxGear = cursor.getInt(cursor.getColumnIndex("maxGear"))
+        val crew = cursor.getInt(cursor.getColumnIndex("crew"))
+        val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
+        val weight = cursor.getString(cursor.getColumnIndex("weight"))
+        readVehicle = Vehicle(name, cost, buildSlots, hull, handling, maxGear, crew, specialRules, weight)
+    }
+    cursor.close()
+    db.close()
+    return readVehicle
+}
