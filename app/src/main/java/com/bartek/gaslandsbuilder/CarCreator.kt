@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.car_spinner_row.view.*
 import kotlinx.android.synthetic.main.chosen_perk_row.view.*
 import kotlinx.android.synthetic.main.chosen_upgrades_row.view.*
 import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
+import kotlinx.android.synthetic.main.sponsor_spinner_row.view.*
 
 class CarCreator : AppCompatActivity() {
     val weaponActivityRequestCode = 0
@@ -34,6 +35,7 @@ class CarCreator : AppCompatActivity() {
         setContentView(R.layout.car_creator)
         updateSumCost()
         val vehicles = getAllVehicles(this)
+        val sponsors = getAllSponsors(this)
         val addWeaponButton: Button = findViewById(R.id.addWeaponButton)
         addWeaponButton.setOnClickListener{
             val intent = Intent(this, WeaponCreator::class.java)
@@ -65,6 +67,27 @@ class CarCreator : AppCompatActivity() {
             ) {
                 chosenVehicle.type = parent.getItemAtPosition(position) as Vehicle
                 updateSumCost()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
+
+        val sponsorsSpinner: Spinner = findViewById(R.id.sponsorsSpinner)
+        val sponsorsAdapter = SponsorsSpinnerAdapter(sponsors)
+        chosenVehicle.sponsor = sponsors.last()
+        sponsorsSpinner.adapter = sponsorsAdapter
+        sponsorsSpinner.setSelection(sponsors.indexOf(chosenVehicle.sponsor!!))
+        sponsorsSpinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
+            ) {
+                chosenVehicle.sponsor!!.sponsorPerks?.let { chosenVehicle.chosenPerks.removeAll(it) }
+                chosenVehicle.sponsor = parent.getItemAtPosition(position) as Sponsor
+                chosenVehicle.sponsor!!.sponsorPerks?.let { chosenVehicle.chosenPerks.addAll(it) }
+                notifier()
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // write code to perform some action
@@ -160,7 +183,8 @@ class CarCreator : AppCompatActivity() {
                     maxGear = chosenVehicle.type!!.maxGear,
                     crew = chosenVehicle.type!!.crew,
                     specialRules = chosenVehicle.type!!.specialRules,
-                    weight = chosenVehicle.type!!.weight
+                    weight = chosenVehicle.type!!.weight,
+                    sponsor = chosenVehicle.sponsor!!.name
                 ),
                 db
             )
@@ -258,6 +282,29 @@ class CarTypeSpinnerAdapter(val carTypeList: MutableList<Vehicle>): BaseAdapter(
     }
 }
 
+class SponsorsSpinnerAdapter(val sponsorsList: MutableList<Sponsor>): BaseAdapter() {
+
+    override fun getItem(position: Int): Any {
+        return sponsorsList[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getCount(): Int {
+        return sponsorsList.size
+    }
+
+    override fun getView(position: Int, convertview: View?, parent: ViewGroup?): View {
+        val view = LayoutInflater.from(parent?.context)
+            .inflate(R.layout.sponsor_spinner_row, parent, false)
+        view.sponsorName.text = sponsorsList[position].name
+        view.sponsorPerkClassI.text = "${sponsorsList[position].perkClassI}, ${sponsorsList[position].perkClassII}"
+        return view
+    }
+}
+
 class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Parcelable>, val remover: (Any) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class ViewHolderWeapon(view: View): RecyclerView.ViewHolder(view) {
@@ -288,6 +335,9 @@ class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Parcelabl
         fun bind(perk: Perk, remover: (Any) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             itemView.chosenPerkName.text = perk.name
+            if (perk.perkClass=="Sponsored Perk"){
+                itemView.removeChosenPerkButton.visibility = View.GONE
+            }
             itemView.removeChosenPerkButton.setOnClickListener{
                 remover(perk)
             }

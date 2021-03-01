@@ -149,6 +149,7 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             itemView.carName.text = car.name
             itemView.cost.text = "Cans: ${car.cost}"
             itemView.savedCarType.text = car.type
+            itemView.savedCarSponsor.text = car.sponsor
             val weaponsAndUpgrades: MutableList<String> = mutableListOf(
                 car.getWeaponsList().joinToString("\n") {
                     var text = "${it.name}"

@@ -1,11 +1,14 @@
 package com.bartek.gaslandsbuilder.data
 
+import java.nio.channels.NonReadableChannelException
+
 data class ChosenVehicle(
     var type: Vehicle? = null,
     val chosenWeapons: MutableList<Weapon> = mutableListOf<Weapon>(),
     val chosenUpgrades: MutableList<Upgrade> = mutableListOf<Upgrade>(),
     val chosenPerks: MutableList<Perk> = mutableListOf<Perk>(),
-    var cost: Int = 0
+    var cost: Int = 0,
+    var sponsor: Sponsor? = null
 ){
     fun calculateCost(): Int {
         var calculated = 0

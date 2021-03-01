@@ -14,9 +14,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bartek.gaslandsbuilder.data.*
+import kotlinx.android.synthetic.main.saved_car_row.view.*
 import kotlinx.android.synthetic.main.view_car_perks_row.view.*
 import kotlinx.android.synthetic.main.view_car_upgrades_row.view.*
 import kotlinx.android.synthetic.main.view_car_weapons_row.view.*
+import org.w3c.dom.Text
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -33,6 +35,9 @@ class ViewCar : AppCompatActivity() {
         val btn: Button = findViewById(R.id.button)
         btn.visibility = View.GONE
 //        btn.setOnClickListener { saveBitmap(toBitmapFromView(findViewById(R.id.carFrame)), car.name) }
+
+        val carSponsor:TextView = findViewById(R.id.carSponsor)
+        carSponsor.text = car.sponsor
 
         val cost: TextView = findViewById(R.id.viewCarCost)
         cost.text = car.cost.toString()
