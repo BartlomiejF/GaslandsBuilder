@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_view_car2.view.*
+import kotlinx.android.synthetic.main.saved_car_row.view.*
 import kotlinx.android.synthetic.main.view_car_perks_row.view.*
 import kotlinx.android.synthetic.main.view_car_upgrades_row.view.*
 import kotlinx.android.synthetic.main.view_car_weapons_row.view.*
@@ -70,6 +71,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
             itemView.viewCarName.text = car.name
             itemView.viewCarCost.text = "Cans: ${car.cost}"
             itemView.maxGearText.text = "Gear"
+            itemView.carSponsor.text = car.sponsor
 
             val weaponsList: MutableList<Weapon> = car.getWeaponsList()
             val upgradesList: MutableList<Upgrade> = car.getUpgradesList()

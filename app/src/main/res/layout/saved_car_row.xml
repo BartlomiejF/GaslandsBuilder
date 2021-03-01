@@ -123,4 +123,16 @@
         app:layout_constraintEnd_toStartOf="@+id/deleteButton"
         app:layout_constraintTop_toTopOf="@+id/deleteButton" />
 
+    <TextView
+        android:id="@+id/savedCarSponsor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:fontFamily="@font/bangers"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/carName"
+        app:layout_constraintEnd_toStartOf="@+id/cost"
+        app:layout_constraintTop_toTopOf="@+id/carName" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

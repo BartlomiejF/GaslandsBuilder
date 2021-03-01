@@ -20,7 +20,8 @@ data class SavedCar(
     val specialRules: String? = null,
     val weight: String = "L",
     val perks: String? = null,
-    var currentGear: Int = 1
+    var currentGear: Int = 1,
+    val sponsor: String? = "Custom"
 ){
     fun getWeaponsList(): MutableList<Weapon>{
         val weaponsList = mutableListOf<Weapon>()
@@ -91,7 +92,8 @@ fun getAllSavedCars(context: Context): MutableList<SavedCar> {
                 val id = cursor.getString(cursor.getColumnIndex("id")).toInt()
                 val upgrades = cursor.getString(cursor.getColumnIndex("upgrades"))
                 val perks = cursor.getString(cursor.getColumnIndex("perks"))
-                savedCarsMutableList.add(SavedCar(name, cost, type, weapons, id, upgrades, perks=perks))
+                val sponsor = cursor.getString(cursor.getColumnIndex("sponsor"))
+                savedCarsMutableList.add(SavedCar(name, cost, type, weapons, id, upgrades, perks=perks, sponsor=sponsor))
                 cursor.moveToNext()
             }
         }
@@ -114,6 +116,7 @@ fun saveCar(car: SavedCar, db: SQLiteDatabase){
         put("specialRules", car.specialRules)
         put("weight", car.weight)
         put("perks", car.perks)
+        put("sponsor", car.sponsor)
     }
     db.insert("savedCars", null, values)
 }
@@ -131,6 +134,7 @@ fun updateCar(car: SavedCar, db: SQLiteDatabase, id: Int){
         put("specialRules", car.specialRules)
         put("weight", car.weight)
         put("perks", car.perks)
+        put("sponsor", car.sponsor)
     }
     db.update("savedCars", values, "id=?", arrayOf(id.toString()))
 }
@@ -167,7 +171,9 @@ fun getSingleCar(context: Context, id: Int?): SavedCar {
         val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
         val weight = cursor.getString(cursor.getColumnIndex("weight"))
         val perks = cursor.getString(cursor.getColumnIndex("perks"))
-        readCar = SavedCar(name, cost, type, weapons, id, upgrades, hull, handling, maxGear, crew, specialRules, weight, perks)
+        var sponsor = cursor.getString(cursor.getColumnIndex("sponsor"))
+        if (sponsor==null){ sponsor="Custom" }
+        readCar = SavedCar(name, cost, type, weapons, id, upgrades, hull, handling, maxGear, crew, specialRules, weight, perks, sponsor = sponsor)
     }
     cursor.close()
     db.close()
@@ -197,6 +203,7 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
             val specialRules = cursor.getString(cursor.getColumnIndex("specialRules"))
             val weight = cursor.getString(cursor.getColumnIndex("weight"))
             val perks = cursor.getString(cursor.getColumnIndex("perks"))
+            val sponsor = cursor.getString(cursor.getColumnIndex("sponsor"))
             readCars.add(SavedCar(name,
                 cost,
                 type,
@@ -209,7 +216,8 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
                 crew,
                 specialRules,
             weight,
-            perks
+            perks,
+                sponsor = sponsor
             ))
             cursor.moveToNext()
         }

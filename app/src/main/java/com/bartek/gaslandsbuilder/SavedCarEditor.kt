@@ -25,6 +25,7 @@ class SavedCarEditor : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.car_creator)
+
         val savedCarId: Int? = intent.extras?.getInt("id")
         val savedCar = getSingleCar(this, savedCarId!!)
         chosenVehicle = ChosenVehicle(
@@ -32,7 +33,8 @@ class SavedCarEditor : AppCompatActivity() {
             chosenWeapons = savedCar.getWeaponsList(),
             chosenUpgrades = savedCar.getUpgradesList(),
             chosenPerks = savedCar.getPerksList(),
-            cost = 0
+            cost = 0,
+            sponsor = savedCar.sponsor?.let { getSponsorOnName(this, it) }
         )
         (findViewById<EditText>(R.id.carNameInput)).apply {
             setText(savedCar.name)
@@ -75,6 +77,28 @@ class SavedCarEditor : AppCompatActivity() {
                 // write code to perform some action
             }
         }
+
+        val sponsors = getAllSponsors(this)
+        val sponsorsSpinner: Spinner = findViewById(R.id.sponsorsSpinner)
+        val sponsorsAdapter = SponsorsSpinnerAdapter(sponsors)
+        sponsorsSpinner.adapter = sponsorsAdapter
+        sponsorsSpinner.setSelection(sponsors.indexOf(chosenVehicle.sponsor!!))
+        sponsorsSpinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
+            ) {
+                chosenVehicle.sponsor!!.sponsorPerks?.let { chosenVehicle.chosenPerks.removeAll(it) }
+                chosenVehicle.sponsor = parent.getItemAtPosition(position) as Sponsor
+                chosenVehicle.sponsor!!.sponsorPerks?.let { chosenVehicle.chosenPerks.addAll(it) }
+                notifier()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
+
         val saveChangesButton: Button = findViewById(R.id.saveCarButton)
         saveChangesButton.text = "Save Changes"
         saveChangesButton.setOnClickListener{
@@ -101,7 +125,8 @@ class SavedCarEditor : AppCompatActivity() {
                     maxGear = chosenVehicle.type!!.maxGear,
                     crew = chosenVehicle.type!!.crew,
                     specialRules = chosenVehicle.type!!.specialRules,
-                    weight = chosenVehicle.type!!.weight
+                    weight = chosenVehicle.type!!.weight,
+                    sponsor = chosenVehicle.sponsor!!.name
                 ),
                 db,
                 savedCarId!!
