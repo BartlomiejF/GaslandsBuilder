@@ -42,6 +42,66 @@ fun getAllPerks(context: Context): MutableList<Perk>{
     return perksMutableList
 }
 
-fun applyUpgradeSpecialRules(perk: Perk, vehicle: ChosenVehicle) {
-
+fun applyPerkSpecialRules(perk: Perk, vehicle: ChosenVehicle, onSave: Boolean = false, onRemove: Boolean = false ) {
+    when (perk.name) {
+        "Well Stocked" -> {
+            if (!onSave) {
+                vehicle.chosenWeapons.forEach {
+                    if (onRemove) {
+                        if (it.ammo == 4) {
+                            it.ammo = 3
+                        }
+                    } else {
+                        if (it.ammo == 3) {
+                            it.ammo = 4
+                        }
+                    }
+                }
+            }
+        }
+        "N2O Addict" -> {
+            if (!onSave) {
+                vehicle.chosenUpgrades.forEach {
+                    if (it.name == "Nitro Booster") {
+                        if (onRemove) {
+                            it.cost = 6
+                        } else {
+                            it.cost = 3
+                        }
+                    }
+                }
+            }
+        }
+        "Spiked Fist" -> {
+            if (!onSave) {
+                vehicle.chosenUpgrades.forEach {
+                    if (it.name == "Ram") {
+                        if (onRemove) {
+                            it.buildSlots = 1
+                        } else {
+                            it.buildSlots = 0
+                        }
+                    }
+                }
+            }
+        }
+        "Crew Quarters" -> {
+            if (!onSave) {
+                vehicle.chosenUpgrades.forEach {
+                    if (it.name == "Extra Crewmember") {
+                        if (onRemove) {
+                            it.cost = 4
+                        } else {
+                            it.cost = 2
+                        }
+                    }
+                }
+            }
+        }
+        "Expertise" -> {
+            if (onSave) {
+                vehicle.type!!.handling += 1
+            }
+        }
+    }
 }

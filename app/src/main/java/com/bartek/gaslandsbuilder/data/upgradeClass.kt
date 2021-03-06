@@ -11,8 +11,8 @@ import kotlinx.android.parcel.RawValue
 @Parcelize
 data class Upgrade(
     val name: String,
-    val cost: Int,
-    val buildSlots: Int,
+    var cost: Int,
+    var buildSlots: Int,
     val ammo: Int,
     val specRules: String,
     var onAdd: @RawValue ((Vehicle) -> Unit)? = null
