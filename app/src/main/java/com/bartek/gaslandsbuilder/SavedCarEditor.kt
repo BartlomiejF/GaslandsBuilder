@@ -57,6 +57,7 @@ class SavedCarEditor : AppCompatActivity() {
         addPerkButton.setOnClickListener {
             val intent = Intent(this, addPerk::class.java)
             intent.putExtra("cost", chosenVehicle.calculateCost())
+            intent.putExtra("sponsor", chosenVehicle.sponsor!!.name)
             startActivityForResult(intent, perksActivityRequestCode)
         }
 

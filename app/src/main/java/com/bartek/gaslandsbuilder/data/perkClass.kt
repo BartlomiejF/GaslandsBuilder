@@ -103,5 +103,15 @@ fun applyPerkSpecialRules(perk: Perk, vehicle: ChosenVehicle, onSave: Boolean = 
                 vehicle.type!!.handling += 1
             }
         }
+        "Prison Car" -> {
+            if (onSave){
+                vehicle.type!!.hull -= 2
+            }
+        }
+        "MicroPlate Armour" -> {
+            if (onSave){
+                vehicle.type!!.hull +=2
+            }
+        }
     }
 }

@@ -52,6 +52,7 @@ class CarCreator : AppCompatActivity() {
         addPerkButton.setOnClickListener {
             val intent = Intent(this, addPerk::class.java)
             intent.putExtra("cost", chosenVehicle.calculateCost())
+            intent.putExtra("sponsor", chosenVehicle.sponsor!!.name)
             startActivityForResult(intent, perksActivityRequestCode)
         }
 
@@ -348,7 +349,7 @@ class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Parcelabl
         fun bind(perk: Perk, remover: (Any) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             itemView.chosenPerkName.text = perk.name
-            if (perk.perkClass=="Sponsored Perk"){
+            if ((perk.perkClass=="Sponsored Perk").and(perk.cost==0)){
                 itemView.removeChosenPerkButton.visibility = View.GONE
             }
             itemView.removeChosenPerkButton.setOnClickListener{
