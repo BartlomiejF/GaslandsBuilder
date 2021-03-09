@@ -95,6 +95,7 @@ class SavedCarEditor : AppCompatActivity() {
                     chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle, onRemove = true) }
                     chosenVehicle.chosenPerks.removeAll(it)
                 }
+                chosenVehicle.chosenPerks.removeAll(listOf(microPlateArmourPerk, prisonCarPerk))
                 chosenVehicle.sponsor = parent.getItemAtPosition(position) as Sponsor
                 chosenVehicle.sponsor!!.sponsorPerks?.let {
                     chosenVehicle.chosenPerks.addAll(it)
@@ -240,6 +241,7 @@ class SavedCarEditor : AppCompatActivity() {
             is Upgrade -> removeWeaponUpgrade(removable)
             is Perk -> removePerk(removable)
         }
+        chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
         updateSumCost()
         notifier()
     }

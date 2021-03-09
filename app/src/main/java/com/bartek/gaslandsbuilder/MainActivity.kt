@@ -38,10 +38,12 @@ class MainActivity : AppCompatActivity() {
         RequestConfiguration.Builder().setTestDeviceIds(listOf("@string/testDeviceId1",
             "@string/testDeviceId2"
         ))
-        MobileAds.initialize(this) {}
-        val mAdView: AdView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+
+//        MobileAds.initialize(this) {}
+//        val mAdView: AdView = findViewById(R.id.adView)
+//        val adRequest = AdRequest.Builder().build()
+//        mAdView.loadAd(adRequest)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
