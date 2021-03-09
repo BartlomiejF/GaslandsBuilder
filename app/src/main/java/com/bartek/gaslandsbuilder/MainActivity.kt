@@ -15,10 +15,11 @@ import com.bartek.gaslandsbuilder.data.SavedCar
 import com.bartek.gaslandsbuilder.data.deleteSavedCar
 import com.bartek.gaslandsbuilder.data.getAllSavedCars
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import kotlinx.android.synthetic.main.saved_car_row.view.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var savedCars: MutableList<SavedCar>
@@ -33,6 +34,10 @@ class MainActivity : AppCompatActivity() {
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
         }
+
+        RequestConfiguration.Builder().setTestDeviceIds(listOf("@string/testDeviceId1",
+            "@string/testDeviceId2"
+        ))
         MobileAds.initialize(this) {}
         val mAdView: AdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()

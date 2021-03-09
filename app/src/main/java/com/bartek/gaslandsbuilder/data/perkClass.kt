@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class Perk(
     val name: String,
     val perkClass: String,
-    val cost: Int
+    var cost: Int
 ): Parcelable{
     fun to_str(): String{
         return "$name:$perkClass:$cost;"
@@ -104,6 +104,12 @@ fun applyPerkSpecialRules(perk: Perk, vehicle: ChosenVehicle, onSave: Boolean = 
             }
         }
         "Prison Car" -> {
+            val vehicleCost = vehicle.calculateCost() - perk.cost
+            if (vehicleCost < 9){
+                perk.cost = 5 - vehicleCost
+            } else {
+                perk.cost = -4
+            }
             if (onSave){
                 vehicle.type!!.hull -= 2
             }
