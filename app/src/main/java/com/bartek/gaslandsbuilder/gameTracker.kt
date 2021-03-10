@@ -38,9 +38,9 @@ class gameTracker : AppCompatActivity() {
             adapter = gameTrackerAdapter
         }
 
-//        val mAdView: AdView = findViewById(R.id.adView2)
-//        val adRequest = AdRequest.Builder().build()
-//        mAdView.loadAd(adRequest)
+        val mAdView: AdView = findViewById(R.id.adView2)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         var audiencePoints = 0
         val audiencePointsTextView = findViewById<TextView>(R.id.audiencePoints)
