@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.Perk
 import com.bartek.gaslandsbuilder.data.getAllPerks
+import com.bartek.gaslandsbuilder.data.microPlateArmourPerk
+import com.bartek.gaslandsbuilder.data.prisonCarPerk
 import kotlinx.android.synthetic.main.single_perk_row.view.*
 
 class addPerk : AppCompatActivity() {
@@ -22,11 +24,19 @@ class addPerk : AppCompatActivity() {
         setContentView(R.layout.activity_add_perk)
         val sumCost: Int = intent.extras!!.getInt("cost")
         findViewById<TextView>(R.id.addPerkSumCarCost).text = sumCost.toString()
+        var perks: MutableList<Perk> = getAllPerks(application)
+        val sponsor: String = intent.extras!!.getString("sponsor", "Custom")
+        when (sponsor){
+            "The Warden" -> perks.add(0, prisonCarPerk)
+//            "The Warden" -> perks.add(0, Perk("Prison Car", "Sponsored Perk", -4))
+            "Verney" -> perks.add(0, microPlateArmourPerk)
+//            "Verney" -> perks.add(0, Perk("MicroPlate Armour", "Sponsored Perk", 6))
+        }
         val carUpgradesRecyclerView: RecyclerView = findViewById(R.id.perksView)
         carUpgradesRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
             adapter = CarPerksAdapter(
-                getAllPerks(application),
+                perks,
                 ::addPerk
             )
         }

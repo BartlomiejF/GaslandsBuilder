@@ -13,7 +13,7 @@ data class Weapon(
     val cost: Int,
     val buildSlots: Int,
     val specialRules: String? = "No special rules.",
-    val ammo: Int = 0,
+    var ammo: Int = 0,
     val crewFired: Int = 0,
     val damage: String? = "1d6",
     val range: String? = "long",

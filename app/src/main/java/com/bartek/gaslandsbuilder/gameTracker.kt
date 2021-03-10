@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,9 +37,25 @@ class gameTracker : AppCompatActivity() {
             layoutManager = LinearLayoutManager(application)
             adapter = gameTrackerAdapter
         }
+
         val mAdView: AdView = findViewById(R.id.adView2)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
+
+        var audiencePoints = 0
+        val audiencePointsTextView = findViewById<TextView>(R.id.audiencePoints)
+        audiencePointsTextView.text = audiencePoints.toString()
+
+        findViewById<Button>(R.id.audienceVotePlus).setOnClickListener {
+            audiencePoints +=1
+            audiencePointsTextView.text = audiencePoints.toString()
+        }
+        findViewById<Button>(R.id.audienceVoteMinus).setOnClickListener {
+            if (audiencePoints > 0) {
+                audiencePoints -= 1
+                audiencePointsTextView.text = audiencePoints.toString()
+            }
+        }
     }
 
     override fun onBackPressed() {

@@ -7,11 +7,14 @@ import android.os.Parcelable
 import com.bartek.gaslandsbuilder.R
 import kotlinx.android.parcel.Parcelize
 
+val prisonCarPerk: Perk = Perk("Prison Car", "Sponsored Perk", -4)
+val microPlateArmourPerk = Perk("MicroPlate Armour", "Sponsored Perk", 6)
+
 @Parcelize
 data class Perk(
     val name: String,
     val perkClass: String,
-    val cost: Int
+    var cost: Int
 ): Parcelable{
     fun to_str(): String{
         return "$name:$perkClass:$cost;"
@@ -42,6 +45,82 @@ fun getAllPerks(context: Context): MutableList<Perk>{
     return perksMutableList
 }
 
-fun applyUpgradeSpecialRules(perk: Perk, vehicle: ChosenVehicle) {
-
+fun applyPerkSpecialRules(perk: Perk, vehicle: ChosenVehicle, onSave: Boolean = false, onRemove: Boolean = false ) {
+    when (perk.name) {
+        "Well Stocked" -> {
+            if (!onSave) {
+                vehicle.chosenWeapons.forEach {
+                    if (onRemove) {
+                        if (it.ammo == 4) {
+                            it.ammo = 3
+                        }
+                    } else {
+                        if (it.ammo == 3) {
+                            it.ammo = 4
+                        }
+                    }
+                }
+            }
+        }
+        "N2O Addict" -> {
+            if (!onSave) {
+                vehicle.chosenUpgrades.forEach {
+                    if (it.name == "Nitro Booster") {
+                        if (onRemove) {
+                            it.cost = 6
+                        } else {
+                            it.cost = 3
+                        }
+                    }
+                }
+            }
+        }
+        "Spiked Fist" -> {
+            if (!onSave) {
+                vehicle.chosenUpgrades.forEach {
+                    if (it.name == "Ram") {
+                        if (onRemove) {
+                            it.buildSlots = 1
+                        } else {
+                            it.buildSlots = 0
+                        }
+                    }
+                }
+            }
+        }
+        "Crew Quarters" -> {
+            if (!onSave) {
+                vehicle.chosenUpgrades.forEach {
+                    if (it.name == "Extra Crewmember") {
+                        if (onRemove) {
+                            it.cost = 4
+                        } else {
+                            it.cost = 2
+                        }
+                    }
+                }
+            }
+        }
+        "Expertise" -> {
+            if (onSave) {
+                vehicle.type!!.handling += 1
+            }
+        }
+        "Prison Car" -> {
+            val vehicleCost = vehicle.calculateCost() - perk.cost
+            if (vehicleCost < 9){
+                perk.cost = 5 - vehicleCost
+            } else {
+                perk.cost = -4
+            }
+            if (onSave){
+                vehicle.type!!.hull -= 2
+            }
+        }
+        "MicroPlate Armour" -> {
+            if (onSave){
+                vehicle.type!!.hull +=2
+            }
+        }
+    }
 }

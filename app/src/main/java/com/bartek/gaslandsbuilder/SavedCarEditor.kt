@@ -36,6 +36,7 @@ class SavedCarEditor : AppCompatActivity() {
             cost = 0,
             sponsor = savedCar.sponsor?.let { getSponsorOnName(this, it) }
         )
+        chosenVehicle.chosenPerks.forEach { applyPerkSpecialRules(it, chosenVehicle) }
         (findViewById<EditText>(R.id.carNameInput)).apply {
             setText(savedCar.name)
             isEnabled = false
@@ -56,6 +57,7 @@ class SavedCarEditor : AppCompatActivity() {
         addPerkButton.setOnClickListener {
             val intent = Intent(this, addPerk::class.java)
             intent.putExtra("cost", chosenVehicle.calculateCost())
+            intent.putExtra("sponsor", chosenVehicle.sponsor!!.name)
             startActivityForResult(intent, perksActivityRequestCode)
         }
 
@@ -89,10 +91,18 @@ class SavedCarEditor : AppCompatActivity() {
                 parent: AdapterView<*>,
                 view: View, position: Int, id: Long
             ) {
-                chosenVehicle.sponsor!!.sponsorPerks?.let { chosenVehicle.chosenPerks.removeAll(it) }
+                chosenVehicle.sponsor!!.sponsorPerks?.let {
+                    chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle, onRemove = true) }
+                    chosenVehicle.chosenPerks.removeAll(it)
+                }
+                chosenVehicle.chosenPerks.removeAll(listOf(microPlateArmourPerk, prisonCarPerk))
                 chosenVehicle.sponsor = parent.getItemAtPosition(position) as Sponsor
-                chosenVehicle.sponsor!!.sponsorPerks?.let { chosenVehicle.chosenPerks.addAll(it) }
+                chosenVehicle.sponsor!!.sponsorPerks?.let {
+                    chosenVehicle.chosenPerks.addAll(it)
+                    chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
+                }
                 notifier()
+                updateSumCost()
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // write code to perform some action
@@ -110,7 +120,6 @@ class SavedCarEditor : AppCompatActivity() {
             updateCar(
                 SavedCar(
                     name = savedCar.name,
-                    cost = chosenVehicle.calculateCost(),
                     type = chosenVehicle.type!!.name,
                     weapons = chosenVehicle.chosenWeapons.joinToString("") {
                         it.to_str()
@@ -119,7 +128,11 @@ class SavedCarEditor : AppCompatActivity() {
                         applyUpgradeSpecialRules(it, chosenVehicle)
                         it.to_str()
                     },
-                    perks = chosenVehicle.chosenPerks.joinToString("") { it.to_str() },
+                    perks = chosenVehicle.chosenPerks.joinToString("") {
+                        applyPerkSpecialRules(it, chosenVehicle, onSave = true)
+                        it.to_str()
+                    },
+                    cost = chosenVehicle.calculateCost(),
                     hull = chosenVehicle.type!!.hull,
                     handling = chosenVehicle.type!!.handling,
                     maxGear = chosenVehicle.type!!.maxGear,
@@ -146,6 +159,7 @@ class SavedCarEditor : AppCompatActivity() {
             weaponActivityRequestCode -> {
                 if (resultCode == Activity.RESULT_OK) {
                     chosenVehicle.chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
+                    chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
                     notifier()
                     updateSumCost()
                 }
@@ -154,6 +168,7 @@ class SavedCarEditor : AppCompatActivity() {
                 if (resultCode == Activity.RESULT_OK) {
                     val chosenUpgrade = data!!.getParcelableExtra<Upgrade>("chosenUpgrade")!!
                     chosenVehicle.chosenUpgrades.add(chosenUpgrade)
+                    chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
                     notifier()
                     updateSumCost()
                 }
@@ -162,6 +177,8 @@ class SavedCarEditor : AppCompatActivity() {
                 if (resultCode == Activity.RESULT_OK) {
                     val chosenPerk = data!!.getParcelableExtra<Perk>("chosenPerk")!!
                     chosenVehicle.chosenPerks.add(chosenPerk)
+                    applyPerkSpecialRules(chosenPerk, chosenVehicle)
+                    chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
                     notifier()
                     updateSumCost()
                 }
@@ -224,6 +241,7 @@ class SavedCarEditor : AppCompatActivity() {
             is Upgrade -> removeWeaponUpgrade(removable)
             is Perk -> removePerk(removable)
         }
+        chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
         updateSumCost()
         notifier()
     }
