@@ -18,7 +18,7 @@ If you would like to download prepopulated database with Gaslands weapons, upgra
 ## Screens
 | ### Main view  |  ### Create Vehicle |  ### Add Weapon |
 |---|---|---|
-|  [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg) | [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg)  |  [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg) |
+|  [<img src="0GooglePlay/images/screenshotsPhone/screenshot_main.png" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/screenshot_main.png) | [<img src="0GooglePlay/images/screenshotsPhone/screenshot_car_creator.png" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/screenshot_car_creator.png)  |  [<img src="0GooglePlay/images/screenshotsPhone/screenshot_game_tracker.png" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/screenshot_game_tracker.png) |
 
 ## Support
 If you would like to show me support you may watch or star this project. You may also buy me a cup of coffee.
