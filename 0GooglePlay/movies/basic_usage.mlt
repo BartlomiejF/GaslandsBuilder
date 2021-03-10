@@ -1,0 +1,163 @@
+<?xml version="1.0" standalone="no"?>
+<mlt LC_NUMERIC="C" version="6.25.0" title="Shotcut version 21.01.29" producer="main_bin">
+  <profile description="automatic" width="1080" height="2220" progressive="1" sample_aspect_num="1" sample_aspect_den="1" display_aspect_num="1080" display_aspect_den="2220" frame_rate_num="24" frame_rate_den="1" colorspace="709"/>
+  <producer id="producer0" in="00:00:00.000" out="00:00:25.667">
+    <property name="length">00:00:25.708</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/bartlomiej/AStudioProjects/GaslandsBuilder/0GooglePlay/images/screenshotsPhone/untitled.webm</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="mute_on_pause">0</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="creation_time">2021-03-02T14:17:18</property>
+    <property name="shotcut:hash">6e435227585621dcd794f04fa08e9231</property>
+    <property name="ignore_points">0</property>
+    <property name="shotcut:caption">untitled.webm</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer1" in="00:00:00.000" out="03:59:59.958">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/bartlomiej/AStudioProjects/GaslandsBuilder/0GooglePlay/images/screenshotsPhone/usage1.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="mlt_service">qimage</property>
+    <property name="creation_time">2021-03-02T20:47:35</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">b9f62e1b6c5bb0cc4699250b7eacfc7e</property>
+  </producer>
+  <producer id="producer2" in="00:00:00.000" out="03:59:59.958">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/bartlomiej/AStudioProjects/GaslandsBuilder/0GooglePlay/images/screenshotsPhone/usage2.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="mlt_service">qimage</property>
+    <property name="creation_time">2021-03-02T20:54:14</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">2e94ba1fecfaeeec65bec7bf6b078b80</property>
+  </producer>
+  <playlist id="main_bin" title="Shotcut version 21.01.29">
+    <property name="shotcut:projectAudioChannels">2</property>
+    <property name="shotcut:projectFolder">0</property>
+    <property name="xml_retain">1</property>
+    <entry producer="producer0" in="00:00:00.000" out="00:00:25.667"/>
+    <entry producer="producer1" in="00:00:00.000" out="00:00:03.958"/>
+    <entry producer="producer2" in="00:00:00.000" out="00:00:03.958"/>
+  </playlist>
+  <producer id="black" in="00:00:00.000" out="00:00:23.083">
+    <property name="length">00:00:23.125</property>
+    <property name="eof">pause</property>
+    <property name="resource">0</property>
+    <property name="aspect_ratio">1</property>
+    <property name="mlt_service">color</property>
+    <property name="mlt_image_format">rgb24a</property>
+    <property name="set.test_audio">0</property>
+  </producer>
+  <playlist id="background">
+    <entry producer="black" in="00:00:00.000" out="00:00:23.083"/>
+  </playlist>
+  <producer id="producer3" in="00:00:00.000" out="03:59:59.958">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/bartlomiej/AStudioProjects/GaslandsBuilder/0GooglePlay/images/screenshotsPhone/usage1.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="mlt_service">qimage</property>
+    <property name="creation_time">2021-03-02T20:47:35</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">b9f62e1b6c5bb0cc4699250b7eacfc7e</property>
+    <property name="shotcut:caption">usage1.png</property>
+  </producer>
+  <producer id="producer4" in="00:00:00.000" out="03:59:59.958">
+    <property name="length">04:00:00.000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/bartlomiej/AStudioProjects/GaslandsBuilder/0GooglePlay/images/screenshotsPhone/usage2.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="mlt_service">qimage</property>
+    <property name="creation_time">2021-03-02T20:54:14</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+    <property name="shotcut:hash">2e94ba1fecfaeeec65bec7bf6b078b80</property>
+    <property name="shotcut:caption">usage2.png</property>
+  </producer>
+  <producer id="producer5" in="00:00:00.000" out="00:00:25.667">
+    <property name="length">00:00:25.708</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/bartlomiej/AStudioProjects/GaslandsBuilder/0GooglePlay/images/screenshotsPhone/untitled.webm</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="mute_on_pause">0</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="creation_time">2021-03-02T14:17:18</property>
+    <property name="shotcut:hash">6e435227585621dcd794f04fa08e9231</property>
+    <property name="ignore_points">0</property>
+    <property name="shotcut:caption">untitled.webm</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer6" in="00:00:00.000" out="00:00:25.667">
+    <property name="length">00:00:25.708</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/bartlomiej/AStudioProjects/GaslandsBuilder/0GooglePlay/images/screenshotsPhone/untitled.webm</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="mute_on_pause">0</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="creation_time">2021-03-02T14:17:18</property>
+    <property name="shotcut:hash">6e435227585621dcd794f04fa08e9231</property>
+    <property name="ignore_points">0</property>
+    <property name="shotcut:caption">untitled.webm</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <playlist id="playlist0">
+    <property name="shotcut:video">1</property>
+    <property name="shotcut:name">V1</property>
+    <entry producer="producer3" in="00:00:00.000" out="00:00:05.042"/>
+    <entry producer="producer4" in="00:00:00.000" out="00:00:05.000"/>
+    <entry producer="producer5" in="00:00:02.917" out="00:00:06.542"/>
+    <entry producer="producer6" in="00:00:16.375" out="00:00:25.667"/>
+  </playlist>
+  <tractor id="tractor0" title="Shotcut version 21.01.29" global_feed="1" in="00:00:00.000" out="00:00:23.083">
+    <property name="shotcut">1</property>
+    <property name="shotcut:projectAudioChannels">2</property>
+    <property name="shotcut:projectFolder">0</property>
+    <track producer="background"/>
+    <track producer="playlist0"/>
+    <transition id="transition0">
+      <property name="a_track">0</property>
+      <property name="b_track">1</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition1">
+      <property name="a_track">0</property>
+      <property name="b_track">1</property>
+      <property name="version">0.9</property>
+      <property name="mlt_service">frei0r.cairoblend</property>
+      <property name="threads">0</property>
+      <property name="disable">1</property>
+    </transition>
+  </tractor>
+</mlt>
