@@ -1,4 +1,4 @@
-# GaslandsBuilder   [<img src="0GooglePlay/google-play-badge.png" width="81" height="31">](https://play.google.com/store/apps/details?id=com.bartek.gaslandsbuilder)
+# GaslandsBuilder   [<img src="0GooglePlay/google-play-badge.png" width="108" height="42">](https://play.google.com/store/apps/details?id=com.bartek.gaslandsbuilder)
 Gaslands vehicle builder.
 
 ## Gaslands
