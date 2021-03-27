@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GaslandsBuilder</string>
+    <string name="app_name">Gaslands Builder</string>
     <string name="create_vehicle">Create vehicle</string>
     <string name="car_name">Car name:</string>
     <string name="carNameHint">Judgement Deliverer</string>
