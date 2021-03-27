@@ -1,26 +1,24 @@
-# GaslandsBuilder
-Gaslands vehicle builder. This is my learning Android development app.
+# GaslandsBuilder   [<img src="0GooglePlay/google-play-badge.png" width="108" height="42">](https://play.google.com/store/apps/details?id=com.bartek.gaslandsbuilder)
+Gaslands vehicle builder.
 
 ## Gaslands
-Gaslands is a tabletop game where one plays with toy cars. For more information head to Gaslands site [here](https://gaslands.com/).
+Gaslands is a tabletop game designed by Mike Hutchinson where one plays with toy cars. For more information head to Gaslands website [here](https://gaslands.com/). If you would like to ask some questions about the game head to [Facebbok](https://www.facebook.com/groups/gaslands)
 
 ## Installation
-You may download the app from Google Play but since it is beta version it must be entered via [this link from Android device](https://play.google.com/store/apps/details?id=com.bartek.gaslandsbuilder).
+You may download the app from [Google Play](https://play.google.com/store/apps/details?id=com.bartek.gaslandsbuilder).
 
-If you would like to install the app via usb then [click here](https://github.com/BartlomiejF/GaslandsBuilder/blob/master/app/release/v0.4.apk) to download the apk.
+If you would like to install the app via usb then [click here](https://github.com/BartlomiejF/GaslandsBuilder/blob/master/app/release/current.apk) to download the apk.
 
 ## Features
-The app has basic functionality - the user may create a car by choosing its type, add weapons and upgrades. The overall vehicle cost and build slots is calculated. The user may save the car and view it on main screen.
+The app has basic functionality - the user may create a car by choosing its type, add weapons, upgrades, perks and choose sponsor. The overall vehicle cost and build slots is calculated. The user may save the car, view it on main screen. There is also game tracker feature - you choose saved cars that you field in the game and then open game tracker to track its hull points, gear etc.
 
 ## Others
 If you would like to download prepopulated database with Gaslands weapons, upgrades and vehicles from this repository then [head here](https://github.com/BartlomiejF/GaslandsBuilder/raw/master/app/src/main/assets/databases/gaslandsWeapons.sqlite3). If it helped to reduce the amount of time it would take to populate the database on your own then give this repo a star.
 
 ## Screens
-| ### Main view  |  ### Create Vehicle |  ### Add Weapon |
+| Main view  | Create Vehicle |  Track your game |
 |---|---|---|
-|  [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221618.jpg) | [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221631.jpg)  |  [<img src="0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/IMG_20201128_221640.jpg) |
+|  [<img src="0GooglePlay/images/screenshotsPhone/screenshot_main.png" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/screenshot_main.png) | [<img src="0GooglePlay/images/screenshotsPhone/screenshot_car_creator.png" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/screenshot_car_creator.png)  |  [<img src="0GooglePlay/images/screenshotsPhone/screenshot_game_tracker.png" width="270" height="567" />](0GooglePlay/images/screenshotsPhone/screenshot_game_tracker.png) |
 
 ## Support
-If you would like to show me support you may watch or star this project. You may also buy me a cup of coffee.
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=255VQT4BEG39N)
+If you would like to show me support you may watch or star this project.
