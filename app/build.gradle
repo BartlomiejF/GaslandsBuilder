@@ -12,7 +12,7 @@ android {
         applicationId "com.bartek.gaslandsbuilder"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 10
+        versionCode 11
         versionName "0.11"
         vectorDrawables.useSupportLibrary = true
 
