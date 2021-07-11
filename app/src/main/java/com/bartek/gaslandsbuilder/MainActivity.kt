@@ -9,12 +9,17 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.SavedCar
 import com.bartek.gaslandsbuilder.data.deleteSavedCar
 import com.bartek.gaslandsbuilder.data.getAllSavedCars
+import com.bartek.gaslandsbuilder.data.getMultipleCarsOnId
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.saved_car_row.view.*
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,18 +40,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = MenuInflater(this@MainActivity)
         inflater.inflate(R.menu.menu_main, menu)
-        menu!!.getItem(1)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menu!!.findItem(R.id.menuItemExport)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menu!!.findItem(R.id.menuItemPlay)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()){
             R.id.menuItemAbout -> startActivity(Intent(this, about::class.java))
-            R.id.play -> {
+            R.id.menuItemPlay -> {
                 val intent = Intent(this, gameTracker::class.java)
                 intent.putExtra("ids", carsToPlay.joinToString(", "))
                 startActivity(intent)
             }
+            R.id.menuItemExport -> export(carsToPlay.joinToString(", "))
         }
         return super.onOptionsItemSelected(item)
     }
@@ -70,6 +77,27 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(application)
             adapter = savedCarsAdapter
             }
+    }
+
+    fun export(ids: String){
+        val cars = getMultipleCarsOnId(this, ids)
+        val file = File(applicationContext.filesDir, "Gaslands Builder roster.txt")
+            file.writeText(cars.joinToString("\r\n\n\n",
+                prefix = "Team cost: ${teamCost}\n\n")
+            { car ->
+                car.getExportCarText()
+            })
+        val uri = FileProvider.getUriForFile(
+            this,
+            BuildConfig.APPLICATION_ID + "." + localClassName + ".provider",
+            file)
+        val share = Intent.createChooser(Intent().apply {
+            action = Intent.ACTION_VIEW
+            data = uri
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+
+        }, null)
+        startActivity(share)
     }
 
     fun removeSavedCar(car: SavedCar){

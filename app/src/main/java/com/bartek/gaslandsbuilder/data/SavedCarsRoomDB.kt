@@ -69,6 +69,33 @@ data class SavedCar(
         }
         return perksList
     }
+
+    fun getExportCarText(): String{
+        val weaponsList: MutableList<String> = mutableListOf<String>()
+        weapons.split(";").dropLast(1).forEach {
+            weaponsList.add(it.split(":")[0])
+        }
+        val upgradesList: MutableList<String> = mutableListOf<String>()
+        upgrades.split(";").dropLast(1).forEach {
+            upgradesList.add(it.split(":")[0])
+        }
+        val perksList: MutableList<String> = mutableListOf<String>()
+        perks?.split(";")?.dropLast(1)?.forEach {
+            perksList.add(it.split(":")[0])
+        }
+        val text = """
+            |$name 
+            |Sponsor: ${"\t"}$sponsor
+            |Car type:${"\t"}$type 
+            |Cost: ${"\t"}${"\t"}$cost Cans 
+            |${"\n"}
+            |Weapons, upgrades and perks:
+            ${weaponsList.joinToString("\n|w: \t", prefix = "|w: \t")}
+            ${upgradesList.joinToString("\n|u: \t", prefix = "|u: \t")}
+            ${perksList.joinToString("\n|p: \t", prefix = "|p: \t")}
+        """.trimIndent().trimMargin()
+        return text
+    }
 }
 
 //fun savedCarFromString(savedCarString: String): SavedCar{
