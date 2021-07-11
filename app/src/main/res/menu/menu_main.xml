@@ -3,15 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
+        android:id="@+id/menuItemExport"
+        android:icon="@drawable/ic_baseline_save_alt_24"
+        android:title="export"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menuItemPlay"
+        android:icon="@drawable/ic_baseline_play_arrow_24"
+        android:title="play"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menuItemAbout"
         android:title="About"
-        app:showAsAction="never|collapseActionView" />
-
-    <item
-        android:id="@+id/play"
-        android:icon="@drawable/ic_baseline_play_arrow_24"
-        android:menuCategory="alternative"
-        android:title="play"
-        app:showAsAction="ifRoom" />
+        android:visible="true"
+        app:showAsAction="never" />
 
 </menu>
