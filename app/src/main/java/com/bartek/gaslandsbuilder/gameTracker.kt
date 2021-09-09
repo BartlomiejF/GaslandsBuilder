@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -177,6 +174,24 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                     car.currentGear -= 1
                     itemView.maxGearValue.text = car.currentGear.toString()
 
+                }
+            }
+            itemView.resetHazard.setOnClickListener {
+                if (car.hazard>0){
+                    car.hazard = 0
+                    itemView.hazardValue.text = car.hazard.toString()
+                }
+            }
+
+            itemView.addHazard.setOnClickListener{
+                car.hazard += 1
+                itemView.hazardValue.text = car.hazard.toString()
+            }
+
+            itemView.removeHazard.setOnClickListener {
+                if (car.hazard>0){
+                    car.hazard -= 1
+                    itemView.hazardValue.text = car.hazard.toString()
                 }
             }
         }

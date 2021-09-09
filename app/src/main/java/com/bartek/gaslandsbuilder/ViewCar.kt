@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -35,6 +36,21 @@ class ViewCar : AppCompatActivity() {
         val btn: Button = findViewById(R.id.button)
         btn.visibility = View.GONE
 //        btn.setOnClickListener { saveBitmap(toBitmapFromView(findViewById(R.id.carFrame)), car.name) }
+
+        val resetHazardButton: Button = findViewById(R.id.resetHazard)
+        resetHazardButton.visibility = View.GONE
+
+        val hazardText: TextView = findViewById(R.id.hazardText)
+        hazardText.visibility = View.GONE
+
+        val hazardValue: TextView = findViewById(R.id.hazardValue)
+        hazardValue.visibility = View.GONE
+
+        val addHazard: ImageButton = findViewById(R.id.addHazard)
+        addHazard.visibility = View.GONE
+
+        val removeHazard: ImageButton = findViewById(R.id.removeHazard)
+        removeHazard.visibility = View.GONE
 
         val carSponsor:TextView = findViewById(R.id.carSponsor)
         carSponsor.text = car.sponsor
