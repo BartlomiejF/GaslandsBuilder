@@ -1,7 +1,11 @@
 package com.bartek.gaslandsbuilder
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.Color.BLACK
+import android.graphics.Color.RED
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.*
@@ -71,8 +77,17 @@ class gameTracker : AppCompatActivity() {
 class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context): RecyclerView.Adapter<GameTrackerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        var fireState = false
 
+        @SuppressLint("ResourceType")
         fun bind(car: SavedCar, context: Context) {
+            fun toggleFireOff(){
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(itemView.fireButton.drawable),
+                    BLACK
+                )
+                fireState = false
+            }
             itemView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             itemView.viewCarName.text = car.name
             itemView.viewCarCost.text = "Cans: ${car.cost}"
@@ -181,6 +196,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                     car.hazard = 0
                     itemView.hazardValue.text = car.hazard.toString()
                 }
+                toggleFireOff()
             }
 
             itemView.addHazard.setOnClickListener{
@@ -192,6 +208,25 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                 if (car.hazard>0){
                     car.hazard -= 1
                     itemView.hazardValue.text = car.hazard.toString()
+                }
+                if (car.hazard - 1 < 0){
+                    toggleFireOff()
+                }
+            }
+
+            itemView.fireButton.setOnClickListener {
+                fireState = if (fireState) {
+                    DrawableCompat.setTint(
+                        DrawableCompat.wrap(itemView.fireButton.drawable),
+                        BLACK
+                    )
+                    false
+                } else {
+                    DrawableCompat.setTint(
+                        DrawableCompat.wrap(itemView.fireButton.drawable),
+                        RED
+                    )
+                    true
                 }
             }
         }

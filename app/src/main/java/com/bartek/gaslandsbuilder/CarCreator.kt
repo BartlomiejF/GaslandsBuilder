@@ -66,7 +66,10 @@ class CarCreator : AppCompatActivity() {
                 parent: AdapterView<*>,
                 view: View, position: Int, id: Long
             ) {
-                chosenVehicle.type = parent.getItemAtPosition(position) as Vehicle
+                val vehicleType = parent.getItemAtPosition(position) as Vehicle
+                chosenVehicle.type = vehicleType
+                chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
+                chosenVehicle.chosenWeapons.forEach{ weapon -> applyVehicleSpecialRules(weapon, chosenVehicle, applicationContext) }
                 updateSumCost()
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -123,7 +126,11 @@ class CarCreator : AppCompatActivity() {
         when (requestCode) {
             weaponActivityRequestCode -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    chosenVehicle.chosenWeapons.add(data!!.getParcelableExtra("chosenWeapon")!!)
+                    val weaponToAdd: Weapon = data!!.getParcelableExtra("chosenWeapon")!!
+                    if ("Gyrocopter Helicopter".contains(chosenVehicle.type!!.name)){
+                        if (weaponToAdd.range=="dropped") weaponToAdd.buildSlots = 0
+                    }
+                    chosenVehicle.chosenWeapons.add(weaponToAdd)
                     chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
                     notifier()
                     updateSumCost()

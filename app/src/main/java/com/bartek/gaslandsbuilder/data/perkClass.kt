@@ -7,8 +7,8 @@ import android.os.Parcelable
 import com.bartek.gaslandsbuilder.R
 import kotlinx.android.parcel.Parcelize
 
-val prisonCarPerk: Perk = Perk("Prison Car", "Sponsored Perk", -4)
-val microPlateArmourPerk = Perk("MicroPlate Armour", "Sponsored Perk", 6)
+val prisonCarPerk: Perk = Perk("Prison Car", "*Sponsored Perk*", -4)
+val microPlateArmourPerk = Perk("MicroPlate Armour", "*Sponsored Perk*", 6)
 
 @Parcelize
 data class Perk(
@@ -107,7 +107,7 @@ fun applyPerkSpecialRules(perk: Perk, vehicle: ChosenVehicle, onSave: Boolean = 
             }
         }
         "Prison Car" -> {
-            val vehicleCost = vehicle.calculateCost() - perk.cost
+            val vehicleCost = vehicle.type!!.cost
             if (vehicleCost < 9){
                 perk.cost = 5 - vehicleCost
             } else {

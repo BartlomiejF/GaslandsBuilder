@@ -72,3 +72,16 @@ fun getVehicleOnName(context: Context, name: String): Vehicle {
     db.close()
     return readVehicle
 }
+
+fun applyVehicleSpecialRules(weapon: Weapon, chosenVehicle: ChosenVehicle, context: Context){
+    when (chosenVehicle.type!!.name){
+        "Gyrocopter", "Helicopter" -> {
+            if (weapon.range=="dropped") weapon.buildSlots = 0
+        }
+        else -> {
+            if (weapon.range=="dropped") {
+                weapon.buildSlots = getWeaponCostOnName(context, weapon.name)
+            }
+        }
+    }
+}

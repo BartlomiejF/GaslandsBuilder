@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class Weapon(
     val name: String,
     val cost: Int,
-    val buildSlots: Int,
+    var buildSlots: Int,
     val specialRules: String? = "No special rules.",
     var ammo: Int = 0,
     val crewFired: Int = 0,
@@ -57,4 +57,20 @@ fun getAllWeaponNames(context: Context): MutableList<Weapon>{
     }
     cursor.close()
     return weaponsMutableList
+}
+
+fun getWeaponCostOnName(context: Context, name: String): Int {
+    val db: SQLiteDatabase = DbHelper(
+        context,
+        "gaslandsWeapons",
+        context.resources.getInteger(R.integer.dbVersion)
+    ).readableDatabase
+    var buildSlots = 0
+    val cursor: Cursor = db.rawQuery("SELECT buildSlots FROM weapons where name=?", arrayOf(name))
+    if (cursor.moveToFirst()) {
+        buildSlots = cursor.getString(cursor.getColumnIndex("buildSlots")).toInt()
+    }
+    cursor.close()
+    db.close()
+    return buildSlots
 }
