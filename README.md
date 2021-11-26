@@ -12,6 +12,9 @@ If you would like to install the app via usb then [click here](https://github.co
 ## Features
 The app has basic functionality - the user may create a car by choosing its type, add weapons, upgrades, perks and choose sponsor. The overall vehicle cost and build slots is calculated. The user may save the car, view it on main screen. There is also game tracker feature - you choose saved cars that you field in the game and then open game tracker to track its hull points, gear etc.
 
+## Known bugs
+1. The app resets when the screen is rotated.
+
 ## Others
 If you would like to download prepopulated database with Gaslands weapons, upgrades and vehicles from this repository then [head here](https://github.com/BartlomiejF/GaslandsBuilder/raw/master/app/src/main/assets/databases/gaslandsWeapons.sqlite3). If it helped to reduce the amount of time it would take to populate the database on your own then give this repo a star.
 
