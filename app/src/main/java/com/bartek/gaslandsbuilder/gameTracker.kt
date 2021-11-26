@@ -181,16 +181,14 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                 if (car.currentGear>1) {
                     car.currentGear -= 1
                     itemView.maxGearValue.text = car.currentGear.toString()
-
                 }
             }
 
-//            itemView.fireButton.setOnClickListener(null)
             when (car.onFire){
                 false -> {
                     DrawableCompat.setTint(
                         DrawableCompat.wrap(itemView.fireButton.drawable),
-                        BLACK
+                        itemView.viewCarName.currentTextColor
                     )
                 }
                 true -> DrawableCompat.setTint(
@@ -203,7 +201,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                 car.onFire = if (car.onFire) {
                     DrawableCompat.setTint(
                         DrawableCompat.wrap(itemView.fireButton.drawable),
-                        BLACK
+                        itemView.viewCarName.currentTextColor
                     )
                     false
                 } else {
