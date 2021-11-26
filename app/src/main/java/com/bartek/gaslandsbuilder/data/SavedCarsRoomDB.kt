@@ -22,7 +22,9 @@ data class SavedCar(
     val perks: String? = null,
     var currentGear: Int = 1,
     val sponsor: String? = "Custom",
-    var hazard: Int = 0
+    var hazard: Int = 0,
+    var chosenToTracker: Int = 0,
+    var onFire: Boolean = false
 ){
     fun getWeaponsList(): MutableList<Weapon>{
         val weaponsList = mutableListOf<Weapon>()

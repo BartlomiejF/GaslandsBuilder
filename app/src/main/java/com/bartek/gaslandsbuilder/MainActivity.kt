@@ -133,9 +133,11 @@ class MainActivity : AppCompatActivity() {
         if (add) {
             carsToPlay.add(car.id!!)
             teamCost += car.cost
+            car.chosenToTracker = 1
         } else {
             carsToPlay.remove(car.id!!)
             teamCost -= car.cost
+            car.chosenToTracker = 0
         }
 
         teamCostValue.text = teamCost.toString()
@@ -199,9 +201,18 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
             itemView.editButton.setOnClickListener {
                 editCar(car.id, context)
             }
+
+            itemView.markToPlay.setOnCheckedChangeListener(null)
+            when (car.chosenToTracker){
+                0 -> itemView.markToPlay.isChecked = false
+                1 -> itemView.markToPlay.isChecked = true
+            }
+//            itemView.markToPlay.setOnCheckedChangeListener()
+
             itemView.markToPlay.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked){
                     (context as MainActivity).teamCostCalculator(car, true)
+
                 } else {
                     (context as MainActivity).teamCostCalculator(car, false)
                 }

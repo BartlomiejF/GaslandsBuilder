@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.*
 import kotlinx.android.synthetic.main.activity_view_car2.view.*
+import kotlinx.android.synthetic.main.saved_car_row.view.*
 import kotlinx.android.synthetic.main.view_car_perks_row.view.*
 import kotlinx.android.synthetic.main.view_car_upgrades_row.view.*
 import kotlinx.android.synthetic.main.view_car_weapons_row.view.*
@@ -77,17 +78,9 @@ class gameTracker : AppCompatActivity() {
 class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context): RecyclerView.Adapter<GameTrackerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        var fireState = false
 
         @SuppressLint("ResourceType")
         fun bind(car: SavedCar, context: Context) {
-            fun toggleFireOff(){
-                DrawableCompat.setTint(
-                    DrawableCompat.wrap(itemView.fireButton.drawable),
-                    BLACK
-                )
-                fireState = false
-            }
             itemView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             itemView.viewCarName.text = car.name
             itemView.viewCarCost.text = "Cans: ${car.cost}"
@@ -188,15 +181,44 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                 if (car.currentGear>1) {
                     car.currentGear -= 1
                     itemView.maxGearValue.text = car.currentGear.toString()
-
                 }
             }
+
+            when (car.onFire){
+                false -> {
+                    DrawableCompat.setTint(
+                        DrawableCompat.wrap(itemView.fireButton.drawable),
+                        itemView.viewCarName.currentTextColor
+                    )
+                }
+                true -> DrawableCompat.setTint(
+                    DrawableCompat.wrap(itemView.fireButton.drawable),
+                    RED
+                )
+            }
+
+            itemView.fireButton.setOnClickListener {
+                car.onFire = if (car.onFire) {
+                    DrawableCompat.setTint(
+                        DrawableCompat.wrap(itemView.fireButton.drawable),
+                        itemView.viewCarName.currentTextColor
+                    )
+                    false
+                } else {
+                    DrawableCompat.setTint(
+                        DrawableCompat.wrap(itemView.fireButton.drawable),
+                        RED
+                    )
+                    true
+                }
+            }
+
             itemView.resetHazard.setOnClickListener {
                 if (car.hazard>0){
                     car.hazard = 0
                     itemView.hazardValue.text = car.hazard.toString()
                 }
-                toggleFireOff()
+                if (car.onFire) itemView.fireButton.performClick()
             }
 
             itemView.addHazard.setOnClickListener{
@@ -210,23 +232,7 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                     itemView.hazardValue.text = car.hazard.toString()
                 }
                 if (car.hazard - 1 < 0){
-                    toggleFireOff()
-                }
-            }
-
-            itemView.fireButton.setOnClickListener {
-                fireState = if (fireState) {
-                    DrawableCompat.setTint(
-                        DrawableCompat.wrap(itemView.fireButton.drawable),
-                        BLACK
-                    )
-                    false
-                } else {
-                    DrawableCompat.setTint(
-                        DrawableCompat.wrap(itemView.fireButton.drawable),
-                        RED
-                    )
-                    true
+                    if (car.onFire) itemView.fireButton.performClick()
                 }
             }
         }
