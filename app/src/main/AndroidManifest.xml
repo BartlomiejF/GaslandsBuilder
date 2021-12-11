@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bartek.gaslandsbuilder"
     android:installLocation="auto"
-    android:versionCode="15">
+    android:versionCode="16">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
@@ -15,16 +15,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".addPerk" />
-        <activity android:name=".gameTracker" />
-        <activity android:name=".ViewCar" />
+        <activity android:name=".addPerk"
+            android:screenOrientation="portrait" />
+        <activity android:name=".gameTracker"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ViewCar"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".warnings" />
-        <activity android:name=".about" />
-        <activity android:name=".addUpgrade" />
-        <activity android:name=".WeaponCreator" />
-        <activity android:name=".CarCreator" />
-        <activity android:name=".SavedCarEditor" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".about"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".addUpgrade"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WeaponCreator"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CarCreator"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SavedCarEditor"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
