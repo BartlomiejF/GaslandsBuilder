@@ -33,6 +33,9 @@ class ViewCar : AppCompatActivity() {
         val name: TextView = findViewById(R.id.viewCarName)
         name.text = car.name
 
+        val onFireButton: ImageButton = findViewById(R.id.fireButton)
+        onFireButton.visibility = View.GONE
+
         val btn: Button = findViewById(R.id.button)
         btn.visibility = View.GONE
 //        btn.setOnClickListener { saveBitmap(toBitmapFromView(findViewById(R.id.carFrame)), car.name) }

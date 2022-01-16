@@ -14,27 +14,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".addPerk"
+        <activity
+            android:name=".image_of_the_month"
+            android:exported="true" />
+        <activity
+            android:name=".addPerk"
             android:screenOrientation="portrait" />
-        <activity android:name=".gameTracker"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".ViewCar"
-            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".gameTracker"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ViewCar"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".warnings" />
-        <activity android:name=".about"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".addUpgrade"
+        <activity
+            android:name=".about"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".addUpgrade"
             android:screenOrientation="portrait" />
-        <activity android:name=".WeaponCreator"
+        <activity
+            android:name=".WeaponCreator"
             android:screenOrientation="portrait" />
-        <activity android:name=".CarCreator"
+        <activity
+            android:name=".CarCreator"
             android:screenOrientation="portrait" />
-        <activity android:name=".SavedCarEditor"
+        <activity
+            android:name=".SavedCarEditor"
             android:screenOrientation="portrait" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -46,15 +57,14 @@
             android:resource="@array/preloaded_fonts" />
 
         <provider
-            android:authorities="com.bartek.gaslandsbuilder.MainActivity.provider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.bartek.gaslandsbuilder.MainActivity.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"/>
+                android:resource="@xml/file_path" />
         </provider>
-
     </application>
 
 </manifest>

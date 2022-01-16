@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.MenuRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.menuItemExport -> export(carsToPlay.joinToString(", "))
+            R.id.menuItemCarOfTheMonth -> startActivity(Intent(this, image_of_the_month::class.java))
         }
         return super.onOptionsItemSelected(item)
     }
@@ -207,7 +210,6 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
                 0 -> itemView.markToPlay.isChecked = false
                 1 -> itemView.markToPlay.isChecked = true
             }
-//            itemView.markToPlay.setOnCheckedChangeListener()
 
             itemView.markToPlay.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked){
@@ -216,6 +218,30 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
                 } else {
                     (context as MainActivity).teamCostCalculator(car, false)
                 }
+            }
+            fun showMenu(v: View, @MenuRes menuRes: Int) {
+                val popup = PopupMenu(context!!, v)
+                popup.menuInflater.inflate(menuRes, popup.menu)
+
+                popup.setOnMenuItemClickListener {
+                    when (it.itemId){
+                        R.id.menuDelete -> carRemover(car)
+                        R.id.menuEdit -> editCar(car.id, context)
+                        R.id.menuView -> viewCar(car.id, context)
+                    }
+                    true
+
+                }
+                popup.setOnDismissListener {
+                    // Respond to popup being dismissed.
+                }
+                // Show the popup menu.
+                popup.show()
+            }
+
+            val hamburgerButton = itemView.hamburgerButton
+            hamburgerButton.setOnClickListener{
+                showMenu(it, R.menu.ovewrflow_menu)
             }
         }
     }

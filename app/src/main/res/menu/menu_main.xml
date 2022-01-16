@@ -19,5 +19,9 @@
         android:title="About"
         android:visible="true"
         app:showAsAction="never" />
-
+    <item
+        android:id="@+id/menuItemCarOfTheMonth"
+        android:title="Car of the month"
+        android:visible="true"
+        app:showAsAction="never" />
 </menu>
