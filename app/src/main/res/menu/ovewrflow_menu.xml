@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/menuDelete"
+            android:title="@string/overflow_menu_delete" />
+        <item android:id="@+id/menuEdit"
+            android:title="@string/overflow_menu_edit" />
+        <item android:id="@+id/menuView"
+            android:title="@string/overflow_menu_view" />
+</menu>

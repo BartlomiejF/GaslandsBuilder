@@ -17,4 +17,11 @@
     <string name="about_support">If you like the app, find it useful and want to support and encourage my efforts click the
         Support button on top. I would appreciate stars and watchers on my GitHub account. You may also provide me a cup of coffee.
     </string>
+    <string name="overflow_menu_delete">Delete</string>
+    <string name="overflow_menu_view">View</string>
+    <string name="overflow_menu_edit">Edit</string>
+    <string name="Car_of_the_month_author">App developer</string>
+    <string name="car_of_the_month_text">Still WIP.</string>
+    <string name="car_of_the_month_image_name">cotm0001.jpeg</string>
+
 </resources>
