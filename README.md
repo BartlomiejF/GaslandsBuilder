@@ -25,3 +25,6 @@ If you would like to download prepopulated database with Gaslands weapons, upgra
 
 ## Support
 If you would like to show me support you may watch or star this project.
+
+# Privacy Policy
+The developer does not collect any data from app users. Everything that user generates is stored locally. 
