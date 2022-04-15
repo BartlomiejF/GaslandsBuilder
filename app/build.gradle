@@ -12,8 +12,8 @@ android {
         applicationId "com.bartek.gaslandsbuilder"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 17
-        versionName "0.17"
+        versionCode 18
+        versionName "0.18"
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
