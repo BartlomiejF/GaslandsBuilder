@@ -112,9 +112,9 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                             ammoLinearLayout.addView(checkBox)
                         }
                         } else { ammoText.visibility = View.GONE }
-                        rangeText.text = item.range
+                        rangeText.text = "Range: " + item.range.toString()
                         if (item.damage != "null"){
-                            weaponDamage.text = item.damage
+                            weaponDamage.text = "Damage: " + item.damage.toString()
                         } else {
                             weaponDamage.visibility = View.GONE
                         }
@@ -122,6 +122,11 @@ class GameTrackerAdapter(val cars: MutableList<SavedCar>, val context: Context):
                             weaponSpecialRules.text = item.specialRules
                         } else {
                             weaponSpecialRules.visibility = View.GONE
+                        }
+                        if (item.mount != "null") {
+                            weaponMount.text = item.mount.toString() + " mounted"
+                        } else {
+                            weaponMount.visibility = View.GONE
                         }
                     }
                     viewCarWeapons.addView(weaponsRow)

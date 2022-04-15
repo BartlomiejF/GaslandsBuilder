@@ -6,12 +6,14 @@
         <entry key="app/src/main/res/drawable/ic_baseline_local_fire_department_24.xml" value="0.38125" />
         <entry key="app/src/main/res/drawable/ic_baseline_local_fire_department_24_a.xml" value="0.38125" />
         <entry key="app/src/main/res/drawable/ic_baseline_local_fire_department_24_on.xml" value="0.38125" />
+        <entry key="app/src/main/res/layout/activity_about.xml" value="0.32971014492753625" />
         <entry key="app/src/main/res/layout/activity_game_tracker.xml" value="0.3651041666666667" />
         <entry key="app/src/main/res/layout/activity_image_of_the_month.xml" value="0.34057971014492755" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_view_car2.xml" value="0.3651041666666667" />
         <entry key="app/src/main/res/layout/saved_car_row.xml" value="0.33" />
         <entry key="app/src/main/res/layout/saved_cars_chosen_weapons_listview_row.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/view_car_weapons_row.xml" value="0.32971014492753625" />
         <entry key="app/src/main/res/menu/menu_car_creator.xml" value="0.3651041666666667" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.3651041666666667" />
         <entry key="app/src/main/res/menu/ovewrflow_menu.xml" value="0.3651041666666667" />
