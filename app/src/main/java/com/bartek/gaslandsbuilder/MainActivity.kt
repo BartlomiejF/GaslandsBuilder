@@ -12,15 +12,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.SavedCar
 import com.bartek.gaslandsbuilder.data.deleteSavedCar
 import com.bartek.gaslandsbuilder.data.getAllSavedCars
 import com.bartek.gaslandsbuilder.data.getMultipleCarsOnId
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.saved_car_row.view.*
+import com.bartek.gaslandsbuilder.databinding.SavedCarRowBinding
 import java.io.File
 
 
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         when (item.getItemId()){
             R.id.menuItemAbout -> startActivity(Intent(this, about::class.java))
             R.id.menuItemPlay -> {
-                val intent = Intent(this, gameTracker::class.java)
+                val intent = Intent(this, GameTracker::class.java)
                 intent.putExtra("ids", carsToPlay.joinToString(", "))
                 startActivity(intent)
             }
@@ -157,7 +155,8 @@ class MainActivity : AppCompatActivity() {
 class SavedCarsAdapter(val savedCars: MutableList<SavedCar>,
 val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<SavedCarsAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: SavedCarRowBinding): RecyclerView.ViewHolder(view.root) {
+        val binding = view
 
         fun viewCar(id: Int?, context: Context){
             val intent = Intent(context, ViewCar::class.java)
@@ -172,10 +171,10 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
         }
 
         fun bind(car: SavedCar, carRemover: (SavedCar) -> Unit, context: Context){
-            itemView.carName.text = car.name
-            itemView.cost.text = "Cans: ${car.cost}"
-            itemView.savedCarType.text = car.type
-            itemView.savedCarSponsor.text = car.sponsor
+            binding.carName.text = car.name
+            binding.cost.text = "Cans: ${car.cost}"
+            binding.savedCarType.text = car.type
+            binding.savedCarSponsor.text = car.sponsor
             val weaponsAndUpgrades: MutableList<String> = mutableListOf(
                 car.getWeaponsList().joinToString("\n") {
                     var text = "${it.name}"
@@ -194,24 +193,24 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
                 ""
             }
 
-            itemView.savedCarWeapons.text = weaponsAndUpgradesList
-            itemView.deleteButton.setOnClickListener {
+            binding.savedCarWeapons.text = weaponsAndUpgradesList
+            binding.deleteButton.setOnClickListener {
                 carRemover(car)
             }
-            itemView.viewCarButton.setOnClickListener{
+            binding.viewCarButton.setOnClickListener{
                 viewCar(car.id, context)
             }
-            itemView.editButton.setOnClickListener {
+            binding.editButton.setOnClickListener {
                 editCar(car.id, context)
             }
 
-            itemView.markToPlay.setOnCheckedChangeListener(null)
+            binding.markToPlay.setOnCheckedChangeListener(null)
             when (car.chosenToTracker){
-                0 -> itemView.markToPlay.isChecked = false
-                1 -> itemView.markToPlay.isChecked = true
+                0 -> binding.markToPlay.isChecked = false
+                1 -> binding.markToPlay.isChecked = true
             }
 
-            itemView.markToPlay.setOnCheckedChangeListener { _, isChecked ->
+            binding.markToPlay.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked){
                     (context as MainActivity).teamCostCalculator(car, true)
 
@@ -239,7 +238,7 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
                 popup.show()
             }
 
-            val hamburgerButton = itemView.hamburgerButton
+            val hamburgerButton = binding.hamburgerButton
             hamburgerButton.setOnClickListener{
                 showMenu(it, R.menu.ovewrflow_menu)
             }
@@ -247,9 +246,10 @@ val carRemover: (SavedCar) -> Unit, val context: Context): RecyclerView.Adapter<
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.saved_car_row, parent, false)
-        return ViewHolder(view)
+//        val view = LayoutInflater.from(parent.context)
+//            .inflate(R.layout.saved_car_row, parent, false)
+        val inflater = LayoutInflater.from(parent?.context)
+        return ViewHolder(SavedCarRowBinding.inflate(inflater, parent, false))
     }
 
     override fun getItemCount(): Int {

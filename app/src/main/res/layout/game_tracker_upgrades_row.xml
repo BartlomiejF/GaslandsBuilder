@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/viewCarUpgradeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/bangers"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ammoValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/bangers"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/viewCarUpgradeName"
+        app:layout_constraintEnd_toStartOf="@id/removeAmmo"
+        app:layout_constraintTop_toTopOf="@+id/viewCarUpgradeName" />
+
+    <ImageButton
+        android:id="@+id/removeAmmo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:background="#00FFFFFF"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/viewCarUpgradeName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewCarUpgradeName"
+        app:srcCompat="@drawable/ic_baseline_remove_24" />
+
+    <TextView
+        android:id="@+id/upgradeSpecialRules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:fontFamily="@font/bangers"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewCarUpgradeName" />
+
+    <TextView
+        android:id="@+id/viewCarAmmoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/bangers"
+        android:text="Ammo:"
+        app:layout_constraintBottom_toBottomOf="@+id/viewCarUpgradeName"
+        app:layout_constraintEnd_toStartOf="@+id/ammoValue"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

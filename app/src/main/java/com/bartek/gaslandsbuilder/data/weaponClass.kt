@@ -17,7 +17,8 @@ data class Weapon(
     val crewFired: Int = 0,
     val damage: String? = "1d6",
     val range: String? = "long",
-    val mount: String? = "front"
+    val mount: String? = "front",
+    var usedAmmo: Int = 0
 ): Parcelable {
     fun to_str(): String {
         return "$name:$cost:$buildSlots:$specialRules:$ammo:$crewFired:$damage:$range:$mount;"

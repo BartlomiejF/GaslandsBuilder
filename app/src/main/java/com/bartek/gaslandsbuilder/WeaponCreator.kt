@@ -1,9 +1,7 @@
 package com.bartek.gaslandsbuilder
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.Weapon
 import com.bartek.gaslandsbuilder.data.getAllWeaponNames
-import kotlinx.android.synthetic.main.single_weapons_row.view.*
+import com.bartek.gaslandsbuilder.databinding.SingleWeaponsRowBinding
+
 
 class WeaponCreator : AppCompatActivity() {
     lateinit var mount: String
@@ -87,20 +86,23 @@ class CarWeaponAdapter(val weaponsList: MutableList<Weapon>,
                        val weaponAdder:(Weapon) -> Unit
     ): RecyclerView.Adapter<CarWeaponAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View, val weaponAdder:(Weapon) -> Unit): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: SingleWeaponsRowBinding, val weaponAdder:(Weapon) -> Unit): RecyclerView.ViewHolder(view.root) {
+        val binding = view
         fun bind(weapon: Weapon){
-            itemView.weaponName.text = weapon.name
-            itemView.slotsCost.text = "${weapon.buildSlots} slots"
-            itemView.weaponCost.text = "${weapon.cost} cans"
-            itemView.setOnClickListener{
+            binding.weaponName.text = weapon.name
+            binding.slotsCost.text = "${weapon.buildSlots} slots"
+            binding.weaponCost.text = "${weapon.cost} cans"
+            binding.root.setOnClickListener{
                 weaponAdder(weapon)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.single_weapons_row, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+//        val view = LayoutInflater.from(parent.context)
+//            .inflate(R.layout.single_weapons_row, parent, false)
+            val view = SingleWeaponsRowBinding.inflate(inflater, parent, false)
         return ViewHolder(view, weaponAdder)
     }
 
