@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bartek.gaslandsbuilder"
     android:installLocation="auto"
-    android:versionCode="18">
+    android:versionCode="19">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
@@ -21,7 +20,7 @@
             android:name=".addPerk"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".gameTracker"
+            android:name=".GameTracker"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".ViewCar"

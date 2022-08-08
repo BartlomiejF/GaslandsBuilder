@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/carFrame"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/view_vehicle_weapons_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/viewCarCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:fontFamily="@font/bangers"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/viewCarName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/viewCarName" />
+
+        <TextView
+            android:id="@+id/viewCarName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/bangers"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="name"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/viewCarWeapons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/view_vehicle_weapons_border"
+            android:fontFamily="@font/bangers"
+            android:maxLines="99"
+            android:orientation="vertical"
+            android:paddingLeft="4dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hullValue">
+
+            <TextView
+                android:id="@+id/viewCarWeaponsNoWeaponsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bangers"
+                android:paddingLeft="4dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="No weapons and upgrades." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/resetHazard"
+            app:layout_constraintEnd_toEndOf="@+id/viewCarWeapons"
+            app:layout_constraintStart_toStartOf="@+id/viewCarWeapons"
+            app:layout_constraintTop_toBottomOf="@+id/viewCarWeapons"
+            app:layout_constraintVertical_bias="0.19999999">
+
+            <TextView
+                android:id="@+id/maxGearText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bangers"
+                android:gravity="center"
+                android:rotation="-90"
+                android:text="Max Gear" />
+
+            <TextView
+                android:id="@+id/maxGearValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/view_vehicle_weapons_border"
+                android:fontFamily="@font/bangers"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="0" />
+
+            <LinearLayout
+                android:id="@+id/gearUpDownLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageButton
+                    android:id="@+id/gearUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    android:foregroundGravity="center"
+                    app:srcCompat="@drawable/ic_baseline_add_24" />
+
+                <ImageButton
+                    android:id="@+id/gearDown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    android:foregroundGravity="center"
+                    app:srcCompat="@drawable/ic_baseline_remove_24" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bangers"
+                android:gravity="center"
+                android:rotation="-90"
+                android:text="Handling" />
+
+            <TextView
+                android:id="@+id/handlingValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/view_vehicle_weapons_border"
+                android:fontFamily="@font/bangers"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bangers"
+                android:gravity="center"
+                android:rotation="-90"
+                android:text="Crew" />
+
+            <TextView
+                android:id="@+id/crewValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/view_vehicle_weapons_border"
+                android:fontFamily="@font/bangers"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="0" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/vehicleTypeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/bangers"
+            android:text="TextView"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/viewCarName"
+            app:layout_constraintTop_toBottomOf="@+id/viewCarName" />
+
+        <TextView
+            android:id="@+id/vehicleWeightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bangers"
+            android:text="TextView"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/vehicleTypeText"
+            app:layout_constraintEnd_toEndOf="@+id/viewCarCost"
+            app:layout_constraintTop_toTopOf="@+id/vehicleTypeText" />
+
+        <TextView
+            android:id="@+id/carSponsor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:fontFamily="@font/bangers"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/viewCarName"
+            app:layout_constraintEnd_toStartOf="@+id/viewCarCost"
+            app:layout_constraintTop_toTopOf="@+id/viewCarName" />
+
+        <TextView
+            android:id="@+id/hazardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bangers"
+            android:paddingTop="2dp"
+            android:paddingRight="4dp"
+            android:text="Hazard:"
+            app:layout_constraintBottom_toBottomOf="@+id/resetHazard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.33"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/resetHazard" />
+
+        <TextView
+            android:id="@+id/hazardValue"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/view_vehicle_weapons_border"
+            android:fontFamily="@font/bangers"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/resetHazard"
+            app:layout_constraintStart_toEndOf="@+id/hazardText"
+            app:layout_constraintTop_toTopOf="@+id/resetHazard" />
+
+        <ImageButton
+            android:id="@+id/addHazard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/resetHazard"
+            app:layout_constraintEnd_toStartOf="@+id/hazardText"
+            app:layout_constraintTop_toTopOf="@+id/resetHazard"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+
+        <ImageButton
+            android:id="@+id/removeHazard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/resetHazard"
+            app:layout_constraintStart_toEndOf="@+id/hazardValue"
+            app:layout_constraintTop_toTopOf="@+id/resetHazard"
+            app:srcCompat="@drawable/ic_baseline_remove_24" />
+
+        <Button
+            android:id="@+id/resetHazard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/bangers"
+            android:text="Reset"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/removeHazard"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <ImageButton
+            android:id="@+id/fireButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@+id/addHazard"
+            app:layout_constraintEnd_toStartOf="@+id/addHazard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/addHazard"
+            app:srcCompat="@drawable/ic_baseline_local_fire_department_24" />
+
+        <ImageButton
+            android:id="@+id/removeHull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/hullValue"
+            app:layout_constraintStart_toEndOf="@+id/hullTextMax"
+            app:layout_constraintTop_toTopOf="@+id/hullValue"
+            app:srcCompat="@drawable/ic_baseline_remove_24" />
+
+        <TextView
+            android:id="@+id/hullValue"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/view_vehicle_weapons_border"
+            android:fontFamily="@font/bangers"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:text="0"
+            app:layout_constraintBottom_toBottomOf="@+id/hullText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/hullText" />
+
+        <TextView
+            android:id="@+id/hullText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/bangers"
+            android:paddingTop="2dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="2dp"
+            android:text="Hull:"
+            app:layout_constraintBottom_toBottomOf="@+id/addHull"
+            app:layout_constraintEnd_toStartOf="@+id/hullValue"
+            app:layout_constraintTop_toTopOf="@+id/addHull" />
+
+        <TextView
+            android:id="@+id/hullTextMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/bangers"
+            android:paddingTop="2dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="2dp"
+            android:text="/0"
+            app:layout_constraintBottom_toBottomOf="@+id/addHull"
+            app:layout_constraintStart_toEndOf="@+id/hullValue"
+            app:layout_constraintTop_toTopOf="@+id/addHull" />
+
+        <ImageButton
+            android:id="@+id/addHull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:foregroundGravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/hullText"
+            app:layout_constraintTop_toBottomOf="@+id/vehicleTypeText"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

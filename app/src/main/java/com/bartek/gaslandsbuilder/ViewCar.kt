@@ -15,11 +15,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bartek.gaslandsbuilder.data.*
-import kotlinx.android.synthetic.main.saved_car_row.view.*
-import kotlinx.android.synthetic.main.view_car_perks_row.view.*
-import kotlinx.android.synthetic.main.view_car_upgrades_row.view.*
-import kotlinx.android.synthetic.main.view_car_weapons_row.view.*
-import org.w3c.dom.Text
+import com.bartek.gaslandsbuilder.databinding.ViewCarPerksRowBinding
+import com.bartek.gaslandsbuilder.databinding.ViewCarUpgradesRowBinding
+import com.bartek.gaslandsbuilder.databinding.ViewCarWeaponsRowBinding
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -70,18 +68,20 @@ class ViewCar : AppCompatActivity() {
             findViewById<TextView>(R.id.viewCarWeaponsNoWeaponsText).visibility = View.GONE
         }
 
+        val inflater = LayoutInflater.from(this)
         val viewCarWeapons: LinearLayout = findViewById<LinearLayout>(R.id.viewCarWeapons)
         if (weaponsList.isNotEmpty()) {
             for (item in weaponsList) {
-                val weaponsRow =
-                    LayoutInflater.from(this).inflate(R.layout.view_car_weapons_row, null)
-                weaponsRow.apply {
+                val weaponsBind = ViewCarWeaponsRowBinding.inflate(inflater, null, false)
+//                val weaponsRow =
+//                    LayoutInflater.from(this).inflate(R.layout.view_car_weapons_row, null)
+                weaponsBind.apply {
                     viewCarWeaponName.text = item.name
                     val ammo = item.ammo
                     if (ammo != 0) {
                         repeat(ammo) {
                             val ammoLinearLayout: LinearLayout = findViewById(R.id.ammoLayout)
-                            val checkBox = CheckBox(context)
+                            val checkBox = CheckBox(this@ViewCar)
                             checkBox.text = ""
                             checkBox.layoutParams =
                                 LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -103,14 +103,15 @@ class ViewCar : AppCompatActivity() {
                         weaponSpecialRules.visibility = View.GONE
                     }
                 }
-                viewCarWeapons.addView(weaponsRow)
+                viewCarWeapons.addView(weaponsBind.root)
             }
         }
         if (upgradesList.isNotEmpty()) {
             upgradesList.forEach {
-                val upgradesRow =
-                    LayoutInflater.from(this).inflate(R.layout.view_car_upgrades_row, null)
-                upgradesRow.apply {
+                val upgradesBind = ViewCarUpgradesRowBinding.inflate(inflater, null, false)
+//                val upgradesRow =
+//                    LayoutInflater.from(this).inflate(R.layout.view_car_upgrades_row, null)
+                upgradesBind.apply {
                     viewCarUpgradeName.text = it.name
                     upgradeSpecialRules.text = it.specRules
                     if (it.ammo == 0) {
@@ -118,18 +119,19 @@ class ViewCar : AppCompatActivity() {
                         viewCarAmmoText.visibility = View.GONE
                     }
                 }
-                viewCarWeapons.addView(upgradesRow)
+                viewCarWeapons.addView(upgradesBind.root)
             }
         }
 
         if (perksList.isNotEmpty()) {
             perksList.forEach {
-                val perksRow = LayoutInflater.from(this).inflate(R.layout.view_car_perks_row, null)
-                perksRow.apply {
+                val perksBind = ViewCarPerksRowBinding.inflate(inflater, null, false)
+//                val perksRow = LayoutInflater.from(this).inflate(R.layout.view_car_perks_row, null)
+                perksBind.apply {
                     viewCarPerkName.text = it.name
                     viewCarPerkClass.text = it.perkClass
                 }
-                viewCarWeapons.addView(perksRow)
+                viewCarWeapons.addView(perksBind.root)
             }
         }
 

@@ -8,11 +8,19 @@
         <entry key="app/src/main/res/drawable/ic_baseline_local_fire_department_24_on.xml" value="0.38125" />
         <entry key="app/src/main/res/layout/activity_about.xml" value="0.32971014492753625" />
         <entry key="app/src/main/res/layout/activity_game_tracker.xml" value="0.3651041666666667" />
+        <entry key="app/src/main/res/layout/activity_game_tracker2.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/layout/activity_image_of_the_month.xml" value="0.34057971014492755" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_view_car2.xml" value="0.3651041666666667" />
+        <entry key="app/src/main/res/layout/car_creator.xml" value="0.18802083333333333" />
+        <entry key="app/src/main/res/layout/car_spinner_row.xml" value="0.18802083333333333" />
+        <entry key="app/src/main/res/layout/game_tracker_car_row.xml" value="0.35733695652173914" />
+        <entry key="app/src/main/res/layout/game_tracker_upgrades_row.xml" value="0.35733695652173914" />
+        <entry key="app/src/main/res/layout/game_tracker_weapons_row.xml" value="0.35733695652173914" />
         <entry key="app/src/main/res/layout/saved_car_row.xml" value="0.33" />
         <entry key="app/src/main/res/layout/saved_cars_chosen_weapons_listview_row.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/view_car_perks_row.xml" value="0.35733695652173914" />
+        <entry key="app/src/main/res/layout/view_car_upgrades_row.xml" value="0.35733695652173914" />
         <entry key="app/src/main/res/layout/view_car_weapons_row.xml" value="0.32971014492753625" />
         <entry key="app/src/main/res/menu/menu_car_creator.xml" value="0.3651041666666667" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.3651041666666667" />
@@ -20,7 +28,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

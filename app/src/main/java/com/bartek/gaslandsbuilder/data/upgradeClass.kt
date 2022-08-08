@@ -15,6 +15,7 @@ data class Upgrade(
     var buildSlots: Int,
     val ammo: Int,
     val specRules: String,
+    var usedAmmo: Int = 0,
     var onAdd: @RawValue ((Vehicle) -> Unit)? = null
 ): Parcelable{
     fun to_str(): String {

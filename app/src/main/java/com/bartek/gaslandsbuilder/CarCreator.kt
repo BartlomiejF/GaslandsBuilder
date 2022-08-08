@@ -1,7 +1,5 @@
 package com.bartek.gaslandsbuilder
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
@@ -16,11 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.*
-import kotlinx.android.synthetic.main.car_spinner_row.view.*
-import kotlinx.android.synthetic.main.chosen_perk_row.view.*
-import kotlinx.android.synthetic.main.chosen_upgrades_row.view.*
-import kotlinx.android.synthetic.main.chosen_weapons_row.view.*
-import kotlinx.android.synthetic.main.sponsor_spinner_row.view.*
+import com.bartek.gaslandsbuilder.databinding.*
 
 class CarCreator : AppCompatActivity() {
     val weaponActivityRequestCode = 0
@@ -125,7 +119,7 @@ class CarCreator : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             weaponActivityRequestCode -> {
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     val weaponToAdd: Weapon = data!!.getParcelableExtra("chosenWeapon")!!
                     if ("Gyrocopter Helicopter".contains(chosenVehicle.type!!.name)){
                         if (weaponToAdd.range=="dropped") weaponToAdd.buildSlots = 0
@@ -137,7 +131,7 @@ class CarCreator : AppCompatActivity() {
                 }
             }
             upgradeActivityRequestCode -> {
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     val chosenUpgrade = data!!.getParcelableExtra<Upgrade>("chosenUpgrade")!!
                     chosenVehicle.chosenUpgrades.add(chosenUpgrade)
                     chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
@@ -146,7 +140,7 @@ class CarCreator : AppCompatActivity() {
                 }
             }
             perksActivityRequestCode -> {
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     val chosenPerk = data!!.getParcelableExtra<Perk>("chosenPerk")!!
                     chosenVehicle.chosenPerks.add(chosenPerk)
                     applyPerkSpecialRules(chosenPerk, chosenVehicle)
@@ -217,7 +211,7 @@ class CarCreator : AppCompatActivity() {
     fun getPrefs(): SharedPreferences{
         return this.getSharedPreferences(
             "singleCar",
-            Context.MODE_PRIVATE
+            MODE_PRIVATE
         )
     }
 
@@ -296,12 +290,13 @@ class CarTypeSpinnerAdapter(val carTypeList: MutableList<Vehicle>): BaseAdapter(
     }
 
     override fun getView(position: Int, convertview: View?, parent: ViewGroup?): View {
-        val view = LayoutInflater.from(parent?.context)
-            .inflate(R.layout.car_spinner_row, parent, false)
-        view.carType.text = carTypeList[position].name
-        view.carCans.text = carTypeList[position].cost.toString()
-        view.buildSlots.text = carTypeList[position].buildSlots.toString()
-        return view
+
+        val inflater = LayoutInflater.from(parent?.context)
+        val binding = CarSpinnerRowBinding.inflate(inflater, parent, false)
+        binding.carType.text = carTypeList[position].name
+        binding.carCans.text = carTypeList[position].cost.toString()
+        binding.buildSlots.text = carTypeList[position].buildSlots.toString()
+        return binding.root
     }
 }
 
@@ -320,48 +315,56 @@ class SponsorsSpinnerAdapter(val sponsorsList: MutableList<Sponsor>): BaseAdapte
     }
 
     override fun getView(position: Int, convertview: View?, parent: ViewGroup?): View {
-        val view = LayoutInflater.from(parent?.context)
-            .inflate(R.layout.sponsor_spinner_row, parent, false)
-        view.sponsorName.text = sponsorsList[position].name
-        view.sponsorPerkClassI.text = "${sponsorsList[position].perkClassI}, ${sponsorsList[position].perkClassII}"
-        return view
+//        val view = LayoutInflater.from(parent?.context)
+//            .inflate(R.layout.sponsor_spinner_row, parent, false)
+        val inflater = LayoutInflater.from(parent?.context)
+        val binding = SponsorSpinnerRowBinding.inflate(inflater, parent, false)
+        binding.sponsorName.text = sponsorsList[position].name
+        binding.sponsorPerkClassI.text = "${sponsorsList[position].perkClassI}, ${sponsorsList[position].perkClassII}"
+        return binding.root
     }
 }
 
 class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Parcelable>, val remover: (Any) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class ViewHolderWeapon(view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolderWeapon(view: ChosenWeaponsRowBinding): RecyclerView.ViewHolder(view.root) {
+        val binding = view
+
         fun bind(weapon: Weapon, remover: (Any) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             var prefix = ""
             if ((weapon.mount!= null).and((weapon.mount) !="null")){ prefix = "${weapon.mount} mounted " }
-            itemView.chosenWeaponName.text = "${prefix}${weapon.name}"
-            itemView.removeChosenWeaponButton.setOnClickListener {
+            binding.chosenWeaponName.text = "${prefix}${weapon.name}"
+            binding.removeChosenWeaponButton.setOnClickListener {
                 remover(weapon)
             }
             itemView.requestLayout()
         }
     }
 
-    class ViewHolderUpgrade(view: View): RecyclerView.ViewHolder(view){
+    class ViewHolderUpgrade(view: ChosenUpgradesRowBinding): RecyclerView.ViewHolder(view.root){
+        val binding = view
+
         fun bind(upgrade: Upgrade, remover: (Any) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            itemView.chosenUpgradesName.text = upgrade.name
-            itemView.removeChosenUpgradesButton.setOnClickListener{
+            binding.chosenUpgradesName.text = upgrade.name
+            binding.removeChosenUpgradesButton.setOnClickListener{
                 remover(upgrade)
             }
             itemView.requestLayout()
         }
     }
 
-    class ViewHolderPerk(view: View): RecyclerView.ViewHolder(view){
+    class ViewHolderPerk(view: ChosenPerkRowBinding): RecyclerView.ViewHolder(view.root){
+        val binding = view
+
         fun bind(perk: Perk, remover: (Any) -> Unit){
             itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            itemView.chosenPerkName.text = perk.name
+            binding.chosenPerkName.text = perk.name
             if ((perk.perkClass=="Sponsored Perk").and(perk.cost==0)){
-                itemView.removeChosenPerkButton.visibility = View.GONE
+                binding.removeChosenPerkButton.visibility = View.GONE
             }
-            itemView.removeChosenPerkButton.setOnClickListener{
+            binding.removeChosenPerkButton.setOnClickListener{
                 remover(perk)
             }
             itemView.requestLayout()
@@ -373,12 +376,13 @@ class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Parcelabl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+//        val view = LayoutInflater.from(parent.context)
         lateinit var holder: RecyclerView.ViewHolder
+        val inflater = LayoutInflater.from(parent?.context)
         when (weaponsUpgradesPerks[viewType]) {
-            is Weapon -> holder = ViewHolderWeapon(view.inflate(R.layout.chosen_weapons_row, parent, false))
-            is Upgrade -> holder = ViewHolderUpgrade(view.inflate(R.layout.chosen_upgrades_row, parent, false))
-            is Perk -> holder = ViewHolderPerk(view.inflate(R.layout.chosen_perk_row, parent, false))
+            is Weapon -> holder = ViewHolderWeapon(ChosenWeaponsRowBinding.inflate(inflater, parent, false))
+            is Upgrade -> holder = ViewHolderUpgrade(ChosenUpgradesRowBinding.inflate(inflater, parent, false))
+            is Perk -> holder = ViewHolderPerk(ChosenPerkRowBinding.inflate(inflater, parent, false))
         }
         return holder
     }

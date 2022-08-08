@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.Upgrade
 import com.bartek.gaslandsbuilder.data.getAllUpgradesNames
-import kotlinx.android.synthetic.main.single_upgrade_row.view.*
-
+import com.bartek.gaslandsbuilder.databinding.SingleUpgradeRowBinding
 
 class addUpgrade : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,20 +40,23 @@ class CarUpgradeAdapter(val upgradesList: MutableList<Upgrade>,
                        val upgradeAdder:(Upgrade) -> Unit
 ): RecyclerView.Adapter<CarUpgradeAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View, val upgradeAdder:(Upgrade) -> Unit): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: SingleUpgradeRowBinding, val upgradeAdder:(Upgrade) -> Unit): RecyclerView.ViewHolder(view.root) {
+        val binding = view
         fun bind(upgrade: Upgrade){
-            itemView.upgradeName.text = upgrade.name
-            itemView.slotsCost.text = "${kotlin.math.abs(upgrade.buildSlots)} slots"
-            itemView.upgradeCost.text = "${upgrade.cost} cans"
-            itemView.setOnClickListener{
+            binding.upgradeName.text = upgrade.name
+            binding.slotsCost.text = "${kotlin.math.abs(upgrade.buildSlots)} slots"
+            binding.upgradeCost.text = "${upgrade.cost} cans"
+            binding.root.setOnClickListener{
                 upgradeAdder(upgrade)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.single_upgrade_row, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+//        val view = LayoutInflater.from(parent.context)
+//            .inflate(R.layout.single_upgrade_row, parent, false)
+            val view = SingleUpgradeRowBinding.inflate(inflater, parent, false)
         return ViewHolder(view, upgradeAdder)
     }
 
