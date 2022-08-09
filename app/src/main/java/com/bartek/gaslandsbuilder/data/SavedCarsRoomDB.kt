@@ -115,7 +115,7 @@ fun getAllSavedCars(context: Context): MutableList<SavedCar> {
             context.resources.getInteger(R.integer.savedCarsDBVersion)
         ).readableDatabase
         val savedCarsMutableList = mutableListOf<SavedCar>()
-        val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars", null)
+        val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars ORDER BY sponsor", null)
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
                 val name = cursor.getString(cursor.getColumnIndex("name"))
