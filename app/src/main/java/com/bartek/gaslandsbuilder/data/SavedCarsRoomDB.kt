@@ -220,7 +220,7 @@ fun getMultipleCarsOnId(context: Context, ids: String): MutableList<SavedCar> {
         context.resources.getInteger(R.integer.savedCarsDBVersion)
     ).readableDatabase
     var readCars = mutableListOf<SavedCar>()
-    val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars WHERE id IN ( $ids )", null)
+    val cursor: Cursor = db.rawQuery("SELECT * FROM savedCars WHERE id IN ( $ids ) ORDER BY sponsor", null)
     if (cursor.moveToFirst()) {
         while (!cursor.isAfterLast) {
             val name = cursor.getString(cursor.getColumnIndex("name"))

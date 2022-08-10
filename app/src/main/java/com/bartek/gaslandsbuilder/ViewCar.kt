@@ -73,20 +73,17 @@ class ViewCar : AppCompatActivity() {
         if (weaponsList.isNotEmpty()) {
             for (item in weaponsList) {
                 val weaponsBind = ViewCarWeaponsRowBinding.inflate(inflater, null, false)
-//                val weaponsRow =
-//                    LayoutInflater.from(this).inflate(R.layout.view_car_weapons_row, null)
                 weaponsBind.apply {
                     viewCarWeaponName.text = item.name
                     val ammo = item.ammo
                     if (ammo != 0) {
                         repeat(ammo) {
-                            val ammoLinearLayout: LinearLayout = findViewById(R.id.ammoLayout)
                             val checkBox = CheckBox(this@ViewCar)
                             checkBox.text = ""
                             checkBox.layoutParams =
                                 LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                     ViewGroup.LayoutParams.WRAP_CONTENT)
-                            ammoLinearLayout.addView(checkBox)
+                            ammoLayout.addView(checkBox)
                         }
                     } else {
                         ammoText.visibility = View.GONE
