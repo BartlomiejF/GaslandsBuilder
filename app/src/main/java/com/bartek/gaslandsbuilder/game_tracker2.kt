@@ -13,6 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.DrawableCompat
 import com.bartek.gaslandsbuilder.data.*
 import com.bartek.gaslandsbuilder.databinding.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+
 
 class GameTracker : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,10 +48,17 @@ class GameTracker : AppCompatActivity() {
                 audiencePointsTextView.text = audiencePoints.toString()
             }
         }
+
+        MobileAds.initialize(this) {}
+        if (intent.extras?.getBoolean("ads") == true){
+            val adRequest = AdRequest.Builder().build()
+            findViewById<AdView>(R.id.adView).loadAd(adRequest)
+        }
     }
 
+
     override fun onBackPressed() {
-        val alertDialog: AlertDialog? = this?.let {
+        val alertDialog: AlertDialog? = this.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setMessage("Do you really want to finish the tracker?")
@@ -122,10 +133,17 @@ class CarsAdapter(private val context: Context,
                         ammoText.visibility = View.GONE
                         ammoValue.visibility = View.GONE
                         removeAmmo.visibility = View.GONE
+                        addAmmo.visibility = View.GONE
                     }
                     removeAmmo.setOnClickListener {
                         item.usedAmmo += 1
                         ammoValue.text = (item.ammo - item.usedAmmo).toString()
+                    }
+
+                    addAmmo.setOnClickListener {
+                        item.ammo += 1
+                        ammoValue.text = (item.ammo - item.usedAmmo).toString()
+
                     }
                     rangeText.text = "Range: " + item.range.toString()
                     if (item.damage != "null"){

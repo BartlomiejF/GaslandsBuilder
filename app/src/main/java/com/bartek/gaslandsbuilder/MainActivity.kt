@@ -1,5 +1,6 @@
 package com.bartek.gaslandsbuilder
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var savedCarsAdapter: SavedCarsAdapter
     var carsToPlay = mutableListOf<Int>()
     var teamCost = 0
+    var ads = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             R.id.menuItemPlay -> {
                 val intent = Intent(this, GameTracker::class.java)
                 intent.putExtra("ids", carsToPlay.joinToString(", "))
+                intent.putExtra("ads", ads)
                 startActivity(intent)
             }
             R.id.menuItemExport -> export(carsToPlay.joinToString(", "))
@@ -68,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         teamCostValue.visibility = View.GONE
         carsToPlay.clear()
         savedCars = getAllSavedCars(this)
+        checkHack()
         savedCarsAdapter = SavedCarsAdapter(savedCars,
             ::removeSavedCar,
             this
@@ -80,6 +84,15 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    fun checkHack() {
+        if ("ads destroyer" in savedCars.map { it.name.lowercase() }){
+            ads = false
+        } else {
+            ads = true
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
     fun export(ids: String){
         val cars = getMultipleCarsOnId(this, ids)
         val file = File(applicationContext.filesDir, "Gaslands Builder roster.txt")
@@ -102,7 +115,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun removeSavedCar(car: SavedCar){
-        val alertDialog: AlertDialog? = this?.let {
+        val alertDialog: AlertDialog? = this.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setMessage("${car.name} will be deleted!")
@@ -112,6 +125,7 @@ class MainActivity : AppCompatActivity() {
                         savedCars.remove(car)
                         savedCarsAdapter.notifyDataSetChanged()
                         deleteSavedCar(car.id!!, context)
+                        checkHack()
                         dialog.cancel()
                     })
                 setNegativeButton("Cancel",
@@ -123,9 +137,6 @@ class MainActivity : AppCompatActivity() {
             builder.create()
         }
         alertDialog?.show()
-
-//        savedCars.remove(car)
-//        savedCarsAdapter.notifyDataSetChanged()
     }
 
     fun teamCostCalculator(car: SavedCar, add:Boolean){
