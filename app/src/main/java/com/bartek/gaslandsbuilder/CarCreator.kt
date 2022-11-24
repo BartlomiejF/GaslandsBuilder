@@ -204,6 +204,12 @@ class CarCreator : AppCompatActivity() {
                 ),
                 db
             )
+            if (carName.lowercase() == "ads destroyer"){
+                val sharedPreferences = getSharedPreferences("ads_preferences", MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putBoolean("ads", false)
+                editor.commit()
+            }
             finish()
         }
     }

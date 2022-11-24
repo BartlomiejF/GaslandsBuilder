@@ -12,6 +12,7 @@ import androidx.annotation.MenuRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,9 @@ import com.bartek.gaslandsbuilder.data.deleteSavedCar
 import com.bartek.gaslandsbuilder.data.getAllSavedCars
 import com.bartek.gaslandsbuilder.data.getMultipleCarsOnId
 import com.bartek.gaslandsbuilder.databinding.SavedCarRowBinding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import java.io.File
 
 
@@ -36,6 +40,15 @@ class MainActivity : AppCompatActivity() {
         val createVehButton: Button = findViewById(R.id.createVehicle)
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
+        }
+        ads = getSharedPreferences("ads_preferences", MODE_PRIVATE).getBoolean("ads", true)
+        if (ads){
+            MobileAds.initialize(this) {}
+            val adRequest = AdRequest.Builder().build()
+            findViewById<AdView>(R.id.adViewMain).loadAd(adRequest)
+        } else {
+            val params = createVehButton.layoutParams as ConstraintLayout.LayoutParams
+            params.setMargins(0,8,24,0)
         }
     }
 
@@ -71,25 +84,24 @@ class MainActivity : AppCompatActivity() {
         teamCostValue.visibility = View.GONE
         carsToPlay.clear()
         savedCars = getAllSavedCars(this)
-        checkHack()
         savedCarsAdapter = SavedCarsAdapter(savedCars,
             ::removeSavedCar,
             this
         )
+
+        if ("ads destroyer" in savedCars.map { it.name.lowercase() } && ads){
+            ads = false
+            val sharedPreferences = getSharedPreferences("ads_preferences", MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("ads", false)
+            editor.commit()
+        }
 
         val savedCarsRecyclerView: RecyclerView = findViewById(R.id.savedCarsRecyclerView)
         savedCarsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
             adapter = savedCarsAdapter
             }
-    }
-
-    fun checkHack() {
-        if ("ads destroyer" in savedCars.map { it.name.lowercase() }){
-            ads = false
-        } else {
-            ads = true
-        }
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -125,7 +137,13 @@ class MainActivity : AppCompatActivity() {
                         savedCars.remove(car)
                         savedCarsAdapter.notifyDataSetChanged()
                         deleteSavedCar(car.id!!, context)
-                        checkHack()
+                        if (car.name.lowercase() == "ads destroyer") {
+                            val sharedPreferences =
+                                getSharedPreferences("ads_preferences", MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putBoolean("ads", true)
+                            editor.commit()
+                        }
                         dialog.cancel()
                     })
                 setNegativeButton("Cancel",

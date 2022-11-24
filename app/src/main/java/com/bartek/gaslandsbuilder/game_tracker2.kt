@@ -9,8 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.RelativeLayout.LayoutParams
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.marginTop
 import com.bartek.gaslandsbuilder.data.*
 import com.bartek.gaslandsbuilder.databinding.*
 import com.google.android.gms.ads.AdRequest
@@ -28,8 +31,19 @@ class GameTracker : AppCompatActivity() {
             car.mutableWeaponsList = car.getWeaponsList()
             car.mutableUpgradesList = car.getUpgradesList()
         }
+
         val gameTrackerAdapter = CarsAdapter(this, cars as ArrayList<SavedCar>)
         val gameTrackerListView: ListView = findViewById(R.id.gameTrackerListView)
+
+        if (intent.extras?.getBoolean("ads") == true){
+            MobileAds.initialize(this) {}
+            val adRequest = AdRequest.Builder().build()
+            findViewById<AdView>(R.id.adViewGameTracker).loadAd(adRequest)
+        } else {
+            val params = gameTrackerListView.layoutParams as ConstraintLayout.LayoutParams
+            params.setMargins(0,8,0,8)
+        }
+
         gameTrackerListView.apply {
             adapter = gameTrackerAdapter
         }
@@ -49,11 +63,8 @@ class GameTracker : AppCompatActivity() {
             }
         }
 
-        MobileAds.initialize(this) {}
-        if (intent.extras?.getBoolean("ads") == true){
-            val adRequest = AdRequest.Builder().build()
-            findViewById<AdView>(R.id.adView).loadAd(adRequest)
-        }
+
+
     }
 
 
