@@ -62,7 +62,24 @@ class GameTracker : AppCompatActivity() {
                 audiencePointsTextView.text = audiencePoints.toString()
             }
         }
+        val currentGear = findViewById<TextView>(R.id.currentGear)
+        findViewById<ImageButton>(R.id.currentGearUp).setOnClickListener {
+            var currentGearValue = (currentGear.text as String).toInt()
+            when (currentGearValue < 6){
+                true -> currentGearValue += 1
+                false -> currentGearValue = 1
+            }
+            currentGear.text = currentGearValue.toString()
+        }
 
+        findViewById<ImageButton>(R.id.currentGearDown).setOnClickListener {
+            var currentGearValue = (currentGear.text as String).toInt()
+            when (currentGearValue > 1){
+                true -> currentGearValue -= 1
+                false -> currentGearValue = 6
+            }
+            currentGear.text = currentGearValue.toString()
+        }
 
 
     }
@@ -294,6 +311,25 @@ class CarsAdapter(private val context: Context,
                 if (car.onFire) binding.fireButton.performClick()
             }
         }
+
+        binding.lastGearUp.setOnClickListener {
+            var lastGear = (binding.lastActivationGear.text as String).toInt()
+            when (lastGear < 6){
+                true -> lastGear += 1
+                false -> lastGear = 1
+            }
+            binding.lastActivationGear.text = lastGear.toString()
+        }
+
+        binding.lastGearDown.setOnClickListener {
+            var lastGear = (binding.lastActivationGear.text as String).toInt()
+            when (lastGear > 1){
+                true -> lastGear -= 1
+                false -> lastGear = 6
+            }
+            binding.lastActivationGear.text = lastGear.toString()
+        }
+
         return binding.root
     }
 

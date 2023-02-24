@@ -62,9 +62,10 @@ class CarCreator : AppCompatActivity() {
             ) {
                 val vehicleType = parent.getItemAtPosition(position) as Vehicle
                 chosenVehicle.type = vehicleType
+                applyVehicleSpecialRules(chosenVehicle, applicationContext)
                 chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
-                chosenVehicle.chosenWeapons.forEach{ weapon -> applyVehicleSpecialRules(weapon, chosenVehicle, applicationContext) }
                 updateSumCost()
+                notifier()
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // write code to perform some action
@@ -82,7 +83,7 @@ class CarCreator : AppCompatActivity() {
                 parent: AdapterView<*>,
                 view: View, position: Int, id: Long
             ) {
-                chosenVehicle.sponsor!!.sponsorPerks?.let {
+                chosenVehicle.sponsor?.sponsorPerks?.let {
                     chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle, onRemove = true) }
                     chosenVehicle.chosenPerks.removeAll(it)
                 }

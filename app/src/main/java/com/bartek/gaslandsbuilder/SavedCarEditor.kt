@@ -74,7 +74,7 @@ class SavedCarEditor : AppCompatActivity() {
             ) {
                 chosenVehicle.type = parent.getItemAtPosition(position) as Vehicle
                 chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
-                chosenVehicle.chosenWeapons.forEach{ weapon -> applyVehicleSpecialRules(weapon, chosenVehicle, applicationContext) }
+                chosenVehicle.chosenWeapons.forEach{ weapon -> applyVehicleSpecialRules(chosenVehicle, applicationContext) }
                 updateSumCost()
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
