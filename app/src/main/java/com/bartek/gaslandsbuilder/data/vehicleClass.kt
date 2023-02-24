@@ -71,17 +71,38 @@ fun getVehicleOnName(context: Context, name: String): Vehicle {
     cursor.close()
     db.close()
     return readVehicle
+
 }
 
-fun applyVehicleSpecialRules(weapon: Weapon, chosenVehicle: ChosenVehicle, context: Context){
+fun applyVehicleSpecialRules(chosenVehicle: ChosenVehicle, context: Context){
     when (chosenVehicle.type!!.name){
         "Gyrocopter", "Helicopter" -> {
-            if (weapon.range=="dropped") weapon.buildSlots = 0
+            chosenVehicle.chosenWeapons.forEach {
+            if (it.range == "dropped") it.buildSlots = 0
+        }
+        }
+        "Buggy" -> {
+            val upgrade = getUpgradeByName(context, "Roll Cage")
+            if (chosenVehicle.chosenUpgrades.contains(upgrade)){
+                chosenVehicle.chosenUpgrades.remove(upgrade)
+            }
+            upgrade.buildSlots = 0
+            chosenVehicle.chosenUpgrades.add(upgrade)
         }
         else -> {
-            if (weapon.range=="dropped") {
-                weapon.buildSlots = getWeaponCostOnName(context, weapon.name)
+            chosenVehicle.chosenWeapons.forEach {
+                if (it.range == "dropped") it.buildSlots = 0
+                else {
+                    it.buildSlots = getWeaponCostOnName(context, it.name)
+                }
             }
+            val upgrade = getUpgradeByName(context, "Roll Cage")
+            upgrade.buildSlots = 0
+            if (chosenVehicle.chosenUpgrades.contains(upgrade)){
+                chosenVehicle.chosenUpgrades.remove(upgrade)
+            }
+            upgrade.buildSlots = 1
+            chosenVehicle.chosenUpgrades.add(upgrade)
         }
     }
 }

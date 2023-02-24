@@ -1,5 +1,6 @@
 package com.bartek.gaslandsbuilder
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -11,6 +12,7 @@ import androidx.annotation.MenuRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,9 @@ import com.bartek.gaslandsbuilder.data.deleteSavedCar
 import com.bartek.gaslandsbuilder.data.getAllSavedCars
 import com.bartek.gaslandsbuilder.data.getMultipleCarsOnId
 import com.bartek.gaslandsbuilder.databinding.SavedCarRowBinding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import java.io.File
 
 
@@ -27,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var savedCarsAdapter: SavedCarsAdapter
     var carsToPlay = mutableListOf<Int>()
     var teamCost = 0
+    var ads = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +40,15 @@ class MainActivity : AppCompatActivity() {
         val createVehButton: Button = findViewById(R.id.createVehicle)
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
+        }
+        ads = getSharedPreferences("ads_preferences", MODE_PRIVATE).getBoolean("ads", true)
+        if (ads){
+            MobileAds.initialize(this) {}
+            val adRequest = AdRequest.Builder().build()
+            findViewById<AdView>(R.id.adViewMain).loadAd(adRequest)
+        } else {
+            val params = createVehButton.layoutParams as ConstraintLayout.LayoutParams
+            params.setMargins(0,8,24,0)
         }
     }
 
@@ -51,6 +66,7 @@ class MainActivity : AppCompatActivity() {
             R.id.menuItemPlay -> {
                 val intent = Intent(this, GameTracker::class.java)
                 intent.putExtra("ids", carsToPlay.joinToString(", "))
+                intent.putExtra("ads", ads)
                 startActivity(intent)
             }
             R.id.menuItemExport -> export(carsToPlay.joinToString(", "))
@@ -73,6 +89,14 @@ class MainActivity : AppCompatActivity() {
             this
         )
 
+        if ("ads destroyer" in savedCars.map { it.name.lowercase() } && ads){
+            ads = false
+            val sharedPreferences = getSharedPreferences("ads_preferences", MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("ads", false)
+            editor.commit()
+        }
+
         val savedCarsRecyclerView: RecyclerView = findViewById(R.id.savedCarsRecyclerView)
         savedCarsRecyclerView.apply {
             layoutManager = LinearLayoutManager(application)
@@ -80,6 +104,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun export(ids: String){
         val cars = getMultipleCarsOnId(this, ids)
         val file = File(applicationContext.filesDir, "Gaslands Builder roster.txt")
@@ -102,7 +127,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun removeSavedCar(car: SavedCar){
-        val alertDialog: AlertDialog? = this?.let {
+        val alertDialog: AlertDialog? = this.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setMessage("${car.name} will be deleted!")
@@ -112,6 +137,13 @@ class MainActivity : AppCompatActivity() {
                         savedCars.remove(car)
                         savedCarsAdapter.notifyDataSetChanged()
                         deleteSavedCar(car.id!!, context)
+                        if (car.name.lowercase() == "ads destroyer") {
+                            val sharedPreferences =
+                                getSharedPreferences("ads_preferences", MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putBoolean("ads", true)
+                            editor.commit()
+                        }
                         dialog.cancel()
                     })
                 setNegativeButton("Cancel",
@@ -123,9 +155,6 @@ class MainActivity : AppCompatActivity() {
             builder.create()
         }
         alertDialog?.show()
-
-//        savedCars.remove(car)
-//        savedCarsAdapter.notifyDataSetChanged()
     }
 
     fun teamCostCalculator(car: SavedCar, add:Boolean){

@@ -44,8 +44,31 @@ fun getAllUpgradesNames(context: Context): MutableList<Upgrade>{
         }
     }
     cursor.close()
+    db.close()
     return upgradesMutableList
 }
+
+fun getUpgradeByName(context: Context, name: String): Upgrade{
+    val db: SQLiteDatabase = DbHelper(
+        context,
+        "gaslandsWeapons",
+        context.resources.getInteger(R.integer.dbVersion)
+    ).readableDatabase
+    lateinit var upgrade: Upgrade
+    val cursor: Cursor = db.rawQuery("SELECT * FROM upgrades where name=?", arrayOf(name))
+    if (cursor.moveToFirst()) {
+        val name = cursor.getString(cursor.getColumnIndex("name"))
+        val cost = cursor.getString(cursor.getColumnIndex("cost")).toInt()
+        val buildSlots = cursor.getString(cursor.getColumnIndex("buildSlots")).toInt()
+        val ammo = cursor.getInt(cursor.getColumnIndex("ammo"))
+        val specRules = cursor.getString(cursor.getColumnIndex("specRules"))
+        upgrade = Upgrade(name, cost, buildSlots, ammo, specRules)
+    }
+    cursor.close()
+    db.close()
+    return upgrade
+}
+
 fun applyUpgradeSpecialRules(upgrade: Upgrade, vehicle: ChosenVehicle) {
     when (upgrade.name) {
         "Extra Crewmember" -> { vehicle.type!!.crew += 1 }

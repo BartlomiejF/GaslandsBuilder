@@ -9,10 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.RelativeLayout.LayoutParams
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.marginTop
 import com.bartek.gaslandsbuilder.data.*
 import com.bartek.gaslandsbuilder.databinding.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+
 
 class GameTracker : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +31,19 @@ class GameTracker : AppCompatActivity() {
             car.mutableWeaponsList = car.getWeaponsList()
             car.mutableUpgradesList = car.getUpgradesList()
         }
+
         val gameTrackerAdapter = CarsAdapter(this, cars as ArrayList<SavedCar>)
         val gameTrackerListView: ListView = findViewById(R.id.gameTrackerListView)
+
+        if (intent.extras?.getBoolean("ads") == true){
+            MobileAds.initialize(this) {}
+            val adRequest = AdRequest.Builder().build()
+            findViewById<AdView>(R.id.adViewGameTracker).loadAd(adRequest)
+        } else {
+            val params = gameTrackerListView.layoutParams as ConstraintLayout.LayoutParams
+            params.setMargins(0,8,0,8)
+        }
+
         gameTrackerListView.apply {
             adapter = gameTrackerAdapter
         }
@@ -44,10 +62,31 @@ class GameTracker : AppCompatActivity() {
                 audiencePointsTextView.text = audiencePoints.toString()
             }
         }
+        val currentGear = findViewById<TextView>(R.id.currentGear)
+        findViewById<ImageButton>(R.id.currentGearUp).setOnClickListener {
+            var currentGearValue = (currentGear.text as String).toInt()
+            when (currentGearValue < 6){
+                true -> currentGearValue += 1
+                false -> currentGearValue = 1
+            }
+            currentGear.text = currentGearValue.toString()
+        }
+
+        findViewById<ImageButton>(R.id.currentGearDown).setOnClickListener {
+            var currentGearValue = (currentGear.text as String).toInt()
+            when (currentGearValue > 1){
+                true -> currentGearValue -= 1
+                false -> currentGearValue = 6
+            }
+            currentGear.text = currentGearValue.toString()
+        }
+
+
     }
 
+
     override fun onBackPressed() {
-        val alertDialog: AlertDialog? = this?.let {
+        val alertDialog: AlertDialog? = this.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setMessage("Do you really want to finish the tracker?")
@@ -122,10 +161,17 @@ class CarsAdapter(private val context: Context,
                         ammoText.visibility = View.GONE
                         ammoValue.visibility = View.GONE
                         removeAmmo.visibility = View.GONE
+                        addAmmo.visibility = View.GONE
                     }
                     removeAmmo.setOnClickListener {
                         item.usedAmmo += 1
                         ammoValue.text = (item.ammo - item.usedAmmo).toString()
+                    }
+
+                    addAmmo.setOnClickListener {
+                        item.ammo += 1
+                        ammoValue.text = (item.ammo - item.usedAmmo).toString()
+
                     }
                     rangeText.text = "Range: " + item.range.toString()
                     if (item.damage != "null"){
@@ -265,6 +311,25 @@ class CarsAdapter(private val context: Context,
                 if (car.onFire) binding.fireButton.performClick()
             }
         }
+
+        binding.lastGearUp.setOnClickListener {
+            var lastGear = (binding.lastActivationGear.text as String).toInt()
+            when (lastGear < 6){
+                true -> lastGear += 1
+                false -> lastGear = 1
+            }
+            binding.lastActivationGear.text = lastGear.toString()
+        }
+
+        binding.lastGearDown.setOnClickListener {
+            var lastGear = (binding.lastActivationGear.text as String).toInt()
+            when (lastGear > 1){
+                true -> lastGear -= 1
+                false -> lastGear = 6
+            }
+            binding.lastActivationGear.text = lastGear.toString()
+        }
+
         return binding.root
     }
 

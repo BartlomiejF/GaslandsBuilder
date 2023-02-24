@@ -188,13 +188,12 @@
             android:id="@+id/vehicleTypeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/bangers"
             android:text="TextView"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/viewCarName"
+            app:layout_constraintEnd_toStartOf="@+id/vehicleWeightText"
             app:layout_constraintTop_toBottomOf="@+id/viewCarName" />
 
         <TextView
@@ -212,13 +211,12 @@
             android:id="@+id/carSponsor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/bangers"
             android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/viewCarName"
-            app:layout_constraintEnd_toStartOf="@+id/viewCarCost"
-            app:layout_constraintTop_toTopOf="@+id/viewCarName" />
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewCarName" />
 
         <TextView
             android:id="@+id/hazardText"
@@ -329,10 +327,27 @@
             android:paddingTop="10dp"
             android:paddingRight="15dp"
             android:paddingBottom="10dp"
+            android:text="1"
+            app:layout_constraintBottom_toBottomOf="@+id/hullText"
+            app:layout_constraintEnd_toStartOf="@+id/lastActivationGear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/hullText" />
+
+        <TextView
+            android:id="@+id/lastActivationGear"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/view_vehicle_weapons_border"
+            android:fontFamily="@font/bangers"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
             android:text="0"
             app:layout_constraintBottom_toBottomOf="@+id/hullText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/hullText" />
 
         <TextView
@@ -347,6 +362,21 @@
             android:text="Hull:"
             app:layout_constraintBottom_toBottomOf="@+id/addHull"
             app:layout_constraintEnd_toStartOf="@+id/hullValue"
+            app:layout_constraintTop_toTopOf="@+id/addHull" />
+
+        <TextView
+            android:id="@+id/lastActivationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bangers"
+            android:gravity="center_vertical|end"
+            android:paddingTop="2dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="2dp"
+            android:text="Last\nActivation\nGear"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/addHull"
+            app:layout_constraintEnd_toStartOf="@+id/lastActivationGear"
             app:layout_constraintTop_toTopOf="@+id/addHull" />
 
         <TextView
@@ -368,14 +398,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:background="#00FFFFFF"
             android:foregroundGravity="center"
             app:layout_constraintEnd_toStartOf="@+id/hullText"
-            app:layout_constraintTop_toBottomOf="@+id/vehicleTypeText"
+            app:layout_constraintTop_toBottomOf="@+id/carSponsor"
             app:srcCompat="@drawable/ic_baseline_add_24" />
+
+        <ImageButton
+            android:id="@+id/lastGearUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:foregroundGravity="center"
+            app:layout_constraintStart_toEndOf="@+id/lastActivationGear"
+            app:layout_constraintTop_toTopOf="@+id/lastActivationGear"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+
+        <ImageButton
+            android:id="@+id/lastGearDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/lastActivationGear"
+            app:layout_constraintStart_toEndOf="@+id/lastActivationGear"
+            app:layout_constraintTop_toBottomOf="@+id/lastGearUp"
+            app:srcCompat="@drawable/ic_baseline_remove_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

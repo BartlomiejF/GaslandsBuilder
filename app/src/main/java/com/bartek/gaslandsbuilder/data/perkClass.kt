@@ -42,6 +42,7 @@ fun getAllPerks(context: Context): MutableList<Perk>{
         }
     }
     cursor.close()
+    db.close()
     return perksMutableList
 }
 

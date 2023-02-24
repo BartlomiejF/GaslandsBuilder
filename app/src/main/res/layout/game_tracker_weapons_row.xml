@@ -99,6 +99,21 @@
         app:layout_constraintTop_toTopOf="@+id/viewCarWeaponName"
         app:srcCompat="@drawable/ic_baseline_remove_24" />
 
+    <ImageButton
+        android:id="@+id/addAmmo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:background="#00FFFFFF"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/viewCarWeaponName"
+        app:layout_constraintEnd_toStartOf="@+id/ammoText"
+        app:layout_constraintTop_toTopOf="@+id/viewCarWeaponName"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -39,6 +39,7 @@ fun getAllSponsors(context: Context): MutableList<Sponsor>{
         }
     }
     cursor.close()
+    db.close()
     return sponsorsMutableList
 }
 
