@@ -91,18 +91,17 @@ fun applyVehicleSpecialRules(chosenVehicle: ChosenVehicle, context: Context){
         }
         else -> {
             chosenVehicle.chosenWeapons.forEach {
-                if (it.range == "dropped") it.buildSlots = 0
-                else {
+                if (it.range == "dropped") {
                     it.buildSlots = getWeaponCostOnName(context, it.name)
                 }
             }
             val upgrade = getUpgradeByName(context, "Roll Cage")
             upgrade.buildSlots = 0
-            if (chosenVehicle.chosenUpgrades.contains(upgrade)){
+            if (chosenVehicle.chosenUpgrades.contains(upgrade)) {
                 chosenVehicle.chosenUpgrades.remove(upgrade)
+                upgrade.buildSlots = 1
+                chosenVehicle.chosenUpgrades.add(upgrade)
             }
-            upgrade.buildSlots = 1
-            chosenVehicle.chosenUpgrades.add(upgrade)
         }
     }
 }

@@ -54,6 +54,7 @@ class CarCreator : AppCompatActivity() {
         val adapter = CarTypeSpinnerAdapter(vehicles)
         chosenVehicle.type = vehicles[0]
         carTypeSpinner.adapter = adapter
+        carTypeSpinner.setSelection(0)
         carTypeSpinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -76,7 +77,7 @@ class CarCreator : AppCompatActivity() {
         val sponsorsAdapter = SponsorsSpinnerAdapter(sponsors)
         chosenVehicle.sponsor = sponsors.last()
         sponsorsSpinner.adapter = sponsorsAdapter
-        sponsorsSpinner.setSelection(sponsors.indexOf(chosenVehicle.sponsor!!))
+        sponsorsSpinner.setSelection(sponsors.indexOf(chosenVehicle.sponsor))
         sponsorsSpinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -89,7 +90,7 @@ class CarCreator : AppCompatActivity() {
                 }
                 chosenVehicle.chosenPerks.removeAll(listOf(microPlateArmourPerk, prisonCarPerk))
                 chosenVehicle.sponsor = parent.getItemAtPosition(position) as Sponsor
-                chosenVehicle.sponsor!!.sponsorPerks?.let {
+                chosenVehicle.sponsor?:sponsors.last().sponsorPerks?.let {
                     chosenVehicle.chosenPerks.addAll(it)
                     chosenVehicle.chosenPerks.forEach { perk -> applyPerkSpecialRules(perk, chosenVehicle) }
                 }
@@ -385,7 +386,7 @@ class WeaponsUpgadesPerksAdapter(val weaponsUpgradesPerks: MutableList<Parcelabl
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 //        val view = LayoutInflater.from(parent.context)
         lateinit var holder: RecyclerView.ViewHolder
-        val inflater = LayoutInflater.from(parent?.context)
+        val inflater = LayoutInflater.from(parent.context)
         when (weaponsUpgradesPerks[viewType]) {
             is Weapon -> holder = ViewHolderWeapon(ChosenWeaponsRowBinding.inflate(inflater, parent, false))
             is Upgrade -> holder = ViewHolderUpgrade(ChosenUpgradesRowBinding.inflate(inflater, parent, false))

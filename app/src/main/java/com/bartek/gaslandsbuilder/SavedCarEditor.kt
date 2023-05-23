@@ -86,7 +86,11 @@ class SavedCarEditor : AppCompatActivity() {
         val sponsorsSpinner: Spinner = findViewById(R.id.sponsorsSpinner)
         val sponsorsAdapter = SponsorsSpinnerAdapter(sponsors)
         sponsorsSpinner.adapter = sponsorsAdapter
-        sponsorsSpinner.setSelection(sponsors.indexOf(chosenVehicle.sponsor!!))
+        val currentSponsor = if (chosenVehicle.sponsor != null) {chosenVehicle.sponsor} else {
+            chosenVehicle.sponsor = sponsors.last()
+            chosenVehicle.sponsor
+        }
+        sponsorsSpinner.setSelection(sponsors.indexOf(currentSponsor))
         sponsorsSpinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(

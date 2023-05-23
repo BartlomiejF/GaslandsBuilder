@@ -77,5 +77,13 @@ fun applyUpgradeSpecialRules(upgrade: Upgrade, vehicle: ChosenVehicle) {
             vehicle.type!!.maxGear -= 1
             vehicle.type!!.handling += 1
             }
+        "Roll Cage" -> {
+            if (vehicle.type!!.name == "Buggy"){
+                upgrade.buildSlots = 0
+            } else {
+                upgrade.buildSlots = 1
+            }
+
+        }
         }
     }
