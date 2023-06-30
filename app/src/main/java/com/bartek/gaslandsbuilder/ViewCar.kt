@@ -99,6 +99,11 @@ class ViewCar : AppCompatActivity() {
                     } else {
                         weaponSpecialRules.visibility = View.GONE
                     }
+                    if (item.mount != "null") {
+                        weaponMount.text = item.mount.toString() + " mounted"
+                    } else {
+                        weaponMount.visibility = View.GONE
+                    }
                 }
                 viewCarWeapons.addView(weaponsBind.root)
             }
