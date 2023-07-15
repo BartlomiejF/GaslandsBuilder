@@ -89,28 +89,28 @@ class GameTracker : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = MenuInflater(this)
-        inflater.inflate(R.menu.dark_mode_menu, menu)
-        menu!!.findItem(R.id.darkMode)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()){
-            R.id.darkMode -> {
-                val nightModePrefs = getSharedPreferences("night_mode", MODE_PRIVATE)
-                if (nightModePrefs.getBoolean("night_mode", false)) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    nightModePrefs.edit().putBoolean("night_mode", false).commit()
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    nightModePrefs.edit().putBoolean("night_mode", true).commit()
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        val inflater = MenuInflater(this)
+//        inflater.inflate(R.menu.dark_mode_menu, menu)
+//        menu!!.findItem(R.id.darkMode)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+//        return super.onCreateOptionsMenu(menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.getItemId()){
+//            R.id.darkMode -> {
+//                val nightModePrefs = getSharedPreferences("gaslands_builder", MODE_PRIVATE)
+//                if (nightModePrefs.getBoolean("night_mode", false)) {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                    nightModePrefs.edit().putBoolean("night_mode", false).commit()
+//                } else {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                    nightModePrefs.edit().putBoolean("night_mode", true).commit()
+//                }
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
 
     override fun onBackPressed() {

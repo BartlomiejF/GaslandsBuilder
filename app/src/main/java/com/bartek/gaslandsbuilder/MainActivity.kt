@@ -12,9 +12,12 @@ import androidx.annotation.MenuRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.SavedCar
@@ -42,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         createVehButton.setOnClickListener {
             startActivity(Intent(this, CarCreator::class.java))
         }
-        ads = getSharedPreferences("ads_preferences", MODE_PRIVATE).getBoolean("ads", true)
+        ads = getSharedPreferences("gaslands_builder", MODE_PRIVATE).getBoolean("ads", true)
         if (ads){
             MobileAds.initialize(this) {}
             val adRequest = AdRequest.Builder().build()
@@ -51,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             val params = createVehButton.layoutParams as ConstraintLayout.LayoutParams
             params.setMargins(0,8,24,0)
         }
-        val nightMode = getSharedPreferences("night_mode", MODE_PRIVATE).getBoolean("night_mode", false)
+        val nightMode = getSharedPreferences("gaslands_builder", MODE_PRIVATE).getBoolean("night_mode", false)
         if (nightMode){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
@@ -64,6 +67,12 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.menu_main, menu)
         menu!!.findItem(R.id.menuItemExport)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         menu!!.findItem(R.id.menuItemPlay)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menu!!.findItem(R.id.menuDarkMode)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        if (getSharedPreferences("gaslands_builder", MODE_PRIVATE).getBoolean("night_mode", false)) {
+            menu!!.findItem(R.id.menuDarkMode)?.setIcon(ContextCompat.getDrawable(this, R.drawable.baseline_wb_sunny_24))
+        } else {
+            menu!!.findItem(R.id.menuDarkMode)?.setIcon(ContextCompat.getDrawable(this, R.drawable.baseline_dark_mode_24))
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -79,14 +88,15 @@ class MainActivity : AppCompatActivity() {
             R.id.menuItemExport -> export(carsToPlay.joinToString(", "))
             R.id.menuItemCarOfTheMonth -> startActivity(Intent(this, image_of_the_month::class.java))
             R.id.menuDarkMode -> {
-                val nightModePrefs = getSharedPreferences("night_mode", MODE_PRIVATE)
+                val nightModePrefs = getSharedPreferences("gaslands_builder", MODE_PRIVATE)
                 if (nightModePrefs.getBoolean("night_mode", false)) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    nightModePrefs.edit().putBoolean("night_mode", false).commit()
+                    nightModePrefs.edit().putBoolean("night_mode", false).apply()
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    nightModePrefs.edit().putBoolean("night_mode", true).commit()
+                    nightModePrefs.edit().putBoolean("night_mode", true).apply()
                 }
+                true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -108,7 +118,7 @@ class MainActivity : AppCompatActivity() {
 
         if ("ads destroyer" in savedCars.map { it.name.lowercase() } && ads){
             ads = false
-            val sharedPreferences = getSharedPreferences("ads_preferences", MODE_PRIVATE)
+            val sharedPreferences = getSharedPreferences("gaslands_builder", MODE_PRIVATE)
             val editor = sharedPreferences.edit()
             editor.putBoolean("ads", false)
             editor.commit()
@@ -156,7 +166,7 @@ class MainActivity : AppCompatActivity() {
                         deleteSavedCar(car.id!!, context)
                         if (car.name.lowercase() == "ads destroyer") {
                             val sharedPreferences =
-                                getSharedPreferences("ads_preferences", MODE_PRIVATE)
+                                getSharedPreferences("gaslands_builder", MODE_PRIVATE)
                             val editor = sharedPreferences.edit()
                             editor.putBoolean("ads", true)
                             editor.commit()

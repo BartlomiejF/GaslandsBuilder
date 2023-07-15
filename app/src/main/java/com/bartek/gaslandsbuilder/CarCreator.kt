@@ -15,10 +15,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.*
 import com.bartek.gaslandsbuilder.databinding.*
+import com.google.android.material.internal.ContextUtils.getActivity
 
 class CarCreator : AppCompatActivity() {
     val weaponActivityRequestCode = 0

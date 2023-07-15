@@ -26,5 +26,5 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/menuDarkMode"
-        android:title="Dark Mode"/>
+        android:title="Dark Mode" />
 </menu>
