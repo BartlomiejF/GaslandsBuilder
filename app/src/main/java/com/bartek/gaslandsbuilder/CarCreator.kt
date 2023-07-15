@@ -7,10 +7,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bartek.gaslandsbuilder.data.*
@@ -113,6 +117,29 @@ class CarCreator : AppCompatActivity() {
 //        when (item.getItemId()){
 //            R.id.menuItemAbout -> startActivity(Intent(this, about::class.java))
 //            R.id.menuItemWarnings -> startActivity(Intent(this, warnings::class.java))
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        val inflater = MenuInflater(this)
+//        inflater.inflate(R.menu.dark_mode_menu, menu)
+//        menu!!.findItem(R.id.darkMode)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+//        return super.onCreateOptionsMenu(menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.getItemId()) {
+//            R.id.darkMode -> {
+//                val nightModePrefs = getSharedPreferences("night_mode", MODE_PRIVATE)
+//                if (nightModePrefs.getBoolean("night_mode", false)) {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                    nightModePrefs.edit().putBoolean("night_mode", false).commit()
+//                } else {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                    nightModePrefs.edit().putBoolean("night_mode", true).commit()
+//                }
+//            }
 //        }
 //        return super.onOptionsItemSelected(item)
 //    }

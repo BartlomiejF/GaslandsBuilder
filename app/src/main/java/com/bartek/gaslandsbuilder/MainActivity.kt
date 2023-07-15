@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
@@ -50,6 +51,12 @@ class MainActivity : AppCompatActivity() {
             val params = createVehButton.layoutParams as ConstraintLayout.LayoutParams
             params.setMargins(0,8,24,0)
         }
+        val nightMode = getSharedPreferences("night_mode", MODE_PRIVATE).getBoolean("night_mode", false)
+        if (nightMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,6 +78,16 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menuItemExport -> export(carsToPlay.joinToString(", "))
             R.id.menuItemCarOfTheMonth -> startActivity(Intent(this, image_of_the_month::class.java))
+            R.id.menuDarkMode -> {
+                val nightModePrefs = getSharedPreferences("night_mode", MODE_PRIVATE)
+                if (nightModePrefs.getBoolean("night_mode", false)) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    nightModePrefs.edit().putBoolean("night_mode", false).commit()
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    nightModePrefs.edit().putBoolean("night_mode", true).commit()
+                }
+            }
         }
         return super.onOptionsItemSelected(item)
     }
