@@ -24,4 +24,7 @@
         android:title="Car of the month"
         android:visible="true"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menuDarkMode"
+        android:title="Dark Mode" />
 </menu>

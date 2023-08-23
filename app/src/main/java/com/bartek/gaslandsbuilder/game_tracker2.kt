@@ -2,15 +2,20 @@ package com.bartek.gaslandsbuilder
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.RelativeLayout.LayoutParams
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.marginTop
@@ -83,6 +88,29 @@ class GameTracker : AppCompatActivity() {
 
 
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        val inflater = MenuInflater(this)
+//        inflater.inflate(R.menu.dark_mode_menu, menu)
+//        menu!!.findItem(R.id.darkMode)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+//        return super.onCreateOptionsMenu(menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.getItemId()){
+//            R.id.darkMode -> {
+//                val nightModePrefs = getSharedPreferences("gaslands_builder", MODE_PRIVATE)
+//                if (nightModePrefs.getBoolean("night_mode", false)) {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                    nightModePrefs.edit().putBoolean("night_mode", false).commit()
+//                } else {
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                    nightModePrefs.edit().putBoolean("night_mode", true).commit()
+//                }
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
 
     override fun onBackPressed() {
