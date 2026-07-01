@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer name="dbVersion">24</integer>
-    <integer name="savedCarsDBVersion">8</integer>
-</resources>
