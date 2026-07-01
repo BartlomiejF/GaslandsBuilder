@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Gaslands Builder</string>
+    <string name="about_description">Greetings, fellow Gaslander! \n\n
+        The app code is open on GitHub for anyone. \n\n
+        If you like the app, head to my GitHub page and add a star. \n\n
+        If you notice any bug or you have an idea how to improve the app, or you would like to request some features, please open an issue there. \n\n
+
+        Happy carnage!
+    </string>
+</resources>
